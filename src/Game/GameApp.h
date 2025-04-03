@@ -12,6 +12,7 @@ extern bool IsResize();
 bool InitGame();
 void CloseGame();
 
+
 void FixedUpdate(double deltaTime);
 void FrameGame(double deltaTime);
 void DrawImGui(double deltaTime);

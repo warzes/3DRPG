@@ -4,13 +4,6 @@
 
 void ClearDefaultGraphicsResource();
 
-struct Vertex final
-{
-	glm::vec3 Position;
-	glm::vec3 Normal;
-	glm::vec2 TexCoords;
-};
-
 class Material final
 {
 public:
@@ -21,10 +14,26 @@ public:
 
 std::shared_ptr<Material> GetDefaultMeshMaterial();
 
+struct MeshVertex final
+{
+	glm::vec3 Position;
+	glm::vec3 Normal;
+	glm::vec2 TexCoords;
+
+	inline static VertexBufferLayout GetLayout()
+	{
+		VertexBufferLayout layout;
+		layout.Push<glm::vec3>("aPosition");
+		layout.Push<glm::vec3>("aNormal");
+		layout.Push<glm::vec2>("aTexCoords");
+		return layout;
+	}
+};
+
 class Mesh final
 {
 public:
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Material> material);
+	Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Material> material);
 	void Draw();
 
 private:
@@ -37,6 +46,7 @@ private:
 class Model final
 {
 public:
+	Model(const std::vector<Mesh>& meshes);
 	Model(const std::string& path, std::shared_ptr<Material> customMainMaterial = nullptr);
 	void Draw();
 
@@ -45,5 +55,4 @@ private:
 	void processMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material);
 
 	std::vector<Mesh> m_meshes;
-	std::string       m_directory;
 };

@@ -117,18 +117,10 @@ void UniformBuffer::SetData(const void* data, uint32_t size, uint32_t offset)
 	glNamedBufferSubData(m_id, offset, size, data);
 }
 //=============================================================================
-VertexArray::VertexArray()
+VertexArray::VertexArray(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<IndexBuffer> ib, const VertexBufferLayout& layout)
 {
 	glCreateVertexArrays(1, &m_id);
-}
-//=============================================================================
-VertexArray::~VertexArray()
-{
-	glDeleteVertexArrays(1, &m_id);
-}
-//=============================================================================
-void VertexArray::AddBuffer(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<IndexBuffer> ib, const VertexBufferLayout& layout)
-{
+
 	glVertexArrayVertexBuffer(m_id, 0, vb->GetID(), 0, layout.GetStride());
 	glVertexArrayElementBuffer(m_id, ib->GetID());
 
@@ -142,6 +134,16 @@ void VertexArray::AddBuffer(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<In
 		glVertexArrayAttribBinding(m_id, i, 0);
 		offset += element.size;
 	}
+}
+//=============================================================================
+VertexArray::~VertexArray()
+{
+	glDeleteVertexArrays(1, &m_id);
+}
+//=============================================================================
+void VertexArray::Bind()
+{
+	glBindVertexArray(m_id);
 }
 //=============================================================================
 std::shared_ptr<Texture2D> Texture2D::LoadFromMemory(int width, int height, void* imageData)

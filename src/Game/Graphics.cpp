@@ -31,26 +31,24 @@ std::shared_ptr<Material> GetDefaultMeshMaterial()
 	return DefaultMeshMaterial;
 }
 //=============================================================================
-Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Material> material)
+Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Material> material)
 	: m_material(material)
 {
-	m_vertexBuffer = std::make_shared<VertexBuffer>(vertices.size() * sizeof(Vertex), vertices.data());
+	m_vertexBuffer = std::make_shared<VertexBuffer>(vertices.size() * sizeof(MeshVertex), vertices.data());
 	m_indexBuffer = std::make_shared<IndexBuffer>(indices.size(), indices.data());
-
-	VertexBufferLayout layout;
-	layout.Push<glm::vec3>("aPosition");
-	layout.Push<glm::vec3>("aNormal");
-	layout.Push<glm::vec2>("aTexCoords");
-
-	m_VAO = std::make_shared<VertexArray>();
-	m_VAO->AddBuffer(m_vertexBuffer, m_indexBuffer, layout);
+	m_VAO = std::make_shared<VertexArray>(m_vertexBuffer, m_indexBuffer, MeshVertex::GetLayout());
 }
 //=============================================================================
 void Mesh::Draw()
 {
 	m_material->diffuse->Bind();
-	glBindVertexArray(m_VAO->GetID());
+	m_VAO->Bind();
 	glDrawElements(GL_TRIANGLES, m_indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+}
+//=============================================================================
+Model::Model(const std::vector<Mesh>& meshes)
+{
+	m_meshes = meshes;
 }
 //=============================================================================
 Model::Model(const std::string& path, std::shared_ptr<Material> customMainMaterial)
@@ -68,14 +66,14 @@ void Model::Draw()
 //=============================================================================
 void Model::loadModel(const std::string& path, std::shared_ptr<Material> customMainMaterial)
 {
-	m_directory = path.substr(0, path.find_last_of('/'));
+	std::string directory = path.substr(0, path.find_last_of('/'));
 
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	std::string warn, err;
 
-	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path.c_str(), m_directory.c_str()))
+	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path.c_str(), directory.c_str()))
 	{
 		Fatal(warn + err);
 		return;
@@ -91,7 +89,7 @@ void Model::loadModel(const std::string& path, std::shared_ptr<Material> customM
 		else
 		{
 			if (materials.size() > 0)
-				material = std::make_shared<Material>(Texture2D::LoadFromFile(m_directory + "/" + materials[shape.mesh.material_ids[0]].diffuse_texname));
+				material = std::make_shared<Material>(Texture2D::LoadFromFile(directory + "/" + materials[shape.mesh.material_ids[0]].diffuse_texname));
 			else
 				material = GetDefaultMeshMaterial();
 		}
@@ -101,14 +99,14 @@ void Model::loadModel(const std::string& path, std::shared_ptr<Material> customM
 //=============================================================================
 void Model::processMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material)
 {
-	std::vector<Vertex> vertices;
+	std::vector<MeshVertex> vertices;
 	std::vector<unsigned int> indices;
 
 	for (unsigned int i = 0; i < mesh.indices.size(); i++)
 	{
 		const tinyobj::index_t& index = mesh.indices[i];
 		
-		Vertex vertex;
+		MeshVertex vertex;
 		vertex.Position = glm::vec3(
 			attrib.vertices[3 * index.vertex_index + 0], 
 			attrib.vertices[3 * index.vertex_index + 1], 

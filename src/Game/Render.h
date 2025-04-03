@@ -192,10 +192,10 @@ private:
 class VertexArray final 
 {
 public:
-	VertexArray();
+	VertexArray(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<IndexBuffer> ib, const VertexBufferLayout& layout);
 	~VertexArray();
 
-	void AddBuffer(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<IndexBuffer> ib, const VertexBufferLayout& layout);
+	void Bind();
 
 	GLuint GetID() const { return m_id; }
 
