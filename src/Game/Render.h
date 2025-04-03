@@ -195,7 +195,7 @@ public:
 	VertexArray();
 	~VertexArray();
 
-	void AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout);
+	void AddBuffer(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<IndexBuffer> ib, const VertexBufferLayout& layout);
 
 	GLuint GetID() const { return m_id; }
 
@@ -206,15 +206,18 @@ private:
 class Texture2D final
 {
 public:
-	static Texture2D LoadFromMemory(int width, int height, void* imageData);
-	static Texture2D LoadFromFile(const std::string& path, bool flipVertical = false);
+	Texture2D() = default;
+	Texture2D(GLuint rendererID) : m_id(rendererID) {}
+
+	static std::shared_ptr<Texture2D> LoadFromMemory(int width, int height, void* imageData);
+	static std::shared_ptr<Texture2D> LoadFromFile(const std::string& path, bool flipVertical = false);
 
 	void Bind(unsigned int slot = 0) const;
 
 	unsigned int GetID() const { return m_id; }
 
 private:
-	Texture2D(GLuint rendererID) : m_id(rendererID) {}
+
 	GLuint m_id{ 0 };
 };
 

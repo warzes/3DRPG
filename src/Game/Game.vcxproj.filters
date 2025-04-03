@@ -10,6 +10,9 @@
     <ClCompile Include="Render.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -18,6 +21,9 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Render.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>

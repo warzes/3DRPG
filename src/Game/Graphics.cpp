@@ -1,0 +1,78 @@
+﻿#include "stdafx.h"
+#include "Graphics.h"
+#include "CoreApp.h"
+//=============================================================================
+Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Material> material)
+	: m_material(material)
+{
+	m_vertexBuffer = std::make_shared<VertexBuffer>(vertices.size() * sizeof(Vertex), vertices.data());
+	m_indexBuffer = std::make_shared<IndexBuffer>(indices.size(), indices.data());
+
+	VertexBufferLayout layout;
+	layout.Push<glm::vec3>("aPosition");
+	layout.Push<glm::vec3>("aNormal");
+	layout.Push<glm::vec2>("aTexCoords");
+	m_VAO.AddBuffer(m_vertexBuffer, m_indexBuffer, layout);
+}
+//=============================================================================
+void Mesh::Draw()
+{
+	m_material->diffuse->Bind();
+	glBindVertexArray(m_VAO.GetID());
+	glDrawElements(GL_TRIANGLES, m_indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+}
+//=============================================================================
+Model::Model(const std::string& path)
+{
+	loadModel(path);
+}
+//=============================================================================
+void Model::Draw()
+{
+	for (unsigned int i = 0; i < m_meshes.size(); i++)
+	{
+		m_meshes[i].Draw();
+	}
+}
+//=============================================================================
+void Model::loadModel(const std::string& path)
+{
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+	std::string warn, err;
+
+	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path.c_str()))
+	{
+		Fatal(warn + err);
+		return;
+	}
+
+	m_directory = path.substr(0, path.find_last_of('/'));
+
+	for (unsigned int i = 0; i < shapes.size(); i++)
+	{
+		processMesh(shapes[i].mesh, attrib, materials[shapes[i].mesh.material_ids[0]]);
+	}
+}
+//=============================================================================
+void Model::processMesh(tinyobj::mesh_t mesh, const tinyobj::attrib_t& attrib, const tinyobj::material_t& mat)
+{
+	std::vector<Vertex> vertices;
+	std::vector<unsigned int> indices;
+
+	for (unsigned int i = 0; i < mesh.indices.size(); i++)
+	{
+		tinyobj::index_t index = mesh.indices[i];
+		Vertex vertex;
+		vertex.Position = glm::vec3(attrib.vertices[3 * index.vertex_index + 0], attrib.vertices[3 * index.vertex_index + 1], attrib.vertices[3 * index.vertex_index + 2]);
+		vertex.Normal = glm::vec3(attrib.normals[3 * index.normal_index + 0], attrib.normals[3 * index.normal_index + 1], attrib.normals[3 * index.normal_index + 2]);
+		vertex.TexCoords = glm::vec2(attrib.texcoords[2 * index.texcoord_index + 0], 1.0f - attrib.texcoords[2 * index.texcoord_index + 1]);
+		vertices.push_back(vertex);
+		indices.push_back(i);
+	}
+
+	std::shared_ptr<Material> material = std::make_shared<Material>(Texture2D::LoadFromFile(m_directory + "/" + mat.diffuse_texname));
+	m_meshes.push_back(Mesh(vertices, indices, material));
+}
+//=============================================================================

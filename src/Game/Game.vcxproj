@@ -97,6 +97,7 @@
   <ItemGroup>
     <ClCompile Include="CoreApp.cpp" />
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -107,6 +108,7 @@
   <ItemGroup>
     <ClInclude Include="CoreApp.h" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="Graphics.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

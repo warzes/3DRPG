@@ -127,9 +127,10 @@ VertexArray::~VertexArray()
 	glDeleteVertexArrays(1, &m_id);
 }
 //=============================================================================
-void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
+void VertexArray::AddBuffer(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<IndexBuffer> ib, const VertexBufferLayout& layout)
 {
-	glVertexArrayVertexBuffer(m_id, 0, vb.GetID(), 0, layout.GetStride());
+	glVertexArrayVertexBuffer(m_id, 0, vb->GetID(), 0, layout.GetStride());
+	glVertexArrayElementBuffer(m_id, ib->GetID());
 
 	const auto& elements = layout.GetElements();
 	unsigned int offset = 0;
@@ -143,7 +144,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 	}
 }
 //=============================================================================
-Texture2D Texture2D::LoadFromMemory(int width, int height, void* imageData)
+std::shared_ptr<Texture2D> Texture2D::LoadFromMemory(int width, int height, void* imageData)
 {
 	GLuint id;
 	glCreateTextures(GL_TEXTURE_2D, 1, &id);
@@ -155,10 +156,10 @@ Texture2D Texture2D::LoadFromMemory(int width, int height, void* imageData)
 	glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	return Texture2D(id);
+	return std::make_shared<Texture2D>(id);
 }
 //=============================================================================
-Texture2D Texture2D::LoadFromFile(const std::string& path, bool flipVertical)
+std::shared_ptr<Texture2D> Texture2D::LoadFromFile(const std::string& path, bool flipVertical)
 {
 	int width, height, channels;
 	stbi_set_flip_vertically_on_load(flipVertical);
@@ -169,7 +170,7 @@ Texture2D Texture2D::LoadFromFile(const std::string& path, bool flipVertical)
 		return { 0 };
 	}
 
-	Texture2D resurce = LoadFromMemory(width, height, data);
+	auto resurce = LoadFromMemory(width, height, data);
 	stbi_image_free(data);
 	return resurce;
 }
