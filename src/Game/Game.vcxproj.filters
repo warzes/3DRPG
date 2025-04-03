@@ -7,11 +7,17 @@
     <ClCompile Include="CoreApp.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Render.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="CoreApp.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Render.h">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
