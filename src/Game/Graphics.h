@@ -2,6 +2,8 @@
 
 #include "Render.h"
 
+void ClearDefaultGraphicsResource();
+
 struct Vertex final
 {
 	glm::vec3 Position;
@@ -17,6 +19,8 @@ public:
 	std::shared_ptr<Texture2D> diffuse;
 };
 
+std::shared_ptr<Material> GetDefaultMeshMaterial();
+
 class Mesh final
 {
 public:
@@ -24,7 +28,7 @@ public:
 	void Draw();
 
 private:
-	VertexArray                   m_VAO;
+	std::shared_ptr<VertexArray>  m_VAO;
 	std::shared_ptr<VertexBuffer> m_vertexBuffer;
 	std::shared_ptr<IndexBuffer>  m_indexBuffer;
 	std::shared_ptr<Material>     m_material;
@@ -38,7 +42,7 @@ public:
 
 private:
 	void loadModel(const std::string& path);
-	void processMesh(tinyobj::mesh_t mesh, const tinyobj::attrib_t& attrib, const tinyobj::material_t& mat);
+	void processMesh(tinyobj::mesh_t mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material);
 
 	std::vector<Mesh> m_meshes;
 	std::string       m_directory;

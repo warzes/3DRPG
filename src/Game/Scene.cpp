@@ -66,10 +66,10 @@ void Scene::AddNode(Node* node)
 	m_nodes.push_back(node);
 }
 //=============================================================================
-void Scene::Render(Shader& shader, Camera& camera, float screenAspect)
+void Scene::Render(std::shared_ptr<Shader> shader, Camera& camera, float screenAspect)
 {
 	glm::mat4 viewProjectionMatrix = camera.GetProjectionMatrix(screenAspect) * camera.GetViewMatrix();
-	shader.Bind();
+	shader->Bind();
 
 	for (auto node : m_nodes)
 	{
@@ -77,7 +77,7 @@ void Scene::Render(Shader& shader, Camera& camera, float screenAspect)
 		if (isVisible(node, viewProjectionMatrix))
 		{	
 			glm::mat4 modelMatrix = node->GetWorldMatrix();
-			glProgramUniformMatrix4fv(shader.GetID(), m_modelLocation, 1, GL_FALSE, &modelMatrix[0][0]);
+			glProgramUniformMatrix4fv(shader->GetID(), m_modelLocation, 1, GL_FALSE, &modelMatrix[0][0]);
 			auto model = node->GetModel();
 			if (model) model->Draw();
 		}

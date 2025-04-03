@@ -10,7 +10,28 @@ namespace
 {
 	int frameWidth{ 0 };
 	int frameHeight{ 0 };
+	float screenAspect{ 0.0 };
 	bool isResize{ true };
+}
+//=============================================================================
+int GetFrameWidth()
+{
+	return frameWidth;
+}
+//=============================================================================
+int GetFrameHeight()
+{
+	return frameHeight;
+}
+//=============================================================================
+float GetFrameAspect()
+{
+	return screenAspect;
+}
+//=============================================================================
+bool IsResize()
+{
+	return isResize;
 }
 //=============================================================================
 void handleWindowMinimizedEvents(GLFWwindow* window, int minimized) noexcept
@@ -99,8 +120,9 @@ void handleFramebufferResizeEvents(GLFWwindow* window, int width, int height) no
 {
 	if (frameWidth != width || frameHeight != height)
 	{
-		frameWidth = width;
-		frameHeight = height;
+		frameWidth = std::max(width, 1);
+		frameHeight = std::max(height, 1);
+		screenAspect = (float)frameWidth / (float)frameHeight;
 		isResize = true;
 	}
 }
@@ -112,8 +134,8 @@ bool InitApp(int windowWidth, int windowHeight)
 		Fatal("glfwInit() failed!");
 		return false;
 	}
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
@@ -129,6 +151,7 @@ bool InitApp(int windowWidth, int windowHeight)
 	glfwGetFramebufferSize(app::window, &fbWidth, &fbHeight);
 	frameWidth = fbWidth;
 	frameHeight = fbHeight;
+	screenAspect = (float)frameWidth / (float)frameHeight;
 
 	glfwSetWindowIconifyCallback(app::window, handleWindowMinimizedEvents);
 	glfwSetWindowMaximizeCallback(app::window, handleWindowMaximizedEvents);
@@ -152,6 +175,8 @@ bool InitApp(int windowWidth, int windowHeight)
 	ImGui_ImplOpenGL3_Init("#version 330 core");
 	ImGui::StyleColorsDark();
 
+	glEnable(GL_DEPTH_TEST);
+
 	return true;
 }
 //=============================================================================
@@ -166,18 +191,27 @@ int main(
 {
 	if (InitApp(1600, 900) && InitGame())
 	{
-		double prevFrameStartTime = glfwGetTime();
+		double lastFrameTime = glfwGetTime();
 
 		while (!ShouldCloseApp())
 		{
-			const double frameStartTime = glfwGetTime();
-			const double deltaTime = frameStartTime - prevFrameStartTime;
-			prevFrameStartTime = frameStartTime;
+			const double currentTime = glfwGetTime();
+			const double deltaTime = currentTime - lastFrameTime;
+			lastFrameTime = currentTime;
 
 			if (isResize)
 			{
 				glViewport(0, 0, frameWidth, frameHeight);
 				isResize = false;
+			}
+
+			// Update и FixedUpdate
+			float accumulator = 0.0f;
+			float fixedDeltaTime = 1.0f / 60.0f;
+			while (accumulator < deltaTime)
+			{
+				FixedUpdate(fixedDeltaTime);
+				accumulator += fixedDeltaTime;
 			}
 
 			FrameGame(deltaTime);

@@ -2,6 +2,35 @@
 #include "Graphics.h"
 #include "CoreApp.h"
 //=============================================================================
+namespace
+{
+	std::shared_ptr<Material> DefaultMeshMaterial;
+}
+//=============================================================================
+void ClearDefaultGraphicsResource()
+{
+	DefaultMeshMaterial.reset();
+}
+//=============================================================================
+std::shared_ptr<Material> GetDefaultMeshMaterial()
+{
+	if (!DefaultMeshMaterial)
+	{
+		uint8_t defColor[] =
+		{
+			64,  64,  64,  255,
+			200, 128, 128, 255,
+			200, 128, 128, 255,
+			64,  64,  64,  255,
+		};
+
+		std::shared_ptr<Texture2D> texture = Texture2D::LoadFromMemory(2, 2, defColor);
+		DefaultMeshMaterial = std::make_shared<Material>(texture);
+	}
+
+	return DefaultMeshMaterial;
+}
+//=============================================================================
 Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Material> material)
 	: m_material(material)
 {
@@ -12,13 +41,15 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& ind
 	layout.Push<glm::vec3>("aPosition");
 	layout.Push<glm::vec3>("aNormal");
 	layout.Push<glm::vec2>("aTexCoords");
-	m_VAO.AddBuffer(m_vertexBuffer, m_indexBuffer, layout);
+
+	m_VAO = std::make_shared<VertexArray>();
+	m_VAO->AddBuffer(m_vertexBuffer, m_indexBuffer, layout);
 }
 //=============================================================================
 void Mesh::Draw()
 {
 	m_material->diffuse->Bind();
-	glBindVertexArray(m_VAO.GetID());
+	glBindVertexArray(m_VAO->GetID());
 	glDrawElements(GL_TRIANGLES, m_indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 //=============================================================================
@@ -52,11 +83,17 @@ void Model::loadModel(const std::string& path)
 
 	for (unsigned int i = 0; i < shapes.size(); i++)
 	{
-		processMesh(shapes[i].mesh, attrib, materials[shapes[i].mesh.material_ids[0]]);
+
+		std::shared_ptr<Material> material;
+		if (materials.size() > 0)
+			material = std::make_shared<Material>(Texture2D::LoadFromFile(m_directory + "/" + materials[shapes[i].mesh.material_ids[0]].diffuse_texname));
+		else
+			material = GetDefaultMeshMaterial();
+		processMesh(shapes[i].mesh, attrib, material);
 	}
 }
 //=============================================================================
-void Model::processMesh(tinyobj::mesh_t mesh, const tinyobj::attrib_t& attrib, const tinyobj::material_t& mat)
+void Model::processMesh(tinyobj::mesh_t mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material)
 {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
@@ -72,7 +109,6 @@ void Model::processMesh(tinyobj::mesh_t mesh, const tinyobj::attrib_t& attrib, c
 		indices.push_back(i);
 	}
 
-	std::shared_ptr<Material> material = std::make_shared<Material>(Texture2D::LoadFromFile(m_directory + "/" + mat.diffuse_texname));
 	m_meshes.push_back(Mesh(vertices, indices, material));
 }
 //=============================================================================

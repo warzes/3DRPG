@@ -96,9 +96,9 @@ enum class Direction : uint8_t
 
 class Camera final
 {
-	const float SPEED = 2.5f;
-	const float SENSITIVITY = 0.1f;
-	const float ZOOM = 45.0f;
+	const float SPEED = 6.5f;
+	const float SENSITIVITY = 0.25f;
+	const float ZOOM = 65.0f;
 public:
 	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f);
 
@@ -129,7 +129,7 @@ public:
 	Scene() = default;
 
 	void AddNode(Node* node);
-	void Render(Shader& shader, Camera& camera, float screenAspect);
+	void Render(std::shared_ptr<Shader> shader, Camera& camera, float screenAspect);
 	void SetModelLocation(unsigned int location);
 
 private:
