@@ -96,7 +96,7 @@ enum class Direction : uint8_t
 
 class Camera final
 {
-	const float SPEED = 6.5f;
+	const float SPEED = 10.5f;
 	const float SENSITIVITY = 0.25f;
 	const float ZOOM = 65.0f;
 public:

@@ -37,12 +37,12 @@ private:
 class Model final
 {
 public:
-	Model(const std::string& path);
+	Model(const std::string& path, std::shared_ptr<Material> customMainMaterial = nullptr);
 	void Draw();
 
 private:
-	void loadModel(const std::string& path);
-	void processMesh(tinyobj::mesh_t mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material);
+	void loadModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);
+	void processMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material);
 
 	std::vector<Mesh> m_meshes;
 	std::string       m_directory;

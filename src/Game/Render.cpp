@@ -155,7 +155,7 @@ std::shared_ptr<Texture2D> Texture2D::LoadFromMemory(int width, int height, void
 	glTextureParameteri(id, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	return std::make_shared<Texture2D>(id);
 }
 //=============================================================================

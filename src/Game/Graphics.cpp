@@ -53,9 +53,9 @@ void Mesh::Draw()
 	glDrawElements(GL_TRIANGLES, m_indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 //=============================================================================
-Model::Model(const std::string& path)
+Model::Model(const std::string& path, std::shared_ptr<Material> customMainMaterial)
 {
-	loadModel(path);
+	loadModel(path, customMainMaterial);
 }
 //=============================================================================
 void Model::Draw()
@@ -66,45 +66,61 @@ void Model::Draw()
 	}
 }
 //=============================================================================
-void Model::loadModel(const std::string& path)
+void Model::loadModel(const std::string& path, std::shared_ptr<Material> customMainMaterial)
 {
+	m_directory = path.substr(0, path.find_last_of('/'));
+
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	std::string warn, err;
 
-	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path.c_str()))
+	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path.c_str(), m_directory.c_str()))
 	{
 		Fatal(warn + err);
 		return;
 	}
 
-	m_directory = path.substr(0, path.find_last_of('/'));
-
-	for (unsigned int i = 0; i < shapes.size(); i++)
+	for (const auto& shape : shapes)
 	{
-
 		std::shared_ptr<Material> material;
-		if (materials.size() > 0)
-			material = std::make_shared<Material>(Texture2D::LoadFromFile(m_directory + "/" + materials[shapes[i].mesh.material_ids[0]].diffuse_texname));
+		if (customMainMaterial)
+		{
+			material = customMainMaterial;
+		}
 		else
-			material = GetDefaultMeshMaterial();
-		processMesh(shapes[i].mesh, attrib, material);
+		{
+			if (materials.size() > 0)
+				material = std::make_shared<Material>(Texture2D::LoadFromFile(m_directory + "/" + materials[shape.mesh.material_ids[0]].diffuse_texname));
+			else
+				material = GetDefaultMeshMaterial();
+		}
+		processMesh(shape.mesh, attrib, material);
 	}
 }
 //=============================================================================
-void Model::processMesh(tinyobj::mesh_t mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material)
+void Model::processMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material)
 {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 
 	for (unsigned int i = 0; i < mesh.indices.size(); i++)
 	{
-		tinyobj::index_t index = mesh.indices[i];
+		const tinyobj::index_t& index = mesh.indices[i];
+		
 		Vertex vertex;
-		vertex.Position = glm::vec3(attrib.vertices[3 * index.vertex_index + 0], attrib.vertices[3 * index.vertex_index + 1], attrib.vertices[3 * index.vertex_index + 2]);
-		vertex.Normal = glm::vec3(attrib.normals[3 * index.normal_index + 0], attrib.normals[3 * index.normal_index + 1], attrib.normals[3 * index.normal_index + 2]);
-		vertex.TexCoords = glm::vec2(attrib.texcoords[2 * index.texcoord_index + 0], 1.0f - attrib.texcoords[2 * index.texcoord_index + 1]);
+		vertex.Position = glm::vec3(
+			attrib.vertices[3 * index.vertex_index + 0], 
+			attrib.vertices[3 * index.vertex_index + 1], 
+			attrib.vertices[3 * index.vertex_index + 2]);
+		vertex.Normal = glm::vec3(
+			attrib.normals[3 * index.normal_index + 0], 
+			attrib.normals[3 * index.normal_index + 1], 
+			attrib.normals[3 * index.normal_index + 2]);
+		vertex.TexCoords = glm::vec2(
+			attrib.texcoords[2 * index.texcoord_index + 0], 
+			1.0f - attrib.texcoords[2 * index.texcoord_index + 1]);
+		
 		vertices.push_back(vertex);
 		indices.push_back(i);
 	}

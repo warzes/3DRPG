@@ -45,6 +45,7 @@ void main()
 )glsl";
 //=============================================================================
 std::shared_ptr<Shader> shader;
+std::shared_ptr<Material> tempMaterial;
 std::shared_ptr<Model> model;
 Camera camera;
 Scene scene;
@@ -57,14 +58,20 @@ float lastY = 900.0f / 2.0;
 bool InitGame()
 {
 	shader = std::make_shared<Shader>(vertexShaderSource, fragmentShaderSource);
-	model = std::make_shared<Model>("data/cube.obj");
+	tempMaterial = std::make_shared<Material>(Texture2D::LoadFromFile("data/temp.png"));
+	//model = std::make_shared<Model>("data/cube.obj", tempMaterial);
+
+	model = std::make_shared<Model>("data/treeRealistic/Tree.obj");
 
 	node.SetModel(model);
 	node.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, -5.0f));
-	node.GetTransform().Rotate(45.0f, glm::vec3(0.5f, 0.5f, 0.0f));
+	node.GetTransform().Rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	
 	scene.AddNode(&node);
 	scene.SetModelLocation(glGetUniformLocation(shader->GetID(), "model"));
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	return true;
 }
@@ -83,7 +90,7 @@ void FrameGame(double deltaTime)
 	ProcessInput(camera, deltaTime, firstMouse, lastX, lastY);
 
 
-	glClearColor(0.1f, 0.3f, 0.8f, 1.0f);
+	glClearColor(0.2f, 0.5f, 0.8f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	shader->Bind();
