@@ -108,12 +108,12 @@ void DrawImGui(double deltaTime)
 //=============================================================================
 void ProcessInput(Camera& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY)
 {
-	if (glfwGetMouseButton(app::window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	if (glfwGetMouseButton(GetWindow(), GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
-		glfwSetInputMode(app::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSetInputMode(GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		double xpos, ypos;
-		glfwGetCursorPos(app::window, &xpos, &ypos);
+		glfwGetCursorPos(GetWindow(), &xpos, &ypos);
 
 		if (firstMouse)
 		{
@@ -132,17 +132,17 @@ void ProcessInput(Camera& camera, float deltaTime, bool& firstMouse, float& last
 	}
 	else 
 	{
-		glfwSetInputMode(app::window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		glfwSetInputMode(GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		firstMouse = true;
 	}
 
-	if (glfwGetKey(app::window, GLFW_KEY_W) == GLFW_PRESS)
+	if (glfwGetKey(GetWindow(), GLFW_KEY_W) == GLFW_PRESS)
 		camera.ProcessKeyboard(Direction::Forward, deltaTime);
-	if (glfwGetKey(app::window, GLFW_KEY_S) == GLFW_PRESS)
+	if (glfwGetKey(GetWindow(), GLFW_KEY_S) == GLFW_PRESS)
 		camera.ProcessKeyboard(Direction::Backward, deltaTime);
-	if (glfwGetKey(app::window, GLFW_KEY_A) == GLFW_PRESS)
+	if (glfwGetKey(GetWindow(), GLFW_KEY_A) == GLFW_PRESS)
 		camera.ProcessKeyboard(Direction::Left, deltaTime);
-	if (glfwGetKey(app::window, GLFW_KEY_D) == GLFW_PRESS)
+	if (glfwGetKey(GetWindow(), GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(Direction::Right, deltaTime);
 }
 //=============================================================================

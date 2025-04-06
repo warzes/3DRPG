@@ -2,16 +2,10 @@
 
 #include "CoreApp.h"
 #include "Scene.h"
-
-
-extern float GetFrameAspect();
-extern int GetFrameWidth();
-extern int GetFrameHeight();
-extern bool IsResize();
+#include "Context.h"
 
 bool InitGame();
 void CloseGame();
-
 
 void FixedUpdate(double deltaTime);
 void FrameGame(double deltaTime);

@@ -95,6 +95,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Context.cpp" />
     <ClCompile Include="CoreApp.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="Graphics.cpp" />
@@ -107,10 +108,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Context.h" />
     <ClInclude Include="CoreApp.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Render.h" />
+    <ClInclude Include="RenderCore.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

@@ -7,8 +7,6 @@ void Fatal(const std::string& msg);
 
 namespace app
 {
-	extern bool        isExit;
-	extern GLFWwindow* window;
-
+	extern bool isExit;
 	void Exit();
 }

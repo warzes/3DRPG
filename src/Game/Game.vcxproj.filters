@@ -5,37 +5,58 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="CoreApp.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Core</Filter>
     </ClCompile>
     <ClCompile Include="Render.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Render</Filter>
     </ClCompile>
     <ClCompile Include="Graphics.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Context.cpp">
+      <Filter>Engine\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="CoreApp.h">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="Render.h">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderCore.h">
+      <Filter>Engine\Render</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.h">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Context.h">
+      <Filter>Engine\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
       <UniqueIdentifier>{ac6c5d5d-a407-465d-a5cc-51d285e08d99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Core">
+      <UniqueIdentifier>{0a710c69-25cf-40a7-b9e6-4d17aac33e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Render">
+      <UniqueIdentifier>{597d1977-a0f7-4018-93fb-0c7c73d2be29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Graphics">
+      <UniqueIdentifier>{59c8a38f-881f-4acb-9a76-b876227b4a79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene">
+      <UniqueIdentifier>{6d4439fc-14ed-418b-aba3-42a582f28b07}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
