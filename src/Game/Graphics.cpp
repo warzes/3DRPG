@@ -331,5 +331,20 @@ void Model::processObjMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t&
 //=============================================================================
 void Model::loadAssimpModel(const std::string& path, std::shared_ptr<Material> customMainMaterial)
 {
+	// Load scene from file
+	const aiScene* p_Scene = aiImportFile(path.c_str(),
+		aiProcess_GenSmoothNormals |
+		aiProcess_CalcTangentSpace |
+		aiProcess_Triangulate |
+		aiProcess_ImproveCacheLocality |
+		aiProcess_SortByPType);
+	// Check if import failed
+	if (!p_Scene)
+	{
+		Error("Failed to open scene file: " + std::string(aiGetErrorString()));
+		return;
+	}
+
+
 }
 //=============================================================================

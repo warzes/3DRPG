@@ -43,6 +43,8 @@
 #include <stb/stb_image.h>
 #include <stb/stb_truetype.h>
 
+#include <ktx.h>
+
 #include <tiny_obj_loader.h>
 
 #include <assimp/cimport.h>

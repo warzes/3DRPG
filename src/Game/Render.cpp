@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "Render.h"
 #include "CoreApp.h"
+#include "Utility.h"
 //=============================================================================
 unsigned int ShaderDataTypeSize(ShaderDataType type)
 {
@@ -164,18 +165,56 @@ std::shared_ptr<Texture2D> Texture2D::LoadFromMemory(int width, int height, void
 std::shared_ptr<Texture2D> Texture2D::LoadFromFile(const std::string& path, bool flipVertical)
 {
 	Print("Texture load: " + path);
-	int width, height, channels;
-	stbi_set_flip_vertically_on_load(flipVertical);
-	unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, STBI_rgb_alpha);
-	if (!data)
+
+	std::string ext = GetFileExtension(path);
+	if (ext.contains("ktx"))
 	{
-		Fatal("Failed to load texture: " + path);
-		return { 0 };
+		// Load texture data
+		ktxTexture* kTexture;
+		KTX_error_code ktxerror = ktxTexture_CreateFromNamedFile(path.c_str(), KTX_TEXTURE_CREATE_NO_FLAGS, &kTexture);
+		if (ktxerror != KTX_SUCCESS)
+		{
+			Error("Failed to load texture: " + path + "\nError: " + ktxErrorString(ktxerror));
+			return nullptr;
+		}
+		GLuint id;
+		GLenum GLTarget, GLError;
+		ktxerror = ktxTexture_GLUpload(kTexture, &id, &GLTarget, &GLError);
+		if (ktxerror != KTX_SUCCESS)
+		{
+			Error("Failed to upload texture file: " + std::string(ktxErrorString(ktxerror)));
+			return nullptr;
+		}
+		// Generate mipmaps
+		if (kTexture->numLevels == 1)
+			glGenerateTextureMipmap(id);
+
+		ktxTexture_Destroy(kTexture);
+
+		// Initialise the texture filtering values
+		glTextureParameteri(id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		return std::make_shared<Texture2D>(id);
+	}
+	else
+	{
+		int width, height, channels;
+		stbi_set_flip_vertically_on_load(flipVertical);
+		unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, STBI_rgb_alpha);
+		if (!data)
+		{
+			Error("Failed to load texture: " + path);
+			return nullptr;
+		}
+		auto resurce = LoadFromMemory(width, height, data);
+		stbi_image_free(data);
+		return resurce;
 	}
 
-	auto resurce = LoadFromMemory(width, height, data);
-	stbi_image_free(data);
-	return resurce;
+	return nullptr;
 }
 //=============================================================================
 void Texture2D::Bind(unsigned int slot) const
