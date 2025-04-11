@@ -233,50 +233,103 @@ void FrameBuffer::BindВepthTexture(GLuint textureUnit) const
 	glBindTextureUnit(textureUnit, m_depthAttachment);
 }
 //=============================================================================
-Shader::Shader(const std::string& vertexShader, const std::string& fragmentShader)
+ShaderProgram::ShaderProgram(const std::string& vertexShaderSource, const std::string& fragmentShaderSource)
 {
-	m_id = createShader(vertexShader, fragmentShader);
+	const GLuint vs = compileShader(GL_VERTEX_SHADER, vertexShaderSource);
+	if (vs == 0) [[unlikely]]
+	{
+		return;
+	}
+	const GLuint fs = compileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+	if (fs == 0) [[unlikely]]
+	{
+		glDeleteShader(vs);
+		return;
+	}
+
+	const GLuint id = glCreateProgram();
+	glAttachShader(id, vs);
+	glAttachShader(id, fs);
+	glLinkProgram(id);
+
+	GLint linkResult;
+	glGetProgramiv(id, GL_LINK_STATUS, &linkResult);
+	if (linkResult == GL_FALSE)
+	{
+		GLint length;
+		glGetProgramiv(id, GL_INFO_LOG_LENGTH, &length);
+		std::string message;
+		message.resize(length);
+		glGetProgramInfoLog(id, length, nullptr, &message[0]);
+		Error("Failed to link shaders: " + message);
+		glDeleteProgram(id);
+		return;
+	}
+	//glValidateProgram(id);
+
+	glDeleteShader(vs);
+	glDeleteShader(fs);
+
+	m_id = id;
 }
 //=============================================================================
-Shader::~Shader()
+ShaderProgram::~ShaderProgram()
 {
 	glDeleteProgram(m_id);
 }
 //=============================================================================
-void Shader::Bind() const
+void ShaderProgram::Bind() const
 {
+	if (!IsValid()) [[unlikely]]
+	{
+		Warning("Shader Program not valid");
+	}
 	glUseProgram(m_id);
 }
 //=============================================================================
-void Shader::SetUniform1i(const std::string& name, int value)
+void ShaderProgram::SetUniform1i(const std::string& name, int value)
 {
 	glUniform1i(getUniformLocation(name), value);
 }
 //=============================================================================
-void Shader::SetUniform2f(const std::string& name, float v0, float v1)
+void ShaderProgram::SetUniform2f(const std::string& name, float v0, float v1)
 {
 	glUniform2f(getUniformLocation(name), v0, v1);
 }
 //=============================================================================
-void Shader::SetUniform3f(const std::string& name, float v0, float v1, float v2)
+void ShaderProgram::SetUniform3f(const std::string& name, float v0, float v1, float v2)
 {
 	glUniform3f(getUniformLocation(name), v0, v1, v2);
 }
 //=============================================================================
-void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
+void ShaderProgram::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
 	glUniform4f(getUniformLocation(name), v0, v1, v2, v3);
 }
 //=============================================================================
-GLuint Shader::compileShader(unsigned int type, const std::string& source)
+GLuint ShaderProgram::compileShader(unsigned int type, const std::string& source)
 {
+	std::string shaderTypeStr;
+	switch (type)
+	{
+	case GL_VERTEX_SHADER:          shaderTypeStr = "vertex"; break;
+	case GL_FRAGMENT_SHADER:        shaderTypeStr = "fragment"; break;
+	case GL_GEOMETRY_SHADER:        shaderTypeStr = "geometry"; break;
+	case GL_COMPUTE_SHADER:         shaderTypeStr = "compute"; break;
+	case GL_TESS_CONTROL_SHADER:    shaderTypeStr = "tessellation control"; break;
+	case GL_TESS_EVALUATION_SHADER: shaderTypeStr = "tessellation evaluation"; break;
+	default: 
+		shaderTypeStr = "unknown";
+		break;
+	}
+
 	const char* src = source.c_str();
 
-	GLuint id = glCreateShader(type);
+	const GLuint id = glCreateShader(type);
 	glShaderSource(id, 1, &src, nullptr);
 	glCompileShader(id);
 
-	int result;
+	GLint result;
 	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
 	if (result == GL_FALSE)
 	{
@@ -285,7 +338,7 @@ GLuint Shader::compileShader(unsigned int type, const std::string& source)
 		std::string message;
 		message.resize(length);
 		glGetShaderInfoLog(id, length, &length, &message[0]);
-		Error(std::string("Failed to compile ") + (type == GL_VERTEX_SHADER ? "vertex" : "fragment") + " shader!\n" + message);
+		Error("Failed to compile " + shaderTypeStr + " shader!\n" + message);
 		glDeleteShader(id);
 		return 0;
 	}
@@ -293,24 +346,7 @@ GLuint Shader::compileShader(unsigned int type, const std::string& source)
 	return id;
 }
 //=============================================================================
-GLuint Shader::createShader(const std::string& vertexShader, const std::string& fragmentShader)
-{
-	GLuint program = glCreateProgram();
-	GLuint vs = compileShader(GL_VERTEX_SHADER, vertexShader);
-	GLuint fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
-
-	glAttachShader(program, vs);
-	glAttachShader(program, fs);
-	glLinkProgram(program);
-	glValidateProgram(program);
-
-	glDeleteShader(vs);
-	glDeleteShader(fs);
-
-	return program;
-}
-//=============================================================================
-int Shader::getUniformLocation(const std::string& name)
+int ShaderProgram::getUniformLocation(const std::string& name)
 {
 	if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
 		return m_UniformLocationCache[name];

@@ -19,6 +19,9 @@
     <ClCompile Include="Context.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>Engine\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -57,6 +60,9 @@
     </Filter>
     <Filter Include="Engine\Scene">
       <UniqueIdentifier>{6d4439fc-14ed-418b-aba3-42a582f28b07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility">
+      <UniqueIdentifier>{db597644-56d9-4e34-9099-03965510c1ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

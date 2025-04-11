@@ -2,6 +2,12 @@
 
 #include "RenderCore.h"
 
+namespace rhi
+{
+	void Init();
+	void Close();
+}
+
 class VertexBufferLayout final
 {
 public:
@@ -203,11 +209,11 @@ private:
 	GLuint m_depthAttachment;
 };
 
-class Shader final
+class ShaderProgram final
 {
 public:
-	Shader(const std::string& vertexShader, const std::string& fragmentShader);
-	~Shader();
+	ShaderProgram(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
+	~ShaderProgram();
 
 	void Bind() const;
 
@@ -218,11 +224,12 @@ public:
 
 	GLuint GetID() const { return m_id; }
 
+	bool IsValid() const { return m_id > 0; }
+
 private:
-	static GLuint compileShader(unsigned int type, const std::string& source);
-	static GLuint createShader(const std::string& vertexShader, const std::string& fragmentShader);
+	GLuint compileShader(unsigned int type, const std::string& source);
 	int getUniformLocation(const std::string& name);
 
-	GLuint m_id;
+	GLuint m_id{ 0 };
 	std::unordered_map<std::string, int> m_UniformLocationCache;
 };

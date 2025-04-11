@@ -2,6 +2,7 @@
 #include "GameApp.h"
 //=============================================================================
 // Shader sources
+#pragma region [ Shaders sources ]
 const GLchar* vertexShaderSource = R"glsl(
 #version 330 core
 
@@ -43,13 +44,24 @@ void main()
 	FragColor = texture(textureDiffuse, TexCoords) * vec4((0.3 + 0.7 * lightAngle) * lightColor, 1.0);
 }
 )glsl";
+
+#pragma endregion
 //=============================================================================
-std::shared_ptr<Shader> shader;
+std::shared_ptr<ShaderProgram> shader;
 std::shared_ptr<Material> tempMaterial;
 std::shared_ptr<Model> model;
+std::shared_ptr<Model> modelCube;
+std::shared_ptr<Model> modelSphere;
+std::shared_ptr<Model> modelPlane;
+
+
+
 Camera camera;
 Scene scene;
 Node node;
+Node nodeCube;
+Node nodeSphere;
+Node nodePlane;
 
 bool firstMouse = true;
 float lastX = 1600.0f / 2.0;
@@ -57,21 +69,32 @@ float lastY = 900.0f / 2.0;
 //=============================================================================
 bool InitGame()
 {
-	shader = std::make_shared<Shader>(vertexShaderSource, fragmentShaderSource);
+	rhi::Init();
+
+	shader = std::make_shared<ShaderProgram>(vertexShaderSource, fragmentShaderSource);
 	tempMaterial = std::make_shared<Material>(Texture2D::LoadFromFile("data/temp.png"));
 	//model = std::make_shared<Model>("data/cube.obj", tempMaterial);
-
 	model = std::make_shared<Model>("data/treeRealistic/Tree.obj");
 
+	modelCube = Model::CreateCube(1);
+	modelSphere = Model::CreateSphere(1.0f, 36, 18);
+	modelPlane = Model::CreatePlane(10.0f, 10.0f, 4.0f, 4.0f);
+
+	nodePlane.SetModel(modelPlane);
+	scene.AddNode(&nodePlane);
+
+	nodeCube.SetModel(modelCube);
+	nodeCube.GetTransform().SetPosition(glm::vec3(2.0f, 0.0f, -5.0f));
+	scene.AddNode(&nodeCube);
+
 	node.SetModel(model);
-	node.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, -5.0f));
-	node.GetTransform().Rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-	
+	node.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	node.GetTransform().Rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f));	
 	scene.AddNode(&node);
+
+
 	scene.SetModelLocation(glGetUniformLocation(shader->GetID(), "model"));
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	return true;
 }
@@ -79,6 +102,7 @@ bool InitGame()
 void CloseGame()
 {
 	ClearDefaultGraphicsResource();
+	rhi::Close();
 }
 //=============================================================================
 void FixedUpdate(double deltaTime)

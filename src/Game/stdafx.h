@@ -5,6 +5,9 @@
 //#	pragma warning(disable : 5039) 
 #endif
 
+#define _USE_MATH_DEFINES
+
+#include <cmath>
 #include <string>
 #include <algorithm>
 #include <memory>

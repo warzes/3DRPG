@@ -66,7 +66,7 @@ void Scene::AddNode(Node* node)
 	m_nodes.push_back(node);
 }
 //=============================================================================
-void Scene::Render(std::shared_ptr<Shader> shader, Camera& camera, float screenAspect)
+void Scene::Render(std::shared_ptr<ShaderProgram> shader, Camera& camera, float screenAspect)
 {
 	glm::mat4 viewProjectionMatrix = camera.GetProjectionMatrix(screenAspect) * camera.GetViewMatrix();
 	shader->Bind();

@@ -100,7 +100,7 @@ class Camera final
 	const float SENSITIVITY = 0.25f;
 	const float ZOOM = 65.0f;
 public:
-	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f);
+	Camera(glm::vec3 position = glm::vec3(0.0f, 3.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f);
 
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetProjectionMatrix(float aspect) const;
@@ -129,7 +129,7 @@ public:
 	Scene() = default;
 
 	void AddNode(Node* node);
-	void Render(std::shared_ptr<Shader> shader, Camera& camera, float screenAspect);
+	void Render(std::shared_ptr<ShaderProgram> shader, Camera& camera, float screenAspect);
 	void SetModelLocation(unsigned int location);
 
 private:

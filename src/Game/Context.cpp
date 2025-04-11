@@ -157,7 +157,6 @@ bool Context::Init(int windowWidth, int windowHeight, std::string_view title)
 	ImGui_ImplOpenGL3_Init("#version 330 core");
 	ImGui::StyleColorsDark();
 
-	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, m_frameWidth, m_frameHeight);
 
 	m_lastFrameTime = glfwGetTime();

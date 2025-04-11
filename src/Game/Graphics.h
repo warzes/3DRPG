@@ -50,6 +50,10 @@ public:
 	Model(const std::string& path, std::shared_ptr<Material> customMainMaterial = nullptr);
 	void Draw();
 
+	static std::shared_ptr<Model> CreateCube(float length = 1.0f);
+	static std::shared_ptr<Model> CreateSphere(float radius, int sectors, int stacks);
+	static std::shared_ptr<Model> CreatePlane(float width, float height, float texWidth, float texHeight);
+
 private:
 	void loadModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);
 	void processMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material);
