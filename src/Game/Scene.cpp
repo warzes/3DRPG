@@ -114,9 +114,12 @@ void Scene::Render(const Camera& camera, float screenAspect)
 			auto model = node->GetModel();
 			if (model)
 			{
-				m_uniformTransformData.model = node->GetWorldMatrix();
-				m_uniformTransformBuffer->SetData(&m_uniformTransformData);
-				model->Draw();
+				for (size_t i = 0; i < model->GetNumMesh(); i++)
+				{
+					m_uniformTransformData.model = node->GetWorldMatrix() * model->GetMesh(i).GetLocalTransform();
+					m_uniformTransformBuffer->SetData(&m_uniformTransformData);
+					model->DrawMesh(i);
+				}
 			}
 		}
 	}

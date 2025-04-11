@@ -232,9 +232,9 @@ void Context::EndImgui()
 //=============================================================================
 void Context::EndFrame()
 {
+	m_isResize = false;
 	glfwSwapBuffers(m_window);
 	glfwPollEvents();
-	m_isResize = false;
 }
 //=============================================================================
 glm::uvec2 Context::GetCursorPosition() const

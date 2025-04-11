@@ -308,7 +308,6 @@ bool InitGame()
 
 	nodeCathedral.SetModel(modelCathedral);
 	nodeCathedral.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	nodeCathedral.GetTransform().Rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	scene.AddNode(&nodeCathedral);
 
 	return true;

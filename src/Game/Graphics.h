@@ -38,14 +38,17 @@ struct MeshVertex final
 class Mesh final
 {
 public:
-	Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Material> material);
+	Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Material> material, const glm::mat4& localTransform);
 	void Draw();
+
+	const glm::mat4& GetLocalTransform() const { return m_localTransform; }
 
 private:
 	std::shared_ptr<VertexArray>  m_VAO;
 	std::shared_ptr<VertexBuffer> m_vertexBuffer;
 	std::shared_ptr<IndexBuffer>  m_indexBuffer;
 	std::shared_ptr<Material>     m_material;
+	glm::mat4                     m_localTransform = glm::mat4(1.0f);
 };
 
 class Model final
@@ -54,6 +57,10 @@ public:
 	Model(const std::vector<Mesh>& meshes);
 	Model(const std::string& path, std::shared_ptr<Material> customMainMaterial = nullptr);
 	void Draw();
+	void DrawMesh(size_t i);
+
+	size_t GetNumMesh() const { return m_meshes.size(); }
+	const Mesh& GetMesh(size_t i) const { return m_meshes[i]; }
 
 	static std::shared_ptr<Model> CreateCube(float length = 1.0f, std::shared_ptr<Material> material = nullptr);
 	static std::shared_ptr<Model> CreateSphere(float radius, uint32_t uiTessU, uint32_t uiTessV, std::shared_ptr<Material> material = nullptr);
@@ -67,7 +74,7 @@ private:
 
 	void loadAssimpModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);
 	void processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Material> material);
-	Mesh processAssimpMesh(const std::string& directoryModel, aiMesh* mesh, const aiScene* scene, std::shared_ptr<Material> material);
+	Mesh processAssimpMesh(const std::string& directoryModel, const glm::mat4& localMat, aiMesh* mesh, const aiScene* scene, std::shared_ptr<Material> material);
 	std::shared_ptr<Texture2D> loadAssimpTexture(const std::string& directoryModel, aiMaterial* mat, aiTextureType type);
 
 	std::vector<Mesh> m_meshes;

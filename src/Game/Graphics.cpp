@@ -75,8 +75,9 @@ void Material::Bind(uint32_t diffuseTexSlot, uint32_t specularTexSlot, uint32_t 
 	roughnessTexture->Bind(roughnessTexSlot);
 }
 //=============================================================================
-Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Material> material)
+Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Material> material, const glm::mat4& localTransform)
 	: m_material(material)
+	, m_localTransform(localTransform)
 {
 	if (!m_material) m_material = GetDefaultMeshMaterial();
 	m_vertexBuffer = std::make_shared<VertexBuffer>(vertices.size() * sizeof(MeshVertex), vertices.data());
@@ -107,6 +108,11 @@ void Model::Draw()
 	{
 		m_meshes[i].Draw();
 	}
+}
+//=============================================================================
+void Model::DrawMesh(size_t i)
+{
+	m_meshes[i].Draw();
 }
 //=============================================================================
 std::shared_ptr<Model> Model::CreateCube(float length, std::shared_ptr<Material> material)
@@ -161,7 +167,7 @@ std::shared_ptr<Model> Model::CreateCube(float length, std::shared_ptr<Material>
 		20, 21, 23, 23, 21, 22
 	};
 
-	return std::make_shared<Model>(std::vector<Mesh>{ {vertices, indices, material} });
+	return std::make_shared<Model>(std::vector<Mesh>{ {vertices, indices, material, glm::mat4(1.0f)} });
 }
 //=============================================================================
 std::shared_ptr<Model> Model::CreateSphere(float radius, uint32_t uiTessU, uint32_t uiTessV, std::shared_ptr<Material> material)
@@ -231,7 +237,7 @@ std::shared_ptr<Model> Model::CreateSphere(float radius, uint32_t uiTessU, uint3
 		}
 	}
 
-	return std::make_shared<Model>(std::vector<Mesh>{ {vertices, indices, material} });
+	return std::make_shared<Model>(std::vector<Mesh>{ {vertices, indices, material, glm::mat4(1.0f)} });
 }
 //=============================================================================
 std::shared_ptr<Model> Model::CreatePlane(float width, float height, float texWidth, float texHeight, std::shared_ptr<Material> material)
@@ -248,7 +254,7 @@ std::shared_ptr<Model> Model::CreatePlane(float width, float height, float texWi
 	// Создаем два треугольника из этих четырех вершин
 	indices = { 2, 1, 0, 0, 3, 2 };
 
-	return std::make_shared<Model>(std::vector<Mesh>{ {vertices, indices, material} });
+	return std::make_shared<Model>(std::vector<Mesh>{ {vertices, indices, material, glm::mat4(1.0f)} });
 }
 //=============================================================================
 void Model::loadModel(const std::string& path, std::shared_ptr<Material> customMainMaterial)
@@ -326,7 +332,7 @@ void Model::processObjMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t&
 		indices.push_back(i);
 	}
 
-	m_meshes.push_back(Mesh(vertices, indices, material));
+	m_meshes.push_back(Mesh(vertices, indices, material, glm::mat4(1.0f)));
 }
 //=============================================================================
 void Model::loadAssimpModel(const std::string& path, std::shared_ptr<Material> material)
@@ -338,7 +344,8 @@ void Model::loadAssimpModel(const std::string& path, std::shared_ptr<Material> m
 		aiProcess_CalcTangentSpace |
 		aiProcess_Triangulate |
 		aiProcess_ImproveCacheLocality |
-		aiProcess_SortByPType); // TODO: aiProcess_FlipUVs?
+		aiProcess_SortByPType |
+		aiProcess_OptimizeMeshes); // TODO: aiProcess_FlipUVs?
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
 		Error("Failed to open scene file: " + std::string(importer.GetErrorString()));
@@ -356,7 +363,8 @@ void Model::processAssimpNode(const std::string& directoryModel, aiNode* node, c
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		m_meshes.emplace_back(processAssimpMesh(directoryModel, mesh, scene, material));
+		glm::mat4 localMat = glm::transpose(*(glm::mat4*)&node->mTransformation);
+		m_meshes.emplace_back(processAssimpMesh(directoryModel, localMat, mesh, scene, material));
 	}
 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -365,7 +373,7 @@ void Model::processAssimpNode(const std::string& directoryModel, aiNode* node, c
 	}
 }
 //=============================================================================
-Mesh Model::processAssimpMesh(const std::string& directoryModel, aiMesh* mesh, const aiScene* scene, std::shared_ptr<Material> defaultMaterial)
+Mesh Model::processAssimpMesh(const std::string& directoryModel, const glm::mat4& localMat, aiMesh* mesh, const aiScene* scene, std::shared_ptr<Material> defaultMaterial)
 {
 	std::vector<MeshVertex> vertices(mesh->mNumVertices);
 
@@ -404,7 +412,7 @@ Mesh Model::processAssimpMesh(const std::string& directoryModel, aiMesh* mesh, c
 			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_HEIGHT));
 	}
 
-	return { vertices, indices, material };
+	return { vertices, indices, material, localMat };
 }
 //=============================================================================
 std::shared_ptr<Texture2D> Model::loadAssimpTexture(const std::string& directoryModel, aiMaterial* mat, aiTextureType type)
