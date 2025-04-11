@@ -251,6 +251,7 @@ void main()
 std::shared_ptr<ShaderProgram> shader;
 std::shared_ptr<Material> tempMaterial;
 std::shared_ptr<Model> model;
+std::shared_ptr<Model> modelCathedral;
 std::shared_ptr<Model> modelCube;
 std::shared_ptr<Model> modelSphere;
 std::shared_ptr<Model> modelPlane;
@@ -258,6 +259,7 @@ std::shared_ptr<Model> modelPlane;
 Camera camera;
 Scene scene;
 Node node;
+Node nodeCathedral;
 Node nodeCube;
 Node nodeSphere;
 Node nodePlane;
@@ -282,6 +284,7 @@ bool InitGame()
 
 	//model = std::make_shared<Model>("data/cube.obj", tempMaterial);
 	model = std::make_shared<Model>("data/treeRealistic/Tree.obj");
+	modelCathedral = std::make_shared<Model>("data/Cathedral/TutorialCathedral.fbx");
 
 	modelCube = Model::CreateCube(1, tempMaterial);
 	modelSphere = Model::CreateSphere(1.0f, 36, 18, tempMaterial);
@@ -302,6 +305,10 @@ bool InitGame()
 	node.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 	node.GetTransform().Rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f));	
 	scene.AddNode(&node);
+
+	nodeCathedral.SetModel(modelCathedral);
+	nodeCathedral.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	scene.AddNode(&nodeCathedral);
 
 	return true;
 }

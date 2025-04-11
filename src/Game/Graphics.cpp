@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "Graphics.h"
 #include "CoreApp.h"
+#include "Utility.h"
 //=============================================================================
 namespace
 {
@@ -252,7 +253,23 @@ std::shared_ptr<Model> Model::CreatePlane(float width, float height, float texWi
 //=============================================================================
 void Model::loadModel(const std::string& path, std::shared_ptr<Material> customMainMaterial)
 {
-	std::string directory = path.substr(0, path.find_last_of('/'));
+	std::string ext = GetFileExtension(path);
+	if (ext.contains("obj"))
+	{
+		loadObjModel(path, customMainMaterial);
+	}
+	else
+	{
+		// TODO: неизвестные форматы
+		//Error("Unknown model format: " + path);
+
+		loadAssimpModel(path, customMainMaterial);
+	}
+}
+//=============================================================================
+void Model::loadObjModel(const std::string& path, std::shared_ptr<Material> customMainMaterial)
+{
+	std::string directory = GetFileDirectory(path);
 
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
@@ -275,15 +292,15 @@ void Model::loadModel(const std::string& path, std::shared_ptr<Material> customM
 		else
 		{
 			if (materials.size() > 0)
-				material = std::make_shared<Material>(Texture2D::LoadFromFile(directory + "/" + materials[shape.mesh.material_ids[0]].diffuse_texname), nullptr, nullptr); // TODO: spec and rought textures
+				material = std::make_shared<Material>(Texture2D::LoadFromFile(directory + materials[shape.mesh.material_ids[0]].diffuse_texname), nullptr, nullptr); // TODO: spec and rought textures
 			else
 				material = GetDefaultMeshMaterial();
 		}
-		processMesh(shape.mesh, attrib, material);
+		processObjMesh(shape.mesh, attrib, material);
 	}
 }
 //=============================================================================
-void Model::processMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material)
+void Model::processObjMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material)
 {
 	std::vector<MeshVertex> vertices;
 	std::vector<unsigned int> indices;
@@ -310,5 +327,9 @@ void Model::processMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& at
 	}
 
 	m_meshes.push_back(Mesh(vertices, indices, material));
+}
+//=============================================================================
+void Model::loadAssimpModel(const std::string& path, std::shared_ptr<Material> customMainMaterial)
+{
 }
 //=============================================================================

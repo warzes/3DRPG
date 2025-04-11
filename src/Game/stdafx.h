@@ -9,6 +9,7 @@
 
 #include <cmath>
 #include <string>
+#include <filesystem>
 #include <algorithm>
 #include <memory>
 #include <chrono>
@@ -43,6 +44,10 @@
 #include <stb/stb_truetype.h>
 
 #include <tiny_obj_loader.h>
+
+#include <assimp/cimport.h>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)

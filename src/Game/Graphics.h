@@ -61,7 +61,11 @@ public:
 
 private:
 	void loadModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);
-	void processMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material);
+
+	void loadObjModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);
+	void processObjMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material);
+
+	void loadAssimpModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);
 
 	std::vector<Mesh> m_meshes;
 };

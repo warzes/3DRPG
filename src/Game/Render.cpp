@@ -163,6 +163,7 @@ std::shared_ptr<Texture2D> Texture2D::LoadFromMemory(int width, int height, void
 //=============================================================================
 std::shared_ptr<Texture2D> Texture2D::LoadFromFile(const std::string& path, bool flipVertical)
 {
+	Print("Texture load: " + path);
 	int width, height, channels;
 	stbi_set_flip_vertically_on_load(flipVertical);
 	unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, STBI_rgb_alpha);
