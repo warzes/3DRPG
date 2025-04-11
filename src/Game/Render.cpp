@@ -147,6 +147,11 @@ void VertexArray::Bind()
 	glBindVertexArray(m_id);
 }
 //=============================================================================
+Texture2D::~Texture2D()
+{
+	glDeleteTextures(1, &m_id);
+}
+//=============================================================================
 std::shared_ptr<Texture2D> Texture2D::LoadFromMemory(int width, int height, void* imageData)
 {
 	GLuint id;
@@ -169,35 +174,37 @@ std::shared_ptr<Texture2D> Texture2D::LoadFromFile(const std::string& path, bool
 	std::string ext = GetFileExtension(path);
 	if (ext.contains("ktx"))
 	{
-		// Load texture data
+		// TODO: в raylib без ktx.h/lib - взять оттуда
+
+
+
+		ktx_size_t offset;
+		ktx_uint8_t* image;
+		ktx_uint32_t level, layer, faceSlice;
+
+		GLenum target, glerror;
+
 		ktxTexture* kTexture;
-		KTX_error_code ktxerror = ktxTexture_CreateFromNamedFile(path.c_str(), KTX_TEXTURE_CREATE_NO_FLAGS, &kTexture);
-		if (ktxerror != KTX_SUCCESS)
+		KTX_error_code result = ktxTexture_CreateFromNamedFile(path.c_str(), KTX_TEXTURE_CREATE_NO_FLAGS, &kTexture);
+		if (result != KTX_SUCCESS)
 		{
-			Error("Failed to load texture: " + path + "\nError: " + ktxErrorString(ktxerror));
+			ktxTexture_Destroy(kTexture);
+			Error("Failed to load texture: " + path + "\nError: " + ktxErrorString(result));
 			return nullptr;
 		}
-		GLuint id;
-		GLenum GLTarget, GLError;
-		ktxerror = ktxTexture_GLUpload(kTexture, &id, &GLTarget, &GLError);
-		if (ktxerror != KTX_SUCCESS)
-		{
-			Error("Failed to upload texture file: " + std::string(ktxErrorString(ktxerror)));
-			return nullptr;
-		}
-		// Generate mipmaps
-		if (kTexture->numLevels == 1)
-			glGenerateTextureMipmap(id);
 
+		GLuint texture = 0;
+		glCreateTextures(GL_TEXTURE_2D, 1, &texture);
+		result = ktxTexture_GLUpload(kTexture, &texture, &target, &glerror);
+		if (result != KTX_SUCCESS)
+		{
+			ktxTexture_Destroy(kTexture);
+			Error("Failed to load texture: " + path + "\nError: " + ktxErrorString(result));
+			return nullptr;
+		}
 		ktxTexture_Destroy(kTexture);
-
-		// Initialise the texture filtering values
-		glTextureParameteri(id, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		return std::make_shared<Texture2D>(id);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		return std::make_shared<Texture2D>(texture);
 	}
 	else
 	{

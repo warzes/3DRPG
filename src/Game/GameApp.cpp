@@ -291,23 +291,24 @@ bool InitGame()
 	modelPlane = Model::CreatePlane(10.0f, 10.0f, 4.0f, 4.0f, tempMaterial);
 
 	nodePlane.SetModel(modelPlane);
-	scene.AddNode(&nodePlane);
+	//scene.AddNode(&nodePlane);
 
 	nodeSphere.SetModel(modelSphere);
 	nodeSphere.GetTransform().SetPosition(glm::vec3(-2.0f, 0.0f, -5.0f));
-	scene.AddNode(&nodeSphere);
+	//scene.AddNode(&nodeSphere);
 
 	nodeCube.SetModel(modelCube);
 	nodeCube.GetTransform().SetPosition(glm::vec3(2.0f, 0.0f, -5.0f));
-	scene.AddNode(&nodeCube);
+	//scene.AddNode(&nodeCube);
 
 	node.SetModel(model);
 	node.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	node.GetTransform().Rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f));	
-	scene.AddNode(&node);
+	node.GetTransform().Rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	//scene.AddNode(&node);
 
 	nodeCathedral.SetModel(modelCathedral);
 	nodeCathedral.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	nodeCathedral.GetTransform().Rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	scene.AddNode(&nodeCathedral);
 
 	return true;

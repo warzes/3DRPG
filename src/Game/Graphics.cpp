@@ -329,22 +329,94 @@ void Model::processObjMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t&
 	m_meshes.push_back(Mesh(vertices, indices, material));
 }
 //=============================================================================
-void Model::loadAssimpModel(const std::string& path, std::shared_ptr<Material> customMainMaterial)
+void Model::loadAssimpModel(const std::string& path, std::shared_ptr<Material> material)
 {
 	// Load scene from file
-	const aiScene* p_Scene = aiImportFile(path.c_str(),
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(path.c_str(),
 		aiProcess_GenSmoothNormals |
 		aiProcess_CalcTangentSpace |
 		aiProcess_Triangulate |
 		aiProcess_ImproveCacheLocality |
-		aiProcess_SortByPType);
-	// Check if import failed
-	if (!p_Scene)
+		aiProcess_SortByPType); // TODO: aiProcess_FlipUVs?
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		Error("Failed to open scene file: " + std::string(aiGetErrorString()));
+		Error("Failed to open scene file: " + std::string(importer.GetErrorString()));
 		return;
 	}
 
+	std::string directory = GetFileDirectory(path);
 
+	// Обрабатываем корневой узел и все его потомки
+	processAssimpNode(directory, scene->mRootNode, scene, material);
+}
+//=============================================================================
+void Model::processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Material> material)
+{
+	for (unsigned int i = 0; i < node->mNumMeshes; i++)
+	{
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		m_meshes.emplace_back(processAssimpMesh(directoryModel, mesh, scene, material));
+	}
+
+	for (unsigned int i = 0; i < node->mNumChildren; i++)
+	{
+		processAssimpNode(directoryModel, node->mChildren[i], scene, material);
+	}
+}
+//=============================================================================
+Mesh Model::processAssimpMesh(const std::string& directoryModel, aiMesh* mesh, const aiScene* scene, std::shared_ptr<Material> defaultMaterial)
+{
+	std::vector<MeshVertex> vertices(mesh->mNumVertices);
+
+	// Обрабатываем вершины
+	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+	{
+		MeshVertex& vertex = vertices[i];
+		vertex.Position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+		if (mesh->HasNormals())
+			vertex.Normal = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+		else
+			vertex.Normal = glm::vec3{ 0.0f, 1.0f, 0.0f };
+
+		if (mesh->mTextureCoords[0])
+			vertex.TexCoords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+		else
+			vertex.TexCoords = glm::vec2{ 0.0f };
+	}
+
+	std::vector<unsigned int> indices;
+	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace face = mesh->mFaces[i];
+		for (unsigned int j = 0; j < face.mNumIndices; j++)
+			indices.push_back(face.mIndices[j]);
+	}
+
+	// Обрабатываем материал
+	auto material = defaultMaterial;
+	if (mesh->mMaterialIndex >= 0)
+	{
+		aiMaterial* aiMaterial = scene->mMaterials[mesh->mMaterialIndex];
+		material = std::make_shared<Material>(
+			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_DIFFUSE),
+			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_SPECULAR),
+			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_HEIGHT));
+	}
+
+	return { vertices, indices, material };
+}
+//=============================================================================
+std::shared_ptr<Texture2D> Model::loadAssimpTexture(const std::string& directoryModel, aiMaterial* mat, aiTextureType type)
+{
+	if (mat->GetTextureCount(type) > 0)
+	{
+		aiString str;
+		mat->GetTexture(type, 0, &str);
+		std::string path = std::string(str.C_Str());
+		return Texture2D::LoadFromFile(directoryModel + path);
+	}
+
+	return nullptr; // Если текстуры нет
 }
 //=============================================================================

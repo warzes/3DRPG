@@ -66,6 +66,9 @@ private:
 	void processObjMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material);
 
 	void loadAssimpModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);
+	void processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Material> material);
+	Mesh processAssimpMesh(const std::string& directoryModel, aiMesh* mesh, const aiScene* scene, std::shared_ptr<Material> material);
+	std::shared_ptr<Texture2D> loadAssimpTexture(const std::string& directoryModel, aiMaterial* mat, aiTextureType type);
 
 	std::vector<Mesh> m_meshes;
 };
