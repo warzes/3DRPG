@@ -100,10 +100,10 @@ void IndexBuffer::SetData(const void* data, unsigned int size, unsigned int offs
 }
 //=============================================================================
 UniformBuffer::UniformBuffer(uint32_t bindingPoint, uint32_t size)
-	: m_bindingPoint(bindingPoint)
+	: m_size(size)
 {
 	glCreateBuffers(1, &m_id);
-	glNamedBufferStorage(m_id, size, nullptr, 0);
+	glNamedBufferStorage(m_id, size, nullptr, GL_DYNAMIC_STORAGE_BIT);
 	glBindBufferBase(GL_UNIFORM_BUFFER, bindingPoint, m_id);
 }
 //=============================================================================
@@ -114,7 +114,7 @@ UniformBuffer::~UniformBuffer()
 //=============================================================================
 void UniformBuffer::SetData(const void* data, uint32_t size, uint32_t offset)
 {
-	glNamedBufferSubData(m_id, offset, size, data);
+	glNamedBufferSubData(m_id, offset, (size ? size : m_size), data);
 }
 //=============================================================================
 VertexArray::VertexArray(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<IndexBuffer> ib, const VertexBufferLayout& layout)
@@ -305,6 +305,13 @@ void ShaderProgram::SetUniform3f(const std::string& name, float v0, float v1, fl
 void ShaderProgram::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
 	glUniform4f(getUniformLocation(name), v0, v1, v2, v3);
+}
+//=============================================================================
+void ShaderProgram::FragmentSubRoutines(uint32_t subroutines)
+{
+	Bind();
+	GLuint subRoutines[] = { subroutines };
+	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &subRoutines[0]);
 }
 //=============================================================================
 GLuint ShaderProgram::compileShader(unsigned int type, const std::string& source)

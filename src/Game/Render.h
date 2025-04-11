@@ -149,13 +149,13 @@ public:
 	UniformBuffer(uint32_t bindingPoint, uint32_t size);
 	~UniformBuffer();
 
-	void SetData(const void* data, uint32_t size, uint32_t offset = 0);
+	void SetData(const void* data, uint32_t size = 0, uint32_t offset = 0);
 
 	GLuint GetID() const { return m_id; }
 
 private:
-	GLuint m_id;
-	uint32_t m_bindingPoint;
+	GLuint   m_id;
+	uint32_t m_size;
 };
 
 class VertexArray final 
@@ -221,6 +221,8 @@ public:
 	void SetUniform2f(const std::string& name, float v0, float v1);
 	void SetUniform3f(const std::string& name, float v0, float v1, float v2);
 	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+
+	void FragmentSubRoutines(uint32_t subroutines);
 
 	GLuint GetID() const { return m_id; }
 

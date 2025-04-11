@@ -7,9 +7,14 @@ void ClearDefaultGraphicsResource();
 class Material final
 {
 public:
-	Material(std::shared_ptr<Texture2D> diffuseTexture) : diffuse(diffuseTexture) {}
+	Material(std::shared_ptr<Texture2D> DiffuseTexture, std::shared_ptr<Texture2D> SpecularTexture, std::shared_ptr<Texture2D> RoughnessTexture);
 
-	std::shared_ptr<Texture2D> diffuse;
+	// TODO: возможно слоты перенести в инициализацию материала
+	void Bind(uint32_t diffuseTexSlot = 0, uint32_t specularTexSlot = 1, uint32_t roughnessTexSlot = 2);
+
+	std::shared_ptr<Texture2D> diffuseTexture;
+	std::shared_ptr<Texture2D> specularTexture;
+	std::shared_ptr<Texture2D> roughnessTexture;
 };
 
 std::shared_ptr<Material> GetDefaultMeshMaterial();
@@ -50,9 +55,9 @@ public:
 	Model(const std::string& path, std::shared_ptr<Material> customMainMaterial = nullptr);
 	void Draw();
 
-	static std::shared_ptr<Model> CreateCube(float length = 1.0f);
-	static std::shared_ptr<Model> CreateSphere(float radius, int sectors, int stacks);
-	static std::shared_ptr<Model> CreatePlane(float width, float height, float texWidth, float texHeight);
+	static std::shared_ptr<Model> CreateCube(float length = 1.0f, std::shared_ptr<Material> material = nullptr);
+	static std::shared_ptr<Model> CreateSphere(float radius, uint32_t uiTessU, uint32_t uiTessV, std::shared_ptr<Material> material = nullptr);
+	static std::shared_ptr<Model> CreatePlane(float width, float height, float texWidth, float texHeight, std::shared_ptr<Material> material = nullptr);
 
 private:
 	void loadModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);

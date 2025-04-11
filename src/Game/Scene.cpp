@@ -61,32 +61,65 @@ void Camera::updateCameraVectors()
 	m_up = glm::normalize(glm::cross(m_right, m_front));
 }
 //=============================================================================
+void Scene::Init()
+{
+	m_uniformTransformBuffer = std::make_shared<UniformBuffer>(0, sizeof(TransformUniformData));
+	m_uniformCameraBuffer = std::make_shared<UniformBuffer>(1, sizeof(CameraUniformData));
+	m_uniformLightBuffer = std::make_shared<UniformBuffer>(2, sizeof(PointLightData) * MaxNumLight);
+	m_uniformMaterialBuffer = std::make_shared<UniformBuffer>(3, sizeof(MaterialData));
+
+	m_uniformLightData[0].position = { 6.0f, 6.0f, 6.0f };
+	m_uniformLightData[0].colour = { 1.0f, 0.0f, 0.0f };
+	m_uniformLightData[0].falloff = { 0.0f, 0.0f, 0.01f };
+	m_uniformLightData[1].position = { -6.0f, 6.0f, 6.0f };
+	m_uniformLightData[1].colour = { 0.0f, 1.0f, 0.0f };
+	m_uniformLightData[1].falloff = { 0.0f, 0.0f, 0.01f };
+	m_uniformLightData[2].position = { 0.0f, 6.0f, 0.0f };
+	m_uniformLightData[2].colour = { 0.0f, 1.0f, 1.0f };
+	m_uniformLightData[2].falloff = { 0.0f, 0.0f, 0.01f };
+
+	m_uniformMaterialData.diffuseColour = { 1.0f, 0.0f, 0.0f };
+	m_uniformMaterialData.specularColour = { 1.0f, 0.3f, 0.3f };
+	m_uniformMaterialData.roughness = 0.35f;
+}
+//=============================================================================
 void Scene::AddNode(Node* node)
 {
 	m_nodes.push_back(node);
 }
 //=============================================================================
-void Scene::Render(std::shared_ptr<ShaderProgram> shader, Camera& camera, float screenAspect)
+void Scene::Render(const Camera& camera, float screenAspect)
 {
-	glm::mat4 viewProjectionMatrix = camera.GetProjectionMatrix(screenAspect) * camera.GetViewMatrix();
-	shader->Bind();
+	assert(m_uniformTransformBuffer);
+	assert(m_uniformCameraBuffer);
+	assert(m_uniformLightBuffer);
+	assert(m_uniformMaterialBuffer);
+
+	m_uniformLightBuffer->SetData(m_uniformLightData.data());
+	m_uniformMaterialBuffer->SetData(&m_uniformMaterialData);
+
+	m_uniformCameraData.projection = camera.GetProjectionMatrix(screenAspect);
+	m_uniformCameraData.view = camera.GetViewMatrix();
+	m_uniformCameraData.cameraPosition = camera.GetPosition();
+	m_uniformCameraBuffer->SetData(&m_uniformCameraData);
+
+
+	glm::mat4 viewProjectionMatrix = m_uniformCameraData.projection * m_uniformCameraData.view;
 
 	for (auto node : m_nodes)
 	{
 		node->UpdateWorldMatrix();
 		if (isVisible(node, viewProjectionMatrix))
-		{	
-			glm::mat4 modelMatrix = node->GetWorldMatrix();
-			glProgramUniformMatrix4fv(shader->GetID(), m_modelLocation, 1, GL_FALSE, &modelMatrix[0][0]);
+		{
 			auto model = node->GetModel();
-			if (model) model->Draw();
+			if (model)
+			{
+				m_uniformTransformData.model = node->GetWorldMatrix();
+				m_uniformTransformBuffer->SetData(&m_uniformTransformData);
+				model->Draw();
+			}
 		}
 	}
-}
-//=============================================================================
-void Scene::SetModelLocation(unsigned int location)
-{
-	m_modelLocation = location;
 }
 //=============================================================================
 bool Scene::isVisible(Node* node, const glm::mat4& viewProjectionMatrix) const

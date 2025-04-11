@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <memory>
 #include <chrono>
+#include <array>
 
 #include <glad/gl.h>
 
@@ -36,6 +37,7 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtx/dual_quaternion.hpp>
+#include <glm/gtx/type_aligned.hpp>
 
 #include <stb/stb_image.h>
 #include <stb/stb_truetype.h>

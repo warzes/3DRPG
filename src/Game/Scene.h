@@ -2,6 +2,32 @@
 
 #include "Graphics.h"
 
+struct TransformUniformData final
+{
+	glm::aligned_mat4 model;
+};
+
+struct CameraUniformData final
+{
+	glm::aligned_mat4 view;
+	glm::aligned_mat4 projection;
+	glm::aligned_vec3 cameraPosition;
+};
+
+struct PointLightData final
+{
+	glm::aligned_vec3 position;
+	glm::aligned_vec3 colour;
+	glm::aligned_vec3 falloff;
+};
+
+struct MaterialData final
+{
+	glm::aligned_vec3 diffuseColour;
+	glm::aligned_vec3 specularColour;
+	float             roughness;
+};
+
 class Transform final
 {
 public:
@@ -104,6 +130,7 @@ public:
 
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetProjectionMatrix(float aspect) const;
+	glm::vec3 GetPosition() const { return m_position; }
 
 	void ProcessMouseMovement(float xoffset, float yoffset);
 	void ProcessKeyboard(Direction direction, float deltaTime);
@@ -123,20 +150,30 @@ private:
 	float m_zoom;
 };
 
+constexpr const size_t MaxNumLight = 16;
+
 class Scene final 
 {
 public:
-	Scene() = default;
+	void Init();
 
+	void AddCamera(const Camera& camera);
 	void AddNode(Node* node);
-	void Render(std::shared_ptr<ShaderProgram> shader, Camera& camera, float screenAspect);
-	void SetModelLocation(unsigned int location);
-
+	void Render(const Camera& camera, float screenAspect);
 private:
 	bool isVisible(Node* node, const glm::mat4& viewProjectionMatrix) const;
 	bool isSphereVisible(Node* node, const glm::mat4& viewProjectionMatrix) const;
 	bool isAABBVisible(Node* node, const glm::mat4& viewProjectionMatrix) const;
 
-	std::vector<Node*> m_nodes;
-	unsigned int m_modelLocation;
+	std::vector<Node*>             m_nodes;
+	TransformUniformData           m_uniformTransformData;
+	std::shared_ptr<UniformBuffer> m_uniformTransformBuffer;
+	CameraUniformData              m_uniformCameraData;
+	std::shared_ptr<UniformBuffer> m_uniformCameraBuffer;
+
+	std::array<PointLightData, MaxNumLight> m_uniformLightData;
+	std::shared_ptr<UniformBuffer> m_uniformLightBuffer;
+
+	MaterialData                   m_uniformMaterialData;
+	std::shared_ptr<UniformBuffer> m_uniformMaterialBuffer;
 };
