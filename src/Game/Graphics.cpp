@@ -340,12 +340,17 @@ void Model::loadAssimpModel(const std::string& path, std::shared_ptr<Material> m
 	// Load scene from file
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path.c_str(),
-		aiProcess_GenSmoothNormals |
 		aiProcess_CalcTangentSpace |
+		aiProcess_JoinIdenticalVertices |
+		//aiProcess_ConvertToLeftHanded |       // TODO: левосторонняя система, пока не используется
 		aiProcess_Triangulate |
+		aiProcess_GenSmoothNormals |
+		//aiProcess_PreTransformVertices | // TODO: удаляет локальную матрицу трансформации - но также возможно удаляет анимацию
 		aiProcess_ImproveCacheLocality |
 		aiProcess_SortByPType |
-		aiProcess_OptimizeMeshes); // TODO: aiProcess_FlipUVs?
+		aiProcess_OptimizeMeshes |
+		aiProcess_OptimizeGraph
+	);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
 		Error("Failed to open scene file: " + std::string(importer.GetErrorString()));
@@ -356,6 +361,8 @@ void Model::loadAssimpModel(const std::string& path, std::shared_ptr<Material> m
 
 	// Обрабатываем корневой узел и все его потомки
 	processAssimpNode(directory, scene->mRootNode, scene, material);
+
+	Print("num mesh: " + std::to_string(m_meshes.size()));
 }
 //=============================================================================
 void Model::processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Material> material)
