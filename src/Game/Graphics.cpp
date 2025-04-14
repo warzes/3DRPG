@@ -53,10 +53,12 @@ std::shared_ptr<Material> GetDefaultMeshMaterial()
 Material::Material(
 	std::shared_ptr<Texture2D> DiffuseTexture,
 	std::shared_ptr<Texture2D> SpecularTexture,
-	std::shared_ptr<Texture2D> RoughnessTexture)
+	std::shared_ptr<Texture2D> RoughnessTexture,
+	float EmissivePower)
 	: diffuseTexture(DiffuseTexture)
 	, specularTexture(SpecularTexture)
 	, roughnessTexture(RoughnessTexture)
+	, emissivePower(EmissivePower)
 {
 	// TODO: если нет нужных текстур, брать дефолтные
 	if (!diffuseTexture || !specularTexture || !roughnessTexture)

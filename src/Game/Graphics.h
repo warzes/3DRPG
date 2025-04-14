@@ -7,7 +7,11 @@ void ClearDefaultGraphicsResource();
 class Material final
 {
 public:
-	Material(std::shared_ptr<Texture2D> DiffuseTexture, std::shared_ptr<Texture2D> SpecularTexture, std::shared_ptr<Texture2D> RoughnessTexture);
+	Material(
+		std::shared_ptr<Texture2D> DiffuseTexture, 
+		std::shared_ptr<Texture2D> SpecularTexture, 
+		std::shared_ptr<Texture2D> RoughnessTexture,
+		float EmissivePower = 0.0f);
 
 	// TODO: возможно слоты перенести в инициализацию материала
 	void Bind(uint32_t diffuseTexSlot = 0, uint32_t specularTexSlot = 1, uint32_t roughnessTexSlot = 2);
@@ -15,6 +19,7 @@ public:
 	std::shared_ptr<Texture2D> diffuseTexture;
 	std::shared_ptr<Texture2D> specularTexture;
 	std::shared_ptr<Texture2D> roughnessTexture;
+	float                      emissivePower;
 };
 
 std::shared_ptr<Material> GetDefaultMeshMaterial();
