@@ -43,34 +43,6 @@ void main()
 }
 )glsl";
 
-//const GLchar* fragmentShaderSource = R"glsl(
-//#version 430 core
-//
-//layout(binding = 1) uniform CameraData
-//{
-//	mat4 view;
-//	mat4 projection;
-//	vec3 cameraPosition;
-//};
-//
-//layout(location = 0) in vec3 PositionIn;
-//layout(location = 1) in vec3 NormalIn;
-//layout(location = 2) in vec2 TexCoordsIn;
-//
-//out vec4 FragColorOut;
-//
-//uniform sampler2D textureDiffuse;
-//
-//vec3 lightPos = vec3(4.0, 3.0, 6.0);
-//vec3 lightColor = vec3(1.0, 1.0, 1.0);
-//
-//void main()
-//{
-//	float lightAngle = max(dot(normalize(NormalIn), normalize(lightPos)), 0.0);
-//	FragColorOut = texture(textureDiffuse, TexCoordsIn) * vec4((0.3 + 0.7 * lightAngle) * lightColor, 1.0);
-//}
-//)glsl";
-
 const GLchar* fragmentShaderSource = R"glsl(
 #version 430 core
 
@@ -81,7 +53,6 @@ struct PointLight
 	vec3 v3Falloff;
 	int enable;
 };
-
 #define MAX_LIGHTS 16
 
 layout(binding = 1) uniform CameraData
@@ -101,13 +72,6 @@ layout(location = 0) uniform int iNumPointLights;
 layout(binding = 0) uniform sampler2D s2DiffuseTexture;
 layout(binding = 1) uniform sampler2D s2SpecularTexture;
 layout(binding = 2) uniform sampler2D s2RoughnessTexture;
-
-//layout(std140, binding = 3) uniform MaterialData
-//{
-//	vec3  v3DiffuseColour;
-//	vec3  v3SpecularColour;
-//	float fRoughness;
-//};
 
 #define M_RCPPI 0.31830988618379067153776752674503f
 #define M_PI 3.1415926535897932384626433832795f
@@ -157,10 +121,7 @@ float GGXVisibility(in vec3 v3Normal, in vec3 v3LightDirection, in vec3 v3ViewDi
 	return 1.0f / (fRecipG1 * fRecipG2);
 }
 
-subroutine vec3 BRDF(in vec3, in vec3, in vec3, in vec3, in vec3, in vec3, in float);
-layout(location = 0) subroutine uniform BRDF BRDFUniform;
-
-layout(index = 0) subroutine(BRDF) vec3 GGX(in vec3 v3Normal, in vec3 v3LightDirection, in vec3 v3ViewDirection, in vec3 v3LightIrradiance, in vec3 v3DiffuseColour, in vec3 v3SpecularColour, in float fRoughness)
+vec3 GGX(in vec3 v3Normal, in vec3 v3LightDirection, in vec3 v3ViewDirection, in vec3 v3LightIrradiance, in vec3 v3DiffuseColour, in vec3 v3SpecularColour, in float fRoughness)
 {
 	// Calculate diffuse component
 	vec3 v3Diffuse = v3DiffuseColour * M_RCPPI;
@@ -188,36 +149,6 @@ layout(index = 0) subroutine(BRDF) vec3 GGX(in vec3 v3Normal, in vec3 v3LightDir
 	return v3RetColour;
 }
 
-layout(index = 1) subroutine(BRDF) vec3 blinnPhong(in vec3 v3Normal, in vec3 v3LightDirection, in vec3 v3ViewDirection, in vec3 v3LightIrradiance, in vec3 v3DiffuseColour, in vec3 v3SpecularColour, in float fRoughness)
-{
-	// Get diffuse component
-	vec3 v3Diffuse = v3DiffuseColour;
-
-	// Calculate half vector
-	vec3 v3HalfVector = normalize(v3ViewDirection + v3LightDirection);
-
-	// Convert roughness to Phong shininess
-	float fRoughnessPhong = (2.0f / (fRoughness * fRoughness)) - 2.0f;
-
-	// Calculate specular component
-	vec3 v3Specular = pow(max(dot(v3Normal, v3HalfVector), 0.0f), fRoughnessPhong) * v3SpecularColour;
-
-	// Normalise diffuse and specular component and add
-	v3Diffuse *= M_RCPPI;
-	v3Specular *= (fRoughnessPhong + 8.0f) / (8.0f * M_PI);
-
-	// Combine diffuse and specular
-	vec3 v3RetColour = v3Diffuse + v3Specular;
-
-	// Multiply by view angle
-	v3RetColour *= max(dot(v3Normal, v3LightDirection), 0.0f);
-
-	// Combine with incoming light value
-	v3RetColour *= v3LightIrradiance;
-
-	return v3RetColour;
-}
-
 void main()
 {
 	// Normalize the inputs
@@ -225,9 +156,9 @@ void main()
 	vec3 v3ViewDirection = normalize(cameraPosition - PositionIn);
 
 	// Get texture data
-	vec4 DiffuseColour = texture(s2DiffuseTexture, TexCoordsIn); // TODO: add mat
-	vec3 v3SpecularColour = texture(s2SpecularTexture, TexCoordsIn).rgb; // TODO: add mat
-	float fRoughness = texture(s2RoughnessTexture, TexCoordsIn).r; // TODO: add mat
+	vec4 DiffuseColour = texture(s2DiffuseTexture, TexCoordsIn);
+	vec3 v3SpecularColour = texture(s2SpecularTexture, TexCoordsIn).rgb;
+	float fRoughness = texture(s2RoughnessTexture, TexCoordsIn).r;
 
 	// Loop over each point light
 	vec3 v3RetColour = vec3(0.0f);
@@ -241,7 +172,7 @@ void main()
 			vec3 v3LightIrradiance = lightFalloff(PointLights[i].v3LightIntensity, PointLights[i].v3Falloff, PointLights[i].v3LightPosition, PositionIn);
 
 			// Perform shading
-			v3RetColour += BRDFUniform(v3Normal, v3LightDirection, v3ViewDirection, v3LightIrradiance, DiffuseColour.rgb, v3SpecularColour, fRoughness);
+			v3RetColour += GGX(v3Normal, v3LightDirection, v3ViewDirection, v3LightIrradiance, DiffuseColour.rgb, v3SpecularColour, fRoughness);
 		}
 	}
 
@@ -454,10 +385,5 @@ void ProcessInput(Camera& camera, float deltaTime, bool& firstMouse, float& last
 		camera.ProcessKeyboard(Direction::Left, deltaTime);
 	if (glfwGetKey(GetWindow(), GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(Direction::Right, deltaTime);
-
-	if (glfwGetKey(GetWindow(), GLFW_KEY_1) == GLFW_PRESS)
-		shader->FragmentSubRoutines(0);
-	if (glfwGetKey(GetWindow(), GLFW_KEY_2) == GLFW_PRESS)
-		shader->FragmentSubRoutines(1);
 }
 //=============================================================================
