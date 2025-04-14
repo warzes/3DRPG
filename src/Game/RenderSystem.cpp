@@ -2,6 +2,11 @@
 #include "Render.h"
 #include "CoreApp.h"
 //=============================================================================
+extern "C" {
+	_declspec(dllexport) uint32_t NvOptimusEnablement = 1;
+	_declspec(dllexport) uint32_t AmdPowerXpressRequestHighPerformance = 1;
+}
+//=============================================================================
 #if defined(_DEBUG)
 void APIENTRY DebugCallback(uint32_t uiSource, uint32_t uiType, uint32_t /*uiID*/, uint32_t uiSeverity, int32_t /*iLength*/, const char* cMessage, void* /*userParam*/) noexcept
 {

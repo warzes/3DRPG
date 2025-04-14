@@ -53,7 +53,7 @@ bool GL_LoadShaders(GLuint& uiShader, GLuint uiVertexShader, GLuint uiFragmentSh
 	return true;
 }
 
-bool GL_LoadShaderFile(GLuint& uiShader, GLenum ShaderType, const char* p_cFileName, int iFileID)
+bool GL_LoadShaderFile(GLuint& uiShader, GLenum ShaderType, const char* p_cFileName)
 {
 	// Открываем файл в режиме чтения
 	std::ifstream file(p_cFileName);
@@ -63,8 +63,11 @@ bool GL_LoadShaderFile(GLuint& uiShader, GLenum ShaderType, const char* p_cFileN
 	// Закрываем файл
 	file.close();
 
+	std::string text = buffer.str();
+	text += "\0";
+
 	// Load in the shader
-	bool bReturn = GL_LoadShader(uiShader, ShaderType, buffer.str().c_str());
+	bool bReturn = GL_LoadShader(uiShader, ShaderType, text.c_str());
 
 	// Print the shader name to assist debugging
 	if (!bReturn)

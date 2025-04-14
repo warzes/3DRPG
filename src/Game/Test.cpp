@@ -11,7 +11,7 @@ int GetFrameHeight();
 //Shaders.cpp
 extern bool GL_LoadShader(GLuint& uiShader, GLenum ShaderType, const GLchar* p_cShader);
 extern bool GL_LoadShaders(GLuint& uiShader, GLuint uiVertexShader, GLuint uiFragmentShader, GLuint uiGeometryShader = -1, GLuint uiTessControlShader = -1, GLuint uiTessEvalShader = -1);
-extern bool GL_LoadShaderFile(GLuint& uiShader, GLenum ShaderType, const char* p_cFileName, int iFileID);
+extern bool GL_LoadShaderFile(GLuint& uiShader, GLenum ShaderType, const char* p_cFileName);
 //Textures.cpp
 extern bool GL_LoadTextureKTX(GLuint uiTexture, const char* p_cTextureFile);
 //Reflection.cpp
@@ -73,20 +73,20 @@ bool GL_Init()
 
 	// Create vertex shader
 	GLuint uiVertexShader;
-	if (!GL_LoadShaderFile(uiVertexShader, GL_VERTEX_SHADER, "data/shaders/MainPNUTVert.glsl", 100))
+	if (!GL_LoadShaderFile(uiVertexShader, GL_VERTEX_SHADER, "data/shaders/MainPNUTVert.glsl"))
 		return false;
 
 	// Create deferred fragment shader
 	GLuint uiFragmentShader;
-	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/Deferred1stFrag.glsl", 200))
+	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/Deferred1stFrag.glsl"))
 		return false;
 
 	// Create tessellation shader
 	GLuint uiTessControl;
 	GLuint uiTessEval;
-	if (!GL_LoadShaderFile(uiTessControl, GL_TESS_CONTROL_SHADER, "data/shaders/PNTriangleTessControl.glsl", 1100))
+	if (!GL_LoadShaderFile(uiTessControl, GL_TESS_CONTROL_SHADER, "data/shaders/PNTriangleTessControl.glsl"))
 		return false;
-	if (!GL_LoadShaderFile(uiTessEval, GL_TESS_EVALUATION_SHADER, "data/shaders/PNTriangleTessEval.glsl", 1200))
+	if (!GL_LoadShaderFile(uiTessEval, GL_TESS_EVALUATION_SHADER, "data/shaders/PNTriangleTessEval.glsl"))
 		return false;
 
 	// Create program
@@ -100,9 +100,9 @@ bool GL_Init()
 	glDeleteShader(uiTessEval);
 
 	// Load in second deferred pass shader
-	if (!GL_LoadShaderFile(uiVertexShader, GL_VERTEX_SHADER, "data/shaders/QuadVert.glsl", 300))
+	if (!GL_LoadShaderFile(uiVertexShader, GL_VERTEX_SHADER, "data/shaders/QuadVert.glsl"))
 		return false;
-	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/Deferred2ndFrag.glsl", 400))
+	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/Deferred2ndFrag.glsl"))
 		return false;
 	if (!GL_LoadShaders(g_uiDeferredProgram2, uiVertexShader, uiFragmentShader))
 		return false;
@@ -111,7 +111,7 @@ bool GL_Init()
 	glDeleteShader(uiFragmentShader);
 
 	// Load in post processing pass shader
-	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/PostProcessFrag.glsl", 1300))
+	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/PostProcessFrag.glsl"))
 		return false;
 	if (!GL_LoadShaders(g_uiPostProcProgram, uiVertexShader, uiFragmentShader))
 		return false;
@@ -120,7 +120,7 @@ bool GL_Init()
 	glDeleteShader(uiFragmentShader);
 
 	// Load in post processing pass shader
-	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/PostProcessInitFrag.glsl", 1400))
+	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/PostProcessInitFrag.glsl"))
 		return false;
 	if (!GL_LoadShaders(g_uiPostProcInitProgram, uiVertexShader, uiFragmentShader))
 		return false;
@@ -129,7 +129,7 @@ bool GL_Init()
 	glDeleteShader(uiFragmentShader);
 
 	// Load in Gaussian blur shader
-	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/GaussBlurFrag.glsl", 1500))
+	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/GaussBlurFrag.glsl"))
 		return false;
 	if (!GL_LoadShaders(g_uiGaussProgram, uiVertexShader, uiFragmentShader))
 		return false;
@@ -138,7 +138,7 @@ bool GL_Init()
 	glDeleteShader(uiFragmentShader);
 
 	// Load in ambient occlusion shader
-	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/PostProcessAO1stFrag.glsl", 1600))
+	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/PostProcessAO1stFrag.glsl"))
 		return false;
 	if (!GL_LoadShaders(g_uiSSAOProgram, uiVertexShader, uiFragmentShader))
 		return false;
@@ -147,7 +147,7 @@ bool GL_Init()
 	glDeleteShader(uiFragmentShader);
 
 	// Load in ambient occlusion shader
-	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/PostProcessAO2ndFrag.glsl", 1700))
+	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/PostProcessAO2ndFrag.glsl"))
 		return false;
 	if (!GL_LoadShaders(g_uiSSAOProgram2, uiVertexShader, uiFragmentShader))
 		return false;
@@ -156,7 +156,7 @@ bool GL_Init()
 	glDeleteShader(uiFragmentShader);
 
 	// Load in ambient occlusion shader
-	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/PostProcessVolSpots1stFrag.glsl", 1800))
+	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/PostProcessVolSpots1stFrag.glsl"))
 		return false;
 	if (!GL_LoadShaders(g_uiSpotSSVLProgram, uiVertexShader, uiFragmentShader))
 		return false;
@@ -165,7 +165,7 @@ bool GL_Init()
 	glDeleteShader(uiFragmentShader);
 
 	// Load in ambient occlusion shader
-	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/PostProcessVolSpots2ndFrag.glsl", 1900))
+	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/PostProcessVolSpots2ndFrag.glsl"))
 		return false;
 	if (!GL_LoadShaders(g_uiSpotSSVLProgram2, uiVertexShader, uiFragmentShader))
 		return false;
@@ -176,11 +176,11 @@ bool GL_Init()
 
 	// Load in shadow map shader
 	GLuint uiGeometryShader;
-	if (!GL_LoadShaderFile(uiVertexShader, GL_VERTEX_SHADER, "data/shaders/ShadowVert.glsl", 500))
+	if (!GL_LoadShaderFile(uiVertexShader, GL_VERTEX_SHADER, "data/shaders/ShadowVert.glsl"))
 		return false;
-	if (!GL_LoadShaderFile(uiGeometryShader, GL_GEOMETRY_SHADER, "data/shaders/ShadowGeom.glsl", 600))
+	if (!GL_LoadShaderFile(uiGeometryShader, GL_GEOMETRY_SHADER, "data/shaders/ShadowGeom.glsl"))
 		return false;
-	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/ShadowFrag.glsl", 700))
+	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/ShadowFrag.glsl"))
 		return false;
 	if (!GL_LoadShaders(g_uiShadowProgram, uiVertexShader, uiFragmentShader, uiGeometryShader))
 		return false;
@@ -191,11 +191,11 @@ bool GL_Init()
 	glDeleteShader(uiFragmentShader);
 
 	// Load in shadow map transparency shader
-	if (!GL_LoadShaderFile(uiVertexShader, GL_VERTEX_SHADER, "data/shaders/ShadowTransVert.glsl", 800))
+	if (!GL_LoadShaderFile(uiVertexShader, GL_VERTEX_SHADER, "data/shaders/ShadowTransVert.glsl"))
 		return false;
-	if (!GL_LoadShaderFile(uiGeometryShader, GL_GEOMETRY_SHADER, "data/shaders/ShadowTransGeom.glsl", 900))
+	if (!GL_LoadShaderFile(uiGeometryShader, GL_GEOMETRY_SHADER, "data/shaders/ShadowTransGeom.glsl"))
 		return false;
-	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/ShadowTransFrag.glsl", 1000))
+	if (!GL_LoadShaderFile(uiFragmentShader, GL_FRAGMENT_SHADER, "data/shaders/ShadowTransFrag.glsl"))
 		return false;
 	if (!GL_LoadShaders(g_uiShadowTransProgram, uiVertexShader, uiFragmentShader, uiGeometryShader))
 		return false;

@@ -167,11 +167,16 @@ bool GL_LoadScene(const char* p_cSceneFile, SceneData& SceneInfo)
 {
 	// Load scene from file
 	const aiScene* p_Scene = aiImportFile(p_cSceneFile,
-		aiProcess_GenSmoothNormals |
 		aiProcess_CalcTangentSpace |
+		aiProcess_JoinIdenticalVertices |
+		//aiProcess_ConvertToLeftHanded |       // TODO: левосторонняя система, пока не используется
 		aiProcess_Triangulate |
+		aiProcess_GenSmoothNormals |
+		//aiProcess_PreTransformVertices | // TODO: удаляет локальную матрицу трансформации - но также возможно удаляет анимацию
 		aiProcess_ImproveCacheLocality |
-		aiProcess_SortByPType);
+		aiProcess_SortByPType |
+		aiProcess_OptimizeMeshes |
+		aiProcess_OptimizeGraph);
 
 	// Check if import failed
 	if (!p_Scene) {
