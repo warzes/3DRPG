@@ -25,6 +25,30 @@
     <ClCompile Include="Utility.cpp">
       <Filter>Engine\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="GLScene.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="GLDeferred.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="GLPostProcess.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="GLReflection.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="GLShader.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="GLShadow.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="GLTexture.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -53,6 +77,12 @@
     <ClInclude Include="SceneShader.h">
       <Filter>Engine\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="GLScene.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Test.h">
+      <Filter>Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -72,6 +102,9 @@
     </Filter>
     <Filter Include="Engine\Utility">
       <UniqueIdentifier>{db597644-56d9-4e34-9099-03965510c1ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{c5a3891c-2518-472a-b5da-2e31ef73d63b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

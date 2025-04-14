@@ -21,6 +21,7 @@ public:
 	std::shared_ptr<Texture2D> roughnessTexture;
 	float                      emissivePower;
 	bool                       transparent;
+	bool                       reflective{ false };
 };
 
 std::shared_ptr<Material> GetDefaultMeshMaterial();

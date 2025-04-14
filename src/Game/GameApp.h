@@ -4,11 +4,14 @@
 #include "Scene.h"
 #include "Context.h"
 
-bool InitGame();
-void CloseGame();
+namespace game
+{
+	bool Init();
+	void Close();
 
-void FixedUpdate(double deltaTime);
-void FrameGame(double deltaTime);
-void DrawImGui(double deltaTime);
+	void FixedUpdate(double deltaTime);
+	void Frame(double deltaTime);
+	void DrawImGui(double deltaTime);
 
-void ProcessInput(Camera& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY);
+	void ProcessInput(Camera& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY);
+}

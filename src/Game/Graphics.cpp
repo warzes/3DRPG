@@ -430,17 +430,23 @@ Mesh Model::processAssimpMesh(const std::string& directoryModel, const glm::mat4
 	{
 		aiMaterial* aiMaterial = scene->mMaterials[mesh->mMaterialIndex];
 
+		// emissive
 		aiColor4D EmissiveColour(0.f, 0.f, 0.f, 0.f);
 		aiMaterial->Get(AI_MATKEY_COLOR_EMISSIVE, EmissiveColour);
 		aiColor4D DiffuseColour(1.f, 1.f, 1.f, 1.f);
 		aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, DiffuseColour);
 		float emissive = EmissiveColour.r / DiffuseColour.r;
 
+		// reflective material
+		float reflectivity = 0.0f;
+		aiMaterial->Get(AI_MATKEY_REFLECTIVITY, reflectivity);
+
 		material = std::make_shared<Material>(
 			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_DIFFUSE),
 			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_SPECULAR),
 			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_SHININESS),
 			emissive);
+		material->reflective = (reflectivity > 0.0f);
 	}
 
 	return { vertices, indices, material, localMat };

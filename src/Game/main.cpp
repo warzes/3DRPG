@@ -2,6 +2,7 @@
 #include "CoreApp.h"
 #include "Context.h"
 #include "GameApp.h"
+#include "Test.h"
 //=============================================================================
 #if defined(_MSC_VER)
 #	pragma comment( lib, "3rdparty.lib" )
@@ -19,7 +20,7 @@ int main(
 	Context context;
 
 	if (context.Init(1600, 900, "Game") 
-		&& InitGame())
+		&& test::Init())
 	{
 		while (!ShouldCloseApp(context))
 		{
@@ -39,16 +40,16 @@ int main(
 			//	FixedUpdate(fixedDeltaTime);
 			//	accumulator += fixedDeltaTime;
 			//}
-			FrameGame(context.GetDeltaTime());
+			test::Frame(context.GetDeltaTime());
 
 			context.BeginImgui();
-			DrawImGui(context.GetDeltaTime());
+			test::DrawImGui(context.GetDeltaTime());
 			context.EndImgui();
 
 			context.EndFrame();
 		}
 	}
-	CloseGame();
+	test::Close();
 	context.Close();
 }
 //=============================================================================

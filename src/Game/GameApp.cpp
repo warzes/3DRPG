@@ -21,7 +21,7 @@ bool firstMouse = true;
 float lastX = 1600.0f / 2.0;
 float lastY = 900.0f / 2.0;
 //=============================================================================
-bool GL_FindSceneNode(aiNode* p_Node, const aiString& Name, const aiScene* p_Scene, const glm::mat4& m4Transform, glm::mat4& m4RetTransform)
+bool findSceneNode(aiNode* p_Node, const aiString& Name, const aiScene* p_Scene, const glm::mat4& m4Transform, glm::mat4& m4RetTransform)
 {
 	// Update current transform
 	glm::mat4 m4CurrentTransform = glm::transpose(*(glm::mat4*)&p_Node->mTransformation) * m4Transform;
@@ -33,7 +33,7 @@ bool GL_FindSceneNode(aiNode* p_Node, const aiString& Name, const aiScene* p_Sce
 
 	// Loop over each child node
 	for (unsigned i = 0; i < p_Node->mNumChildren; i++) {
-		bool bRet = GL_FindSceneNode(p_Node->mChildren[i], Name, p_Scene, m4CurrentTransform, m4RetTransform);
+		bool bRet = findSceneNode(p_Node->mChildren[i], Name, p_Scene, m4CurrentTransform, m4RetTransform);
 		if (bRet) {
 			return true;
 		}
@@ -67,7 +67,7 @@ void LoadLight(const std::string& path)
 	{
 		const aiLight* p_AILight = aiscene->mLights[i];
 		glm::mat4 m4Ret(1.0f);
-		GL_FindSceneNode(aiscene->mRootNode, p_AILight->mName, aiscene, m4Ret, m4Ret);
+		findSceneNode(aiscene->mRootNode, p_AILight->mName, aiscene, m4Ret, m4Ret);
 		if (p_AILight->mType == aiLightSource_POINT)
 		{
 			// Get point light
@@ -91,7 +91,7 @@ void LoadLight(const std::string& path)
 	}
 }
 //=============================================================================
-bool InitGame()
+bool game::Init()
 {
 	rhi::Init();
 
@@ -136,18 +136,18 @@ bool InitGame()
 	return true;
 }
 //=============================================================================
-void CloseGame()
+void game::Close()
 {
 	scene.Close();
 	ClearDefaultGraphicsResource();
 	rhi::Close();
 }
 //=============================================================================
-void FixedUpdate(double deltaTime)
+void game::FixedUpdate(double deltaTime)
 {
 }
 //=============================================================================
-void FrameGame(double deltaTime)
+void game::Frame(double deltaTime)
 {
 	ProcessInput(camera, deltaTime, firstMouse, lastX, lastY);
 
@@ -156,12 +156,12 @@ void FrameGame(double deltaTime)
 	scene.Render(camera, GetFrameAspect());
 }
 //=============================================================================
-void DrawImGui(double deltaTime)
+void game::DrawImGui(double deltaTime)
 {
 
 }
 //=============================================================================
-void ProcessInput(Camera& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY)
+void game::ProcessInput(Camera& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY)
 {
 	if (glfwGetMouseButton(GetWindow(), GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
