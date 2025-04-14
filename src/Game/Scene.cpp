@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "Scene.h"
 #include "CoreApp.h"
+#include "SceneShader.h"
 //=============================================================================
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
 	: m_position(position)
@@ -64,9 +65,19 @@ void Camera::updateCameraVectors()
 //=============================================================================
 void Scene::Init()
 {
+	m_geometryShader = std::make_shared<ShaderProgram>(vertexShaderSource, fragmentShaderSource);
+
 	m_uniformTransformBuffer = std::make_shared<UniformBuffer>(0, sizeof(TransformUniformData));
 	m_uniformCameraBuffer = std::make_shared<UniformBuffer>(1, sizeof(CameraUniformData));
 	m_uniformLightBuffer = std::make_shared<UniformBuffer>(2, sizeof(PointLightData) * MaxNumLight);
+
+	m_tempSkyBoxMap = TextureCube::LoadFromFiles({ "data/Cathedral/textures/SkyBox.ktx" });
+}
+//=============================================================================
+void Scene::Close()
+{
+	m_tempSkyBoxMap.reset();
+	m_geometryShader.reset();
 }
 //=============================================================================
 void Scene::AddNode(Node* node)
@@ -79,6 +90,9 @@ void Scene::Render(const Camera& camera, float screenAspect)
 	assert(m_uniformTransformBuffer);
 	assert(m_uniformCameraBuffer);
 	assert(m_uniformLightBuffer);
+
+	m_geometryShader->Bind();
+	m_geometryShader->SetUniform1i("iNumPointLights", MaxNumLight); // Set number of lights
 
 	m_uniformLightBuffer->SetData(m_uniformLightData.data());
 
@@ -101,6 +115,16 @@ void Scene::Render(const Camera& camera, float screenAspect)
 				{
 					m_uniformTransformData.model = node->GetWorldMatrix() * model->GetMesh(i).GetLocalTransform();
 					m_uniformTransformBuffer->SetData(&m_uniformTransformData);
+
+					m_geometryShader->SetUniform1f("EmissivePower", model->GetMesh(i).GetMaterial()->emissivePower);
+
+					m_geometryShader->FragmentSubRoutines(model->GetMesh(i).GetMaterial()->transparent ? 1 : 0);
+
+					if (model->GetMesh(i).GetMaterial()->transparent)
+						m_tempSkyBoxMap->Bind(3);
+					else
+						glBindTextureUnit(3, 0);
+
 					model->DrawMesh(i);
 				}
 			}

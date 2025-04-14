@@ -150,6 +150,7 @@ class Scene final
 {
 public:
 	void Init();
+	void Close();
 
 	void AddCamera(const Camera& camera);
 	void AddNode(Node* node);
@@ -164,6 +165,8 @@ private:
 	bool isSphereVisible(Node* node, const glm::mat4& viewProjectionMatrix) const;
 	bool isAABBVisible(Node* node, const glm::mat4& viewProjectionMatrix) const;
 
+	std::shared_ptr<ShaderProgram> m_geometryShader;
+
 	std::vector<Node*>             m_nodes;
 	TransformUniformData           m_uniformTransformData;
 	std::shared_ptr<UniformBuffer> m_uniformTransformBuffer;
@@ -172,4 +175,6 @@ private:
 
 	std::array<PointLightData, MaxNumLight> m_uniformLightData;
 	std::shared_ptr<UniformBuffer> m_uniformLightBuffer;
+
+	std::shared_ptr<TextureCube>   m_tempSkyBoxMap;
 };

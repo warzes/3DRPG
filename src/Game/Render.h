@@ -121,7 +121,7 @@ public:
 
 	void SetData(const void* data, unsigned int size, unsigned int offset = 0);
 
-	GLuint GetID() const { return m_id; }
+	auto GetID() const { return m_id; }
 
 private:
 	GLuint m_id;
@@ -135,8 +135,8 @@ public:
 
 	void SetData(const void* data, unsigned int size, unsigned int offset = 0);
 
-	GLuint GetID() const { return m_id; }
-	uint32_t GetCount() const { return m_count; }
+	auto GetID() const { return m_id; }
+	auto GetCount() const { return m_count; }
 
 private:
 	GLuint m_id;
@@ -151,7 +151,7 @@ public:
 
 	void SetData(const void* data, uint32_t size = 0, uint32_t offset = 0);
 
-	GLuint GetID() const { return m_id; }
+	auto GetID() const { return m_id; }
 
 private:
 	GLuint   m_id;
@@ -166,7 +166,7 @@ public:
 
 	void Bind();
 
-	GLuint GetID() const { return m_id; }
+	auto GetID() const { return m_id; }
 
 private:
 	GLuint m_id;
@@ -179,17 +179,42 @@ public:
 	Texture2D(GLuint rendererID) : m_id(rendererID) {}
 	~Texture2D();
 
-	static std::shared_ptr<Texture2D> LoadFromMemory(int width, int height, void* imageData);
+	static std::shared_ptr<Texture2D> LoadFromMemory(int width, int height, ImageFormat format, uint8_t* imageData);
 	static std::shared_ptr<Texture2D> LoadFromFile(const std::string& path, bool flipVertical = false);
 
 	void Bind(unsigned int slot = 0) const;
 
-	unsigned int GetID() const { return m_id; }
+	auto GetID() const { return m_id; }
+	auto GetWidth() const { return m_width; }
+	auto GetHeight() const { return m_height; }
+	auto GetFormat() const { return m_format; }
+	auto HasTransparency() const { return m_hasTransparency; }
 
 private:
-
-	GLuint m_id{ 0 };
+	GLuint      m_id{ 0 };
+	int         m_width{ 0 };
+	int         m_height{ 0 };
+	ImageFormat m_format{ ImageFormat::RGBA };
+	bool        m_hasTransparency{ false };
 };
+
+class TextureCube final
+{
+public:
+	TextureCube() = default;
+	TextureCube(GLuint rendererID) : m_id(rendererID) {}
+	~TextureCube();
+
+	static std::shared_ptr<TextureCube> LoadFromMemory(int width, int height, ImageFormat format, const std::vector<uint8_t*>& imageData);
+	static std::shared_ptr<TextureCube> LoadFromFiles(const std::vector<std::string>& paths);
+
+	void Bind(unsigned int slot = 0) const;
+
+	auto GetID() const { return m_id; }
+private:
+	GLuint m_id{ 0 }; 
+};
+
 
 class FrameBuffer final
 {
@@ -219,13 +244,14 @@ public:
 	void Bind() const;
 
 	void SetUniform1i(const std::string& name, int value);
+	void SetUniform1f(const std::string& name, float value);
 	void SetUniform2f(const std::string& name, float v0, float v1);
 	void SetUniform3f(const std::string& name, float v0, float v1, float v2);
 	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
 
 	void FragmentSubRoutines(uint32_t subroutines);
 
-	GLuint GetID() const { return m_id; }
+	auto GetID() const { return m_id; }
 
 	bool IsValid() const { return m_id > 0; }
 

@@ -50,6 +50,9 @@
     <ClInclude Include="Utility.h">
       <Filter>Engine\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="SceneShader.h">
+      <Filter>Engine\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

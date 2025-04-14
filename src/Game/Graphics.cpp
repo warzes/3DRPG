@@ -19,30 +19,30 @@ std::shared_ptr<Material> GetDefaultMeshMaterial()
 	{
 		uint8_t defColor[] =
 		{
-			64,  64,  64,  255,
-			255, 150, 200, 255,
-			255, 150, 200, 255,
-			64,  64,  64,  255,
+			64,  64,  64,
+			255, 150, 200,
+			255, 150, 200,
+			64,  64,  64,
 		};
-		std::shared_ptr<Texture2D> diffuseTexture = Texture2D::LoadFromMemory(2, 2, defColor);
+		std::shared_ptr<Texture2D> diffuseTexture = Texture2D::LoadFromMemory(2, 2, ImageFormat::RGB, defColor);
 
 		uint8_t specColor[] =
 		{
-			255, 255, 255, 255,
-			255, 255, 255, 255,
-			255, 255, 255, 255,
-			255, 255, 255, 255,
+			255, 255, 255,
+			255, 255, 255,
+			255, 255, 255,
+			255, 255, 255,
 		};
-		std::shared_ptr<Texture2D> specularTexture = Texture2D::LoadFromMemory(2, 2, specColor);
+		std::shared_ptr<Texture2D> specularTexture = Texture2D::LoadFromMemory(2, 2, ImageFormat::RGB, specColor);
 
 		uint8_t roughColor[] =
 		{
-			128, 128, 128, 255,
-			128, 128, 128, 255,
-			128, 128, 128, 255,
-			128, 128, 128, 255,
+			128, 128, 128,
+			128, 128, 128,
+			128, 128, 128,
+			128, 128, 128,
 		};
-		std::shared_ptr<Texture2D> roughnessTexture = Texture2D::LoadFromMemory(2, 2, roughColor);
+		std::shared_ptr<Texture2D> roughnessTexture = Texture2D::LoadFromMemory(2, 2, ImageFormat::RGB, roughColor);
 
 		DefaultMeshMaterial = std::make_shared<Material>(diffuseTexture, specularTexture, roughnessTexture);
 	}
@@ -68,6 +68,8 @@ Material::Material(
 		if (!specularTexture) specularTexture = defaultMat->specularTexture;
 		if (!roughnessTexture) roughnessTexture = defaultMat->roughnessTexture;
 	}
+
+	transparent = diffuseTexture->HasTransparency();
 }
 //=============================================================================
 void Material::Bind(uint32_t diffuseTexSlot, uint32_t specularTexSlot, uint32_t roughnessTexSlot)
@@ -361,24 +363,36 @@ void Model::loadAssimpModel(const std::string& path, std::shared_ptr<Material> m
 
 	std::string directory = GetFileDirectory(path);
 
+	std::vector<Mesh> transMesh;
+	std::vector<Mesh> solidMesh;
+
 	// Обрабатываем корневой узел и все его потомки
-	processAssimpNode(directory, scene->mRootNode, scene, material);
+	processAssimpNode(directory, scene->mRootNode, scene, material, transMesh, solidMesh);
+
+	m_meshes.reserve(transMesh.size() + solidMesh.size()); // Резервируем память для оптимизации
+	m_meshes.insert(m_meshes.end(), solidMesh.begin(), solidMesh.end());
+	m_meshes.insert(m_meshes.end(), transMesh.begin(), transMesh.end());
 
 	Print("num mesh: " + std::to_string(m_meshes.size()));
 }
 //=============================================================================
-void Model::processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Material> material)
+void Model::processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Material> material, std::vector<Mesh>& transMesh, std::vector<Mesh>& solidMesh)
 {
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
-		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		aiMesh* aimesh = scene->mMeshes[node->mMeshes[i]];
 		glm::mat4 localMat = glm::transpose(*(glm::mat4*)&node->mTransformation);
-		m_meshes.emplace_back(processAssimpMesh(directoryModel, localMat, mesh, scene, material));
+
+		Mesh mesh = processAssimpMesh(directoryModel, localMat, aimesh, scene, material);
+		if (mesh.GetMaterial()->transparent)
+			transMesh.emplace_back(mesh);
+		else
+			solidMesh.emplace_back(mesh);
 	}
 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
-		processAssimpNode(directoryModel, node->mChildren[i], scene, material);
+		processAssimpNode(directoryModel, node->mChildren[i], scene, material, transMesh, solidMesh);
 	}
 }
 //=============================================================================
@@ -415,10 +429,18 @@ Mesh Model::processAssimpMesh(const std::string& directoryModel, const glm::mat4
 	if (mesh->mMaterialIndex >= 0)
 	{
 		aiMaterial* aiMaterial = scene->mMaterials[mesh->mMaterialIndex];
+
+		aiColor4D EmissiveColour(0.f, 0.f, 0.f, 0.f);
+		aiMaterial->Get(AI_MATKEY_COLOR_EMISSIVE, EmissiveColour);
+		aiColor4D DiffuseColour(1.f, 1.f, 1.f, 1.f);
+		aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, DiffuseColour);
+		float emissive = EmissiveColour.r / DiffuseColour.r;
+
 		material = std::make_shared<Material>(
 			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_DIFFUSE),
 			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_SPECULAR),
-			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_SHININESS));
+			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_SHININESS),
+			emissive);
 	}
 
 	return { vertices, indices, material, localMat };

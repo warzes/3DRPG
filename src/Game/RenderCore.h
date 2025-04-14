@@ -24,6 +24,14 @@ unsigned int ShaderDataTypeSize(ShaderDataType type);
 unsigned int GetComponentCount(ShaderDataType type);
 GLenum GetShaderDataType(ShaderDataType type);
 
+enum class ImageFormat : uint8_t
+{
+	Grey,
+	GreyAlpha,
+	RGB,
+	RGBA
+};
+
 //=============================================================================
 // structs
 //=============================================================================

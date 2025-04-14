@@ -20,6 +20,7 @@ public:
 	std::shared_ptr<Texture2D> specularTexture;
 	std::shared_ptr<Texture2D> roughnessTexture;
 	float                      emissivePower;
+	bool                       transparent;
 };
 
 std::shared_ptr<Material> GetDefaultMeshMaterial();
@@ -47,6 +48,7 @@ public:
 	void Draw();
 
 	const glm::mat4& GetLocalTransform() const { return m_localTransform; }
+	std::shared_ptr<Material> GetMaterial() const { return m_material; }
 
 private:
 	std::shared_ptr<VertexArray>  m_VAO;
@@ -78,7 +80,7 @@ private:
 	void processObjMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material);
 
 	void loadAssimpModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);
-	void processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Material> material);
+	void processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Material> material, std::vector<Mesh>& transMesh, std::vector<Mesh>& solidMesh);
 	Mesh processAssimpMesh(const std::string& directoryModel, const glm::mat4& localMat, aiMesh* mesh, const aiScene* scene, std::shared_ptr<Material> material);
 	std::shared_ptr<Texture2D> loadAssimpTexture(const std::string& directoryModel, aiMaterial* mat, aiTextureType type);
 
