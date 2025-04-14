@@ -1,5 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Scene.h"
+#include "CoreApp.h"
 //=============================================================================
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
 	: m_position(position)
@@ -66,21 +67,6 @@ void Scene::Init()
 	m_uniformTransformBuffer = std::make_shared<UniformBuffer>(0, sizeof(TransformUniformData));
 	m_uniformCameraBuffer = std::make_shared<UniformBuffer>(1, sizeof(CameraUniformData));
 	m_uniformLightBuffer = std::make_shared<UniformBuffer>(2, sizeof(PointLightData) * MaxNumLight);
-	m_uniformMaterialBuffer = std::make_shared<UniformBuffer>(3, sizeof(MaterialData));
-
-	m_uniformLightData[0].position = { 6.0f, 6.0f, 6.0f };
-	m_uniformLightData[0].colour = { 1.0f, 0.0f, 0.0f };
-	m_uniformLightData[0].falloff = { 0.0f, 0.0f, 0.01f };
-	m_uniformLightData[1].position = { -6.0f, 6.0f, 6.0f };
-	m_uniformLightData[1].colour = { 0.0f, 1.0f, 0.0f };
-	m_uniformLightData[1].falloff = { 0.0f, 0.0f, 0.01f };
-	m_uniformLightData[2].position = { 0.0f, 6.0f, 0.0f };
-	m_uniformLightData[2].colour = { 0.0f, 1.0f, 1.0f };
-	m_uniformLightData[2].falloff = { 0.0f, 0.0f, 0.01f };
-
-	m_uniformMaterialData.diffuseColour = { 1.0f, 0.0f, 0.0f };
-	m_uniformMaterialData.specularColour = { 1.0f, 0.3f, 0.3f };
-	m_uniformMaterialData.roughness = 0.35f;
 }
 //=============================================================================
 void Scene::AddNode(Node* node)
@@ -93,16 +79,13 @@ void Scene::Render(const Camera& camera, float screenAspect)
 	assert(m_uniformTransformBuffer);
 	assert(m_uniformCameraBuffer);
 	assert(m_uniformLightBuffer);
-	assert(m_uniformMaterialBuffer);
 
 	m_uniformLightBuffer->SetData(m_uniformLightData.data());
-	m_uniformMaterialBuffer->SetData(&m_uniformMaterialData);
 
 	m_uniformCameraData.projection = camera.GetProjectionMatrix(screenAspect);
 	m_uniformCameraData.view = camera.GetViewMatrix();
 	m_uniformCameraData.cameraPosition = camera.GetPosition();
 	m_uniformCameraBuffer->SetData(&m_uniformCameraData);
-
 
 	glm::mat4 viewProjectionMatrix = m_uniformCameraData.projection * m_uniformCameraData.view;
 
@@ -179,5 +162,27 @@ bool Scene::isAABBVisible(Node* node, const glm::mat4& viewProjectionMatrix) con
 		}
 	}
 	return false;
+}
+//=============================================================================
+void Scene::SetPointLight(size_t id, bool enable, const glm::vec3& position, const glm::vec3& colour, const glm::vec3& falloff)
+{
+	if (id < MaxNumLight)
+	{
+		if (enable)
+		{
+			m_uniformLightData[id].position = position;
+			m_uniformLightData[id].colour = colour;
+			m_uniformLightData[id].falloff = falloff;
+			m_uniformLightData[id].enable = 1;
+		}
+		else
+		{
+			m_uniformLightData[id].enable = 0;
+		}
+	}
+	else
+	{
+		Warning("Max Light 16 - " + std::to_string(id));
+	}
 }
 //=============================================================================

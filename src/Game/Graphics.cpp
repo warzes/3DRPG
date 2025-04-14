@@ -416,7 +416,7 @@ Mesh Model::processAssimpMesh(const std::string& directoryModel, const glm::mat4
 		material = std::make_shared<Material>(
 			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_DIFFUSE),
 			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_SPECULAR),
-			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_HEIGHT));
+			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_SHININESS));
 	}
 
 	return { vertices, indices, material, localMat };

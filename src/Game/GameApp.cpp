@@ -1,5 +1,6 @@
 ﻿#include "stdafx.h"
 #include "GameApp.h"
+#include "Utility.h"
 //=============================================================================
 // Shader sources
 #pragma region [ Shaders sources ]
@@ -78,6 +79,7 @@ struct PointLight
 	vec3 v3LightPosition;
 	vec3 v3LightIntensity;
 	vec3 v3Falloff;
+	int enable;
 };
 
 #define MAX_LIGHTS 16
@@ -231,13 +233,16 @@ void main()
 	vec3 v3RetColour = vec3(0.0f);
 	for (int i = 0; i < iNumPointLights; i++)
 	{
-		vec3 v3LightDirection = normalize(PointLights[i].v3LightPosition - PositionIn);
+		if (PointLights[i].enable == 1)
+		{
+			vec3 v3LightDirection = normalize(PointLights[i].v3LightPosition - PositionIn);
 
-		// Calculate light falloff
-		vec3 v3LightIrradiance = lightFalloff(PointLights[i].v3LightIntensity, PointLights[i].v3Falloff, PointLights[i].v3LightPosition, PositionIn);
+			// Calculate light falloff
+			vec3 v3LightIrradiance = lightFalloff(PointLights[i].v3LightIntensity, PointLights[i].v3Falloff, PointLights[i].v3LightPosition, PositionIn);
 
-		// Perform shading
-		v3RetColour += BRDFUniform(v3Normal, v3LightDirection, v3ViewDirection, v3LightIrradiance, DiffuseColour.rgb, v3SpecularColour, fRoughness);
+			// Perform shading
+			v3RetColour += BRDFUniform(v3Normal, v3LightDirection, v3ViewDirection, v3LightIrradiance, DiffuseColour.rgb, v3SpecularColour, fRoughness);
+		}
 	}
 
 	// Add in ambient contribution
@@ -267,7 +272,76 @@ Node nodePlane;
 bool firstMouse = true;
 float lastX = 1600.0f / 2.0;
 float lastY = 900.0f / 2.0;
+//=============================================================================
+bool GL_FindSceneNode(aiNode* p_Node, const aiString& Name, const aiScene* p_Scene, const glm::mat4& m4Transform, glm::mat4& m4RetTransform)
+{
+	// Update current transform
+	glm::mat4 m4CurrentTransform = glm::transpose(*(glm::mat4*)&p_Node->mTransformation) * m4Transform;
+	if (strcmp(p_Node->mName.data, Name.data) == 0)
+	{
+		m4RetTransform = m4CurrentTransform;
+		return true;
+	}
 
+	// Loop over each child node
+	for (unsigned i = 0; i < p_Node->mNumChildren; i++) {
+		bool bRet = GL_FindSceneNode(p_Node->mChildren[i], Name, p_Scene, m4CurrentTransform, m4RetTransform);
+		if (bRet) {
+			return true;
+		}
+	}
+	return false;
+}
+//=============================================================================
+void LoadLight(const std::string& path)
+{
+	// Load scene from file
+	Assimp::Importer importer;
+	const aiScene* aiscene = importer.ReadFile(path,
+		aiProcess_CalcTangentSpace |
+		aiProcess_JoinIdenticalVertices |
+		aiProcess_Triangulate |
+		aiProcess_GenSmoothNormals |
+		aiProcess_ImproveCacheLocality |
+		aiProcess_SortByPType |
+		aiProcess_OptimizeMeshes |
+		aiProcess_OptimizeGraph
+	);
+
+	if (!aiscene || aiscene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !aiscene->mRootNode)
+	{
+		Error("Failed to open scene file: " + std::string(importer.GetErrorString()));
+		return;
+	}
+
+	// Load in each light
+	for (unsigned i = 0; i < aiscene->mNumLights; i++)
+	{
+		const aiLight* p_AILight = aiscene->mLights[i];
+		glm::mat4 m4Ret(1.0f);
+		GL_FindSceneNode(aiscene->mRootNode, p_AILight->mName, aiscene, m4Ret, m4Ret);
+		if (p_AILight->mType == aiLightSource_POINT)
+		{
+			// Get point light
+			glm::vec3 v3Position = glm::vec3(
+				p_AILight->mPosition.x,
+				p_AILight->mPosition.y,
+				p_AILight->mPosition.z);
+			v3Position = (glm::vec3)(m4Ret * glm::vec4(v3Position, 1.0f));
+			glm::vec3 colour = glm::vec3(
+				p_AILight->mColorDiffuse.r,
+				p_AILight->mColorDiffuse.g,
+				p_AILight->mColorDiffuse.b);
+			// Divide linear and quadratic components by 2 to compensate for using a minimum attenuation of 1
+			glm::vec3 falloff = glm::vec3(
+				(p_AILight->mAttenuationConstant == 0.0f) ? 1.0f : p_AILight->mAttenuationConstant,
+				p_AILight->mAttenuationLinear / 2.0f,
+				p_AILight->mAttenuationQuadratic / 2.0f);
+
+			scene.SetPointLight(i, true, v3Position, colour, falloff);
+		}
+	}
+}
 //=============================================================================
 bool InitGame()
 {
@@ -293,6 +367,10 @@ bool InitGame()
 	nodePlane.SetModel(modelPlane);
 	//scene.AddNode(&nodePlane);
 
+	nodeCathedral.SetModel(modelCathedral);
+	nodeCathedral.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	scene.AddNode(&nodeCathedral);
+
 	nodeSphere.SetModel(modelSphere);
 	nodeSphere.GetTransform().SetPosition(glm::vec3(-2.0f, 0.0f, -5.0f));
 	//scene.AddNode(&nodeSphere);
@@ -306,9 +384,7 @@ bool InitGame()
 	node.GetTransform().Rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	//scene.AddNode(&node);
 
-	nodeCathedral.SetModel(modelCathedral);
-	nodeCathedral.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	scene.AddNode(&nodeCathedral);
+	LoadLight("data/Cathedral/TutorialCathedral.fbx");
 
 	return true;
 }
@@ -331,7 +407,7 @@ void FrameGame(double deltaTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	shader->Bind();
-	shader->SetUniform1i("iNumPointLights", 3); // Set number of lights
+	shader->SetUniform1i("iNumPointLights", MaxNumLight); // Set number of lights
 	scene.Render(camera, GetFrameAspect());
 }
 //=============================================================================

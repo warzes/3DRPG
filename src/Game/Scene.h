@@ -19,13 +19,7 @@ struct PointLightData final
 	glm::aligned_vec3 position;
 	glm::aligned_vec3 colour;
 	glm::aligned_vec3 falloff;
-};
-
-struct MaterialData final
-{
-	glm::aligned_vec3 diffuseColour;
-	glm::aligned_vec3 specularColour;
-	float             roughness;
+	glm::aligned_i32  enable{ 0 };
 };
 
 class Transform final
@@ -160,6 +154,11 @@ public:
 	void AddCamera(const Camera& camera);
 	void AddNode(Node* node);
 	void Render(const Camera& camera, float screenAspect);
+
+	void SetPointLight(size_t id, bool enable,
+		const glm::vec3& position = glm::vec3(0.0f),
+		const glm::vec3& colour = glm::vec3(1.0f),
+		const glm::vec3& falloff = glm::vec3(0.0f));
 private:
 	bool isVisible(Node* node, const glm::mat4& viewProjectionMatrix) const;
 	bool isSphereVisible(Node* node, const glm::mat4& viewProjectionMatrix) const;
@@ -173,7 +172,4 @@ private:
 
 	std::array<PointLightData, MaxNumLight> m_uniformLightData;
 	std::shared_ptr<UniformBuffer> m_uniformLightBuffer;
-
-	MaterialData                   m_uniformMaterialData;
-	std::shared_ptr<UniformBuffer> m_uniformMaterialBuffer;
 };
