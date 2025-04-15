@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "Context.h"
 #include "CoreApp.h"
+#include "DemoContext.h"
 //=============================================================================
 Context* thisContext{ nullptr };
 //=============================================================================

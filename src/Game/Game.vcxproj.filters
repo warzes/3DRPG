@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="Test01.cpp" />
     <ClCompile Include="CoreApp.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
@@ -25,10 +24,18 @@
     <ClCompile Include="Utility.cpp">
       <Filter>Engine\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Test01.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="0001Demo.cpp">
+      <Filter>_Demo\01API</Filter>
+    </ClCompile>
+    <ClCompile Include="DemoContext.cpp">
+      <Filter>_Demo\Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Test01.h" />
     <ClInclude Include="CoreApp.h">
       <Filter>Engine\Core</Filter>
     </ClInclude>
@@ -53,6 +60,15 @@
     <ClInclude Include="SceneShader.h">
       <Filter>Engine\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Test01.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="0001Demo.h">
+      <Filter>_Demo\01API</Filter>
+    </ClInclude>
+    <ClInclude Include="DemoContext.h">
+      <Filter>_Demo\Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -75,6 +91,15 @@
     </Filter>
     <Filter Include="Test">
       <UniqueIdentifier>{c5a3891c-2518-472a-b5da-2e31ef73d63b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Demo">
+      <UniqueIdentifier>{1f821387-60a4-4870-b094-2cc6fe23825c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Demo\01API">
+      <UniqueIdentifier>{f8872b3b-96d3-4923-a247-e8dd6a1fe55d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Demo\Framework">
+      <UniqueIdentifier>{58377f26-4bfe-41df-9244-58d2792f570e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

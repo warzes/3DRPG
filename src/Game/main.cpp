@@ -18,13 +18,6 @@ int main(
 {
 	Context context;
 
-	HybridRenderingEngine
-	nuEngine
-		dw - sample - framework
-		limitless - engine
-		https ://zhuanlan.zhihu.com/p/357265599
-https://www.youtube.com/@pascl62/videos
-
 	Test01 game;
 
 	if (context.Init(1600, 900, "Game") 

@@ -95,8 +95,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="0001Demo.cpp" />
     <ClCompile Include="Context.cpp" />
     <ClCompile Include="CoreApp.cpp" />
+    <ClCompile Include="DemoContext.cpp" />
     <ClCompile Include="Test01.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
@@ -110,8 +112,10 @@
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="0001Demo.h" />
     <ClInclude Include="Context.h" />
     <ClInclude Include="CoreApp.h" />
+    <ClInclude Include="DemoContext.h" />
     <ClInclude Include="Test01.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Render.h" />
