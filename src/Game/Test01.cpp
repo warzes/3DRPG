@@ -1,5 +1,5 @@
 ﻿#include "stdafx.h"
-#include "GameApp.h"
+#include "Test01.h"
 #include "Utility.h"
 //=============================================================================
 std::shared_ptr<Material> tempMaterial;
@@ -91,7 +91,7 @@ void LoadLight(const std::string& path)
 	}
 }
 //=============================================================================
-bool game::Init()
+bool Test01::Init()
 {
 	rhi::Init();
 
@@ -116,38 +116,38 @@ bool game::Init()
 
 	nodeCathedral.SetModel(modelCathedral);
 	nodeCathedral.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	scene.AddNode(&nodeCathedral);
+	//scene.AddNode(&nodeCathedral);
 
 	nodeSphere.SetModel(modelSphere);
 	nodeSphere.GetTransform().SetPosition(glm::vec3(-2.0f, 0.0f, -5.0f));
-	//scene.AddNode(&nodeSphere);
+	scene.AddNode(&nodeSphere);
 
 	nodeCube.SetModel(modelCube);
 	nodeCube.GetTransform().SetPosition(glm::vec3(2.0f, 0.0f, -5.0f));
-	//scene.AddNode(&nodeCube);
+	scene.AddNode(&nodeCube);
 
 	node.SetModel(model);
 	node.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 	node.GetTransform().Rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-	//scene.AddNode(&node);
+	scene.AddNode(&node);
 
 	LoadLight("data/Cathedral/TutorialCathedral.fbx");
 
 	return true;
 }
 //=============================================================================
-void game::Close()
+void Test01::Close()
 {
 	scene.Close();
 	ClearDefaultGraphicsResource();
 	rhi::Close();
 }
 //=============================================================================
-void game::FixedUpdate(double deltaTime)
+void Test01::FixedUpdate(double deltaTime)
 {
 }
 //=============================================================================
-void game::Frame(double deltaTime)
+void Test01::Frame(double deltaTime)
 {
 	ProcessInput(camera, deltaTime, firstMouse, lastX, lastY);
 
@@ -156,12 +156,12 @@ void game::Frame(double deltaTime)
 	scene.Render(camera, GetFrameAspect());
 }
 //=============================================================================
-void game::DrawImGui(double deltaTime)
+void Test01::DrawImGui(double deltaTime)
 {
 
 }
 //=============================================================================
-void game::ProcessInput(Camera& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY)
+void Test01::ProcessInput(Camera& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY)
 {
 	if (glfwGetMouseButton(GetWindow(), GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{

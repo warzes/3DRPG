@@ -1,8 +1,7 @@
 ﻿#include "stdafx.h"
 #include "CoreApp.h"
 #include "Context.h"
-#include "GameApp.h"
-#include "Test.h"
+#include "Test01.h"
 //=============================================================================
 #if defined(_MSC_VER)
 #	pragma comment( lib, "3rdparty.lib" )
@@ -19,8 +18,17 @@ int main(
 {
 	Context context;
 
+	HybridRenderingEngine
+	nuEngine
+		dw - sample - framework
+		limitless - engine
+		https ://zhuanlan.zhihu.com/p/357265599
+https://www.youtube.com/@pascl62/videos
+
+	Test01 game;
+
 	if (context.Init(1600, 900, "Game") 
-		&& test::Init())
+		&& game.Init())
 	{
 		while (!ShouldCloseApp(context))
 		{
@@ -40,16 +48,16 @@ int main(
 			//	FixedUpdate(fixedDeltaTime);
 			//	accumulator += fixedDeltaTime;
 			//}
-			test::Frame(context.GetDeltaTime());
+			game.Frame(context.GetDeltaTime());
 
 			context.BeginImgui();
-			test::DrawImGui(context.GetDeltaTime());
+			game.DrawImGui(context.GetDeltaTime());
 			context.EndImgui();
 
 			context.EndFrame();
 		}
 	}
-	test::Close();
+	game.Close();
 	context.Close();
 }
 //=============================================================================

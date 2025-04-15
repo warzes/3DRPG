@@ -4,8 +4,9 @@
 #include "Scene.h"
 #include "Context.h"
 
-namespace game
+class Test01 final
 {
+public:
 	bool Init();
 	void Close();
 
@@ -14,4 +15,4 @@ namespace game
 	void DrawImGui(double deltaTime);
 
 	void ProcessInput(Camera& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY);
-}
+};

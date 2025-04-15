@@ -3,7 +3,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="Test01.cpp" />
     <ClCompile Include="CoreApp.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
@@ -25,34 +25,10 @@
     <ClCompile Include="Utility.cpp">
       <Filter>Engine\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="GLScene.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="GLDeferred.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="GLPostProcess.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="GLReflection.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="GLShader.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="GLShadow.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="GLTexture.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="GameApp.h" />
+    <ClInclude Include="Test01.h" />
     <ClInclude Include="CoreApp.h">
       <Filter>Engine\Core</Filter>
     </ClInclude>
@@ -76,12 +52,6 @@
     </ClInclude>
     <ClInclude Include="SceneShader.h">
       <Filter>Engine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="GLScene.h">
-      <Filter>Test</Filter>
-    </ClInclude>
-    <ClInclude Include="Test.h">
-      <Filter>Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

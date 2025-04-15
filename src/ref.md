@@ -1,4 +1,13 @@
-﻿для скриптинга
+﻿https://zhuanlan.zhihu.com/p/95917609  - про воду
+
+https://github.com/skiriushichev/eely - анимация
+
+https://github.com/FernRP/FernRPExample
+
+разные - https://github.com/AngelMonica126/GraphicAlgorithm
+
+
+для скриптинга
 	https://miniscript.org/
 	https://github.com/r-lyeh/min/blob/main/min.c
 	wren
