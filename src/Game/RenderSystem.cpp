@@ -49,6 +49,8 @@ void APIENTRY DebugCallback(uint32_t uiSource, uint32_t uiType, uint32_t /*uiID*
 
 	if (uiSeverity == GL_DEBUG_SEVERITY_HIGH)
 		Fatal(message);
+	else if (uiSeverity == GL_DEBUG_SEVERITY_NOTIFICATION)
+		Warning(message);
 	else
 		Error(message);
 }
@@ -57,11 +59,8 @@ void APIENTRY DebugCallback(uint32_t uiSource, uint32_t uiType, uint32_t /*uiID*
 void rhi::Init()
 {
 #if defined(_DEBUG)
-	//Allow for synchronous callbacks.
-	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-
-	//Set up the debug info callback
 	glDebugMessageCallback((GLDEBUGPROC)&DebugCallback, nullptr);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
 	//Set up the type of debug information we want to receive
 	uint32_t uiUnusedIDs = 0;
@@ -71,16 +70,16 @@ void rhi::Init()
 	//glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_MEDIUM, 0, NULL, GL_FALSE); //Disable medium severity warnings
 #endif
 
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_STENCIL_TEST);
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
-	glCullFace(GL_BACK);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_STENCIL_TEST);
+
+	//glCullFace(GL_BACK);
+	//glEnable(GL_CULL_FACE);
 
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 }
 //=============================================================================
 void rhi::Close()

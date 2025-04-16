@@ -6,10 +6,10 @@
 #	pragma comment( lib, "3rdparty.lib" )
 #endif
 //=============================================================================
-bool ShouldCloseApp(const Context& context)
+bool ExitRequested(const Context& context)
 {
 	extern bool IsExitApp;
-	return IsExitApp || context.ShouldClose();
+	return IsExitApp || context.ExitRequested();
 }
 //=============================================================================
 ContextCreateInfo GetContextCreateInfo()
@@ -18,6 +18,32 @@ ContextCreateInfo GetContextCreateInfo()
 
 	return contextInfo;
 }
+#if defined(__EMSCRIPTEN__)
+RoguelikeGameApp* game{ nullptr };
+
+void runFrame(void* arg)
+{
+	auto context = GetContext();
+
+	context->BeginFrame();
+
+	if (context->IsResize())
+	{
+		game->Resize(context->GetWidth(), context->GetHeight());
+	}
+
+	const auto deltaTime = context->GetDeltaTime();
+
+	game->Update(deltaTime);
+	game->Draw(deltaTime);
+
+	context->BeginImgui();
+	game->DrawImGui(deltaTime);
+	context->EndImgui();
+
+	context->EndFrame();
+}
+#endif
 //=============================================================================
 int main(
 	[[maybe_unused]] int   argc,
@@ -30,7 +56,11 @@ int main(
 	if (context.Init(GetContextCreateInfo())
 		&& game.Init())
 	{
-		while (!ShouldCloseApp(context))
+#if defined(__EMSCRIPTEN__)
+		game = &game;
+		emscripten_set_main_loop_arg(runFrame, this, 0, 1);
+#else
+		while (!ExitRequested(context))
 		{
 			context.BeginFrame();
 
@@ -60,6 +90,7 @@ int main(
 			context.EndFrame();
 		}
 	}
+#endif
 	game.Close();
 	context.Close();
 }

@@ -4,25 +4,6 @@
 //=============================================================================
 Context* thisContext{ nullptr };
 //=============================================================================
-void SetWindowSize(int width, int height)
-{
-	assert(width > 0);
-	assert(height > 0);
-	assert(thisContext);
-
-	if (width < 0 || height < 0) return;
-	width = std::max(width, 1);
-	height = std::max(height, 1);
-
-	if (thisContext->m_frameWidth != width || thisContext->m_frameHeight != height)
-	{
-		thisContext->m_frameWidth = width;
-		thisContext->m_frameHeight = height;
-		thisContext->m_screenAspect = static_cast<float>(width) / static_cast<float>(height);
-		thisContext->m_isResize = true;
-	}
-}
-//=============================================================================
 void handleWindowMinimizedEvents(GLFWwindow* window, int minimized) noexcept
 {
 
@@ -33,31 +14,36 @@ void handleWindowMaximizedEvents(GLFWwindow* window, int maximized) noexcept
 
 }
 //=============================================================================
-void handleKeyEvents(GLFWwindow* window, int key, int scancode, int action, int mods) noexcept
+void handleKeyEvents([[maybe_unused]] GLFWwindow* window, int key, [[maybe_unused]] int scancode, int action, [[maybe_unused]] int mods) noexcept
 {
-	//std::string actionName;
-	//switch (action)
-	//{
-	//case GLFW_PRESS:
-	//	actionName = "pressed";
-	//	break;
-	//case GLFW_RELEASE:
-	//	actionName = "released";
-	//	break;
-	//case GLFW_REPEAT:
-	//	actionName = "repeated";
-	//	break;
-	//default:
-	//	actionName = "invalid";
-	//	break;
-	//}
+	key_callback_glfw
 
+	if (key >= 0 && key < MaxKeys)
+	{
+		if (action == GLFW_PRESS)
+		{
+			if (thisContext->KeyPressedFunc)
+				thisContext->KeyPressedFunc(key);
+			thisContext->m_keys[key] = true;
+		}
+		else if (action == GLFW_RELEASE)
+		{
+			if (thisContext->KeyReleasedFunc)
+				thisContext->KeyReleasedFunc(key);
+			thisContext->m_keys[key] = false;
+		}
+		else if (action == GLFW_REPEAT)
+		{
+			// TODO:
+		}
+	}
 	//std::string keyName = glfwGetKeyName(key, 0);
-	//Print(keyName + " - " + actionName);
 }
 //=============================================================================
 void handleMouseButtonEvents(GLFWwindow* window, int button, int action, int mods) noexcept
 {
+	mouse_button_callback_glfw
+	тут
 	//std::string actionName;
 	//switch (action)
 	//{
@@ -95,9 +81,24 @@ void handleMouseButtonEvents(GLFWwindow* window, int button, int action, int mod
 	//Print(mouseButtonName + " - " + actionName);
 }
 //=============================================================================
-void handleMousePositionEvents(GLFWwindow* window, double xpos, double ypos) noexcept
+void handleMousePositionEvents([[maybe_unused]] GLFWwindow* window, double xpos, double ypos) noexcept
 {
-
+	thisContext->m_mouseX = xpos;
+	thisContext->m_mouseY = ypos;
+	if (thisContext->MouseMoveFunc)
+		thisContext->MouseMoveFunc(xpos, ypos, thisContext->m_mouseDeltaX, thisContext->m_mouseDeltaY);
+}
+//=============================================================================
+void handleMouseScrollEvents([[maybe_unused]] GLFWwindow* window, double xoffset, double yoffset) noexcept
+{
+	scroll_callback_glfw
+	if (thisContext->MouseScrolledFunc)
+		thisContext->MouseScrolledFunc(xoffset, yoffset);
+}
+//=============================================================================
+void handleCharEvents(GLFWwindow* window, unsigned int c)
+{
+	char_callback_glfw
 }
 //=============================================================================
 void handleMouseEnterLeaveEvents(GLFWwindow* window, int entered) noexcept
@@ -107,7 +108,22 @@ void handleMouseEnterLeaveEvents(GLFWwindow* window, int entered) noexcept
 //=============================================================================
 void handleFramebufferResizeEvents([[maybe_unused]] GLFWwindow* window, int width, int height) noexcept
 {
-	SetWindowSize(width, height);
+	тут
+	assert(width > 0);
+	assert(height > 0);
+	assert(thisContext);
+
+	if (width < 0 || height < 0) return;
+	width = std::max(width, 1);
+	height = std::max(height, 1);
+
+	if (thisContext->m_frameWidth != width || thisContext->m_frameHeight != height)
+	{
+		thisContext->m_frameWidth = width;
+		thisContext->m_frameHeight = height;
+		thisContext->m_screenAspect = static_cast<float>(width) / static_cast<float>(height);
+		thisContext->m_isResize = true;
+	}
 }
 //=============================================================================
 bool Context::Init(const ContextCreateInfo& createInfo)
@@ -116,42 +132,47 @@ bool Context::Init(const ContextCreateInfo& createInfo)
 
 	if (!glfwInit())
 	{
-		Fatal("glfwInit() failed!");
+		Fatal("Failed to initialize GLFW");
 		return false;
 	}
+
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+	glfwWindowHint(GLFW_MAXIMIZED, createInfo.window.maximized ? GL_TRUE : GL_FALSE);
+
+	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+#if __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+#if defined(__EMSCRIPTEN__)
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+#else
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_SAMPLES, 8);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-#if defined(_DEBUG)
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #endif
 
-	m_window = glfwCreateWindow(createInfo.window.width, createInfo.window.height, createInfo.window.title.data(), nullptr, nullptr);
+#if defined(_DEBUG)
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+#else
+	glfwWindowHint(GLFW_CONTEXT_NO_ERROR, GLFW_TRUE);
+#endif
+
+	m_window = glfwCreateWindow(createInfo.window.width, createInfo.window.height, createInfo.window.title.data(), createInfo.window.fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 	if (!m_window)
 	{
 		Fatal("Failed to create GLFW window!");
 		return false;
 	}
 
-	int frameWidth, frameHeight;
-	glfwGetFramebufferSize(m_window, &frameWidth, &frameHeight);
-	if (frameWidth < 0 || frameHeight < 0)
-	{
-		Fatal("glfwGetFramebufferSize failed!");
-		return false;
-	}
-
-	m_frameWidth   = std::max(frameWidth, 1);
-	m_frameHeight  = std::max(frameHeight, 1);
-	m_screenAspect = static_cast<float>(m_frameWidth) / static_cast<float>(m_frameHeight);
-
 	glfwSetWindowIconifyCallback(m_window, handleWindowMinimizedEvents);
 	glfwSetWindowMaximizeCallback(m_window, handleWindowMaximizedEvents);
 	glfwSetKeyCallback(m_window, handleKeyEvents);
 	glfwSetMouseButtonCallback(m_window, handleMouseButtonEvents);
 	glfwSetCursorPosCallback(m_window, handleMousePositionEvents);
+	glfwSetScrollCallback(m_window, handleMouseScrollEvents);
+	glfwSetCharCallback(m_window, handleCharEvents);
 	glfwSetCursorEnterCallback(m_window, handleMouseEnterLeaveEvents);
 	glfwSetFramebufferSizeCallback(m_window, handleFramebufferResizeEvents);
 
@@ -163,12 +184,37 @@ bool Context::Init(const ContextCreateInfo& createInfo)
 		return false;
 	}
 
+	glfwSwapInterval(createInfo.render.vsync ? 1 : 0);
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-	ImGui_ImplOpenGL3_Init("#version 330 core");
+	ImGui_ImplGlfw_InitForOpenGL(m_window, false);
+	ImGui_ImplOpenGL3_Init("#version 150");
 	ImGui::StyleColorsDark();
 
+	GLFWmonitor* primary = glfwGetPrimaryMonitor();
+
+	float xscale, yscale;
+	glfwGetMonitorContentScale(primary, &xscale, &yscale);
+
+	ImGuiStyle* style = &ImGui::GetStyle();
+	style->ScaleAllSizes(xscale > yscale ? xscale : yscale);
+
+	ImGuiIO& io = ImGui::GetIO();
+	io.FontGlobalScale = xscale > yscale ? xscale : yscale;
+	io.IniFilename = nullptr;
+
+	int displayW, displayH;
+	glfwGetFramebufferSize(m_window, &displayW, &displayH);
+	if (displayW < 0 || displayH < 0)
+	{
+		Fatal("glfwGetFramebufferSize failed!");
+		return false;
+	}
+
+	m_frameWidth = std::max(displayW, 1);
+	m_frameHeight = std::max(displayH, 1);
+	m_screenAspect = static_cast<float>(m_frameWidth) / static_cast<float>(m_frameHeight);
 	glViewport(0, 0, m_frameWidth, m_frameHeight);
 
 	m_lastFrameTime = glfwGetTime();
@@ -187,7 +233,7 @@ void Context::Close()
 	thisContext = nullptr;
 }
 //=============================================================================
-bool Context::ShouldClose() const
+bool Context::ExitRequested() const
 {
 	return glfwWindowShouldClose(m_window);
 }
@@ -229,9 +275,14 @@ GLFWwindow* Context::GetWindow()
 //=============================================================================
 void Context::BeginFrame()
 {
-	const double currentTime = glfwGetTime();
-	m_deltaTime = currentTime - m_lastFrameTime;
+	const double currentTime = GetTimeInSeconds();
+	m_deltaTime     = currentTime - m_lastFrameTime;
 	m_lastFrameTime = currentTime;
+
+	m_mouseDeltaX = m_mouseX - m_lastMouseX;
+	m_mouseDeltaY = m_mouseY - m_lastMouseY;
+	m_lastMouseX = m_mouseX;
+	m_lastMouseY = m_mouseY;
 }
 //=============================================================================
 void Context::BeginImgui()
