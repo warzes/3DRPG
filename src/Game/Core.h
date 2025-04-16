@@ -1,20 +1,27 @@
 ﻿#pragma once
 
+void ExitApp();
+
 void Print(const std::string& msg);
 void Warning(const std::string& msg);
 void Error(const std::string& msg);
 void Fatal(const std::string& msg);
 
-void ExitApp();
-
-inline std::string GetFileExtension(const std::string& filePath)
+template <typename T>
+bool Contains(const std::vector<T>& vec, const T& obj)
 {
-	std::filesystem::path path(filePath);
-	return path.extension().string();
+	for (auto& e : vec)
+	{
+		if (e == obj) return true;
+	}
+	return false;
 }
 
-inline std::string GetFileDirectory(const std::string& filePath)
-{
-	std::filesystem::path path(filePath);
-	return path.parent_path().string() + "/";
-}
+std::string GetFileExtension(const std::string& filePath);
+std::string GetFileName(const std::string& filePath);
+std::string GetFileNameWithoutExtension(const std::string& filePath);
+std::string GetFileDirectory(const std::string& filePath);
+
+std::string ReadTextFile(const std::string& filename);
+std::string ReadShaderCode(const std::string& filename, std::vector<std::string> defines = {});
+

@@ -1,6 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Render.h"
-#include "CoreApp.h"
+#include "Core.h"
 //=============================================================================
 extern "C" {
 	_declspec(dllexport) uint32_t NvOptimusEnablement = 1;

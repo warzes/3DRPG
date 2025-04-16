@@ -1,6 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Scene.h"
-#include "CoreApp.h"
+#include "Core.h"
 #include "SceneShader.h"
 //=============================================================================
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)

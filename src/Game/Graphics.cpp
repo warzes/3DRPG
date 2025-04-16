@@ -1,7 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Graphics.h"
-#include "CoreApp.h"
-#include "Utility.h"
+#include "Core.h"
 //=============================================================================
 namespace
 {

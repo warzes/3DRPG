@@ -25,10 +25,12 @@ public:
 
 	bool IsResize() const;
 
-	uint32_t GetWidth() const;
-	uint32_t GetHeight() const;
-	float GetAspect() const;
-	double GetDeltaTime() const;
+	double GetTimeInSeconds() const;
+
+	uint32_t    GetWidth() const;
+	uint32_t    GetHeight() const;
+	float       GetAspect() const;
+	double      GetDeltaTime() const;
 	GLFWwindow* GetWindow();
 
 	glm::uvec2 GetCursorPosition() const;

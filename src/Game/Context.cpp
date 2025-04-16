@@ -1,7 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Context.h"
-#include "CoreApp.h"
-#include "DemoContext.h"
+#include "Core.h"
 //=============================================================================
 Context* thisContext{ nullptr };
 //=============================================================================
@@ -196,6 +195,11 @@ bool Context::ShouldClose() const
 bool Context::IsResize() const
 {
 	return m_isResize;
+}
+//=============================================================================
+double Context::GetTimeInSeconds() const
+{
+	return glfwGetTime();
 }
 //=============================================================================
 uint32_t Context::GetWidth() const

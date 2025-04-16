@@ -1,7 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Render.h"
-#include "CoreApp.h"
-#include "Utility.h"
+#include "Core.h"
 //=============================================================================
 unsigned int ShaderDataTypeSize(ShaderDataType type)
 {

@@ -24,17 +24,17 @@
     <ClCompile Include="DemoContext.cpp">
       <Filter>_Demo\Framework</Filter>
     </ClCompile>
-    <ClCompile Include="RoguelikeGameApp.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="RTSGameApp.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="RenderSystem.cpp">
       <Filter>Engine\Render\old</Filter>
     </ClCompile>
     <ClCompile Include="Render.cpp">
       <Filter>Engine\Render\old</Filter>
+    </ClCompile>
+    <ClCompile Include="RoguelikeGameApp.cpp">
+      <Filter>Game\Roguelike</Filter>
+    </ClCompile>
+    <ClCompile Include="RTSGameApp.cpp">
+      <Filter>Game\RTS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,17 +63,17 @@
     <ClInclude Include="DemoContext.h">
       <Filter>_Demo\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="RoguelikeGameApp.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="RTSGameApp.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Render.h">
       <Filter>Engine\Render\old</Filter>
     </ClInclude>
     <ClInclude Include="RenderCore.h">
       <Filter>Engine\Render\old</Filter>
+    </ClInclude>
+    <ClInclude Include="RoguelikeGameApp.h">
+      <Filter>Game\Roguelike</Filter>
+    </ClInclude>
+    <ClInclude Include="RTSGameApp.h">
+      <Filter>Game\RTS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +109,12 @@
     </Filter>
     <Filter Include="_Test">
       <UniqueIdentifier>{c5a3891c-2518-472a-b5da-2e31ef73d63b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Roguelike">
+      <UniqueIdentifier>{7b3fbac1-7c79-418c-a503-2d012342ef75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\RTS">
+      <UniqueIdentifier>{3c6aaf0d-5363-4a56-95ef-e4485701075a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
