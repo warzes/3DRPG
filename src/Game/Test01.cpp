@@ -1,6 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Test01.h"
-#include "Utility.h"
+#include "Core.h"
 //=============================================================================
 std::shared_ptr<Material> tempMaterial;
 std::shared_ptr<Model> model;

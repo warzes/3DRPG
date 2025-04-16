@@ -97,8 +97,10 @@
   <ItemGroup>
     <ClCompile Include="0001Demo.cpp" />
     <ClCompile Include="Context.cpp" />
-    <ClCompile Include="CoreApp.cpp" />
+    <ClCompile Include="Core.cpp" />
     <ClCompile Include="DemoContext.cpp" />
+    <ClCompile Include="RoguelikeGameApp.cpp" />
+    <ClCompile Include="RTSGameApp.cpp" />
     <ClCompile Include="Test01.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
@@ -109,13 +111,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="0001Demo.h" />
     <ClInclude Include="Context.h" />
-    <ClInclude Include="CoreApp.h" />
+    <ClInclude Include="Core.h" />
     <ClInclude Include="DemoContext.h" />
+    <ClInclude Include="RoguelikeGameApp.h" />
+    <ClInclude Include="RTSGameApp.h" />
     <ClInclude Include="Test01.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Render.h" />
@@ -123,7 +126,6 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneShader.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,11 +1,7 @@
 ﻿#include "stdafx.h"
-#include "CoreApp.h"
+#include "Core.h"
 //=============================================================================
-namespace app
-{
-	bool        isExit{ false };
-	GLFWwindow* window{ nullptr };
-}
+bool IsExitApp{ false };
 //=============================================================================
 void Print(const std::string& msg)
 {
@@ -25,11 +21,11 @@ void Error(const std::string& msg)
 void Fatal(const std::string& msg)
 {
 	Print("Fatal: " + msg);
-	app::Exit();
+	ExitApp();
 }
 //=============================================================================
-void app::Exit()
+void ExitApp()
 {
-	isExit = true;
+	IsExitApp = true;
 }
 //=============================================================================

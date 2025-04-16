@@ -1,9 +1,19 @@
 ﻿#pragma once
 
+struct ContextCreateInfo final
+{
+	struct Window
+	{
+		uint32_t width{ 1600 };
+		uint32_t height{ 900 };
+		std::string_view title{ "Game" };
+	} window;
+};
+
 class Context final
 {
 public:
-	bool Init(int windowWidth, int windowHeight, std::string_view title);
+	bool Init(const ContextCreateInfo& createInfo);
 	void Close();
 
 	bool ShouldClose() const;
@@ -15,8 +25,8 @@ public:
 
 	bool IsResize() const;
 
-	int GetWidth() const;
-	int GetHeight() const;
+	uint32_t GetWidth() const;
+	uint32_t GetHeight() const;
 	float GetAspect() const;
 	double GetDeltaTime() const;
 	GLFWwindow* GetWindow();
@@ -28,8 +38,8 @@ private:
 	friend void SetWindowSize(int width, int height);
 
 	GLFWwindow* m_window{ nullptr };
-	int         m_frameWidth{ 0 };
-	int         m_frameHeight{ 0 };
+	uint32_t    m_frameWidth{ 0 };
+	uint32_t    m_frameHeight{ 0 };
 	float       m_screenAspect{ 0.0 };
 	bool        m_isResize{ true };
 
@@ -38,7 +48,7 @@ private:
 };
 
 float GetFrameAspect();
-int GetFrameWidth();
-int GetFrameHeight();
+uint32_t GetFrameWidth();
+uint32_t GetFrameHeight();
 GLFWwindow* GetWindow();
 Context* GetContext();

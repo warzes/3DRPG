@@ -7,8 +7,11 @@ Context* thisContext{ nullptr };
 //=============================================================================
 void SetWindowSize(int width, int height)
 {
+	assert(width > 0);
+	assert(height > 0);
 	assert(thisContext);
 
+	if (width < 0 || height < 0) return;
 	width = std::max(width, 1);
 	height = std::max(height, 1);
 
@@ -16,7 +19,7 @@ void SetWindowSize(int width, int height)
 	{
 		thisContext->m_frameWidth = width;
 		thisContext->m_frameHeight = height;
-		thisContext->m_screenAspect = (float)width / (float)height;
+		thisContext->m_screenAspect = static_cast<float>(width) / static_cast<float>(height);
 		thisContext->m_isResize = true;
 	}
 }
@@ -108,7 +111,7 @@ void handleFramebufferResizeEvents([[maybe_unused]] GLFWwindow* window, int widt
 	SetWindowSize(width, height);
 }
 //=============================================================================
-bool Context::Init(int windowWidth, int windowHeight, std::string_view title)
+bool Context::Init(const ContextCreateInfo& createInfo)
 {
 	glfwSetErrorCallback([](int e, const char* str) { Fatal("GLTF Context error(" + std::to_string(e) + "): " + str); });
 
@@ -126,15 +129,24 @@ bool Context::Init(int windowWidth, int windowHeight, std::string_view title)
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #endif
 
-	m_window = glfwCreateWindow(windowWidth, windowHeight, title.data(), nullptr, nullptr);
+	m_window = glfwCreateWindow(createInfo.window.width, createInfo.window.height, createInfo.window.title.data(), nullptr, nullptr);
 	if (!m_window)
 	{
 		Fatal("Failed to create GLFW window!");
 		return false;
 	}
 
-	glfwGetFramebufferSize(m_window, &m_frameWidth, &m_frameHeight);
-	m_screenAspect = (float)m_frameWidth / (float)m_frameHeight;
+	int frameWidth, frameHeight;
+	glfwGetFramebufferSize(m_window, &frameWidth, &frameHeight);
+	if (frameWidth < 0 || frameHeight < 0)
+	{
+		Fatal("glfwGetFramebufferSize failed!");
+		return false;
+	}
+
+	m_frameWidth   = std::max(frameWidth, 1);
+	m_frameHeight  = std::max(frameHeight, 1);
+	m_screenAspect = static_cast<float>(m_frameWidth) / static_cast<float>(m_frameHeight);
 
 	glfwSetWindowIconifyCallback(m_window, handleWindowMinimizedEvents);
 	glfwSetWindowMaximizeCallback(m_window, handleWindowMaximizedEvents);
@@ -186,12 +198,12 @@ bool Context::IsResize() const
 	return m_isResize;
 }
 //=============================================================================
-int Context::GetWidth() const
+uint32_t Context::GetWidth() const
 {
 	return m_frameWidth;
 }
 //=============================================================================
-int Context::GetHeight() const
+uint32_t Context::GetHeight() const
 {
 	return m_frameHeight;
 }
@@ -250,12 +262,12 @@ void Context::SetCursorPosition(const glm::uvec2& position)
 	glfwSetCursorPos(m_window, static_cast<double>(position.x), static_cast<double>(position.y));
 }
 //=============================================================================
-int GetFrameWidth()
+uint32_t GetFrameWidth()
 {
 	return thisContext->GetWidth();
 }
 //=============================================================================
-int GetFrameHeight()
+uint32_t GetFrameHeight()
 {
 	return thisContext->GetHeight();
 }

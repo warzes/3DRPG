@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "CoreApp.h"
+#include "Core.h"
 #include "Scene.h"
 #include "Context.h"
 

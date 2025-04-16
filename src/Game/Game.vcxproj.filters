@@ -3,11 +3,8 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="CoreApp.cpp">
+    <ClCompile Include="Core.cpp">
       <Filter>Engine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Render.cpp">
-      <Filter>Engine\Render</Filter>
     </ClCompile>
     <ClCompile Include="Graphics.cpp">
       <Filter>Engine\Graphics</Filter>
@@ -18,14 +15,8 @@
     <ClCompile Include="Context.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem.cpp">
-      <Filter>Engine\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility.cpp">
-      <Filter>Engine\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="Test01.cpp">
-      <Filter>Test</Filter>
+      <Filter>_Test</Filter>
     </ClCompile>
     <ClCompile Include="0001Demo.cpp">
       <Filter>_Demo\01API</Filter>
@@ -33,17 +24,23 @@
     <ClCompile Include="DemoContext.cpp">
       <Filter>_Demo\Framework</Filter>
     </ClCompile>
+    <ClCompile Include="RoguelikeGameApp.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="RTSGameApp.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>Engine\Render\old</Filter>
+    </ClCompile>
+    <ClCompile Include="Render.cpp">
+      <Filter>Engine\Render\old</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="CoreApp.h">
+    <ClInclude Include="Core.h">
       <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Render.h">
-      <Filter>Engine\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderCore.h">
-      <Filter>Engine\Render</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.h">
       <Filter>Engine\Graphics</Filter>
@@ -54,20 +51,29 @@
     <ClInclude Include="Context.h">
       <Filter>Engine\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Utility.h">
-      <Filter>Engine\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="SceneShader.h">
       <Filter>Engine\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Test01.h">
-      <Filter>Test</Filter>
+      <Filter>_Test</Filter>
     </ClInclude>
     <ClInclude Include="0001Demo.h">
       <Filter>_Demo\01API</Filter>
     </ClInclude>
     <ClInclude Include="DemoContext.h">
       <Filter>_Demo\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="RoguelikeGameApp.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="RTSGameApp.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Render.h">
+      <Filter>Engine\Render\old</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderCore.h">
+      <Filter>Engine\Render\old</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -86,12 +92,6 @@
     <Filter Include="Engine\Scene">
       <UniqueIdentifier>{6d4439fc-14ed-418b-aba3-42a582f28b07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Utility">
-      <UniqueIdentifier>{db597644-56d9-4e34-9099-03965510c1ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test">
-      <UniqueIdentifier>{c5a3891c-2518-472a-b5da-2e31ef73d63b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="_Demo">
       <UniqueIdentifier>{1f821387-60a4-4870-b094-2cc6fe23825c}</UniqueIdentifier>
     </Filter>
@@ -100,6 +100,15 @@
     </Filter>
     <Filter Include="_Demo\Framework">
       <UniqueIdentifier>{58377f26-4bfe-41df-9244-58d2792f570e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{bef2c127-006b-43a9-8516-6d1a0a376c85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Render\old">
+      <UniqueIdentifier>{cf153560-fb3e-4b3e-8d92-98351b869177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Test">
+      <UniqueIdentifier>{c5a3891c-2518-472a-b5da-2e31ef73d63b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

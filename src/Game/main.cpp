@@ -1,7 +1,6 @@
 ﻿#include "stdafx.h"
-#include "CoreApp.h"
 #include "Context.h"
-#include "Test01.h"
+#include "RoguelikeGameApp.h"
 //=============================================================================
 #if defined(_MSC_VER)
 #	pragma comment( lib, "3rdparty.lib" )
@@ -9,7 +8,15 @@
 //=============================================================================
 bool ShouldCloseApp(const Context& context)
 {
-	return app::isExit || context.ShouldClose();
+	extern bool IsExitApp;
+	return IsExitApp || context.ShouldClose();
+}
+//=============================================================================
+ContextCreateInfo GetContextCreateInfo()
+{
+	ContextCreateInfo contextInfo{};
+
+	return contextInfo;
 }
 //=============================================================================
 int main(
@@ -18,9 +25,9 @@ int main(
 {
 	Context context;
 
-	Test01 game;
+	RoguelikeGameApp game(context);
 
-	if (context.Init(1600, 900, "Game") 
+	if (context.Init(GetContextCreateInfo())
 		&& game.Init())
 	{
 		while (!ShouldCloseApp(context))
@@ -29,9 +36,12 @@ int main(
 
 			if (context.IsResize())
 			{
-				glViewport(0, 0, context.GetWidth(), context.GetHeight());
+				game.Resize(context.GetWidth(), context.GetHeight());
 			}
 
+			const auto deltaTime = context.GetDeltaTime();
+
+			game.Update(deltaTime);
 			// Update и FixedUpdate
 			// это не работает
 			//float accumulator = 0.0f;
@@ -41,10 +51,10 @@ int main(
 			//	FixedUpdate(fixedDeltaTime);
 			//	accumulator += fixedDeltaTime;
 			//}
-			game.Frame(context.GetDeltaTime());
+			game.Draw(deltaTime);
 
 			context.BeginImgui();
-			game.DrawImGui(context.GetDeltaTime());
+			game.DrawImGui(deltaTime);
 			context.EndImgui();
 
 			context.EndFrame();
