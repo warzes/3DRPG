@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "RenderCore.h"
+#include "RHITexture.h"
 
 namespace rhi
 {
@@ -172,15 +173,15 @@ private:
 	GLuint m_id;
 };
 
-class Texture2D final
+class Texture2Do final
 {
 public:
-	Texture2D() = default;
-	Texture2D(GLuint rendererID) : m_id(rendererID) {}
-	~Texture2D();
+	Texture2Do() = default;
+	Texture2Do(GLuint rendererID) : m_id(rendererID) {}
+	~Texture2Do();
 
-	static std::shared_ptr<Texture2D> LoadFromMemory(int width, int height, ImageFormat format, uint8_t* imageData);
-	static std::shared_ptr<Texture2D> LoadFromFile(const std::string& path, bool flipVertical = false);
+	static std::shared_ptr<Texture2Do> LoadFromMemory(int width, int height, ImageFormat format, uint8_t* imageData);
+	static std::shared_ptr<Texture2Do> LoadFromFile(const std::string& path, bool flipVertical = false);
 
 	void Bind(unsigned int slot = 0) const;
 
@@ -198,15 +199,15 @@ private:
 	bool        m_hasTransparency{ false };
 };
 
-class TextureCube final
+class TextureCubeo final
 {
 public:
-	TextureCube() = default;
-	TextureCube(GLuint rendererID) : m_id(rendererID) {}
-	~TextureCube();
+	TextureCubeo() = default;
+	TextureCubeo(GLuint rendererID) : m_id(rendererID) {}
+	~TextureCubeo();
 
-	static std::shared_ptr<TextureCube> LoadFromMemory(int width, int height, ImageFormat format, const std::vector<uint8_t*>& imageData);
-	static std::shared_ptr<TextureCube> LoadFromFiles(const std::vector<std::string>& paths);
+	static std::shared_ptr<TextureCubeo> LoadFromMemory(int width, int height, ImageFormat format, const std::vector<uint8_t*>& imageData);
+	static std::shared_ptr<TextureCubeo> LoadFromFiles(const std::vector<std::string>& paths);
 
 	void Bind(unsigned int slot = 0) const;
 

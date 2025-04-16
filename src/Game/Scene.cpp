@@ -71,7 +71,7 @@ void Scene::Init()
 	m_uniformCameraBuffer = std::make_shared<UniformBuffer>(1, sizeof(CameraUniformData));
 	m_uniformLightBuffer = std::make_shared<UniformBuffer>(2, sizeof(PointLightData) * MaxNumLight);
 
-	m_tempSkyBoxMap = TextureCube::LoadFromFiles({ "data/Cathedral/textures/SkyBox.ktx" });
+	m_tempSkyBoxMap = TextureCubeo::LoadFromFiles({ "data/Cathedral/textures/SkyBox.ktx" });
 }
 //=============================================================================
 void Scene::Close()

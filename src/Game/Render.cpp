@@ -2,68 +2,6 @@
 #include "Render.h"
 #include "Core.h"
 //=============================================================================
-unsigned int ShaderDataTypeSize(ShaderDataType type)
-{
-	switch (type)
-	{
-	case ShaderDataType::Float:  return sizeof(float);
-	case ShaderDataType::Float2: return sizeof(float) * 2;
-	case ShaderDataType::Float3: return sizeof(float) * 3;
-	case ShaderDataType::Float4: return sizeof(float) * 4;
-	case ShaderDataType::Mat3:   return sizeof(float) * 3 * 3;
-	case ShaderDataType::Mat4:   return sizeof(float) * 4 * 4;
-	case ShaderDataType::Int:    return sizeof(int);
-	case ShaderDataType::Int2:   return sizeof(int) * 2;
-	case ShaderDataType::Int3:   return sizeof(int) * 3;
-	case ShaderDataType::Int4:   return sizeof(int) * 4;
-	case ShaderDataType::Bool:   return 1;
-	}
-	return 0;
-}
-//=============================================================================
-unsigned int GetComponentCount(ShaderDataType type)
-{
-	switch (type)
-	{
-	case ShaderDataType::Float:  return 1;
-	case ShaderDataType::Float2: return 2;
-	case ShaderDataType::Float3: return 3;
-	case ShaderDataType::Float4: return 4;
-	case ShaderDataType::Mat3:   return 3 * 3;
-	case ShaderDataType::Mat4:   return 4 * 4;
-	case ShaderDataType::Int:    return 1;
-	case ShaderDataType::Int2:   return 2;
-	case ShaderDataType::Int3:   return 3;
-	case ShaderDataType::Int4:   return 4;
-	case ShaderDataType::Bool:   return 1;
-	}
-	return 0;
-}
-//=============================================================================
-GLenum GetShaderDataType(ShaderDataType type)
-{
-	switch (type)
-	{
-	case ShaderDataType::Float:
-	case ShaderDataType::Float2:
-	case ShaderDataType::Float3:
-	case ShaderDataType::Float4:
-	case ShaderDataType::Mat3:
-	case ShaderDataType::Mat4:
-		return GL_FLOAT;
-	case ShaderDataType::Int:
-	case ShaderDataType::Int2:
-	case ShaderDataType::Int3:
-	case ShaderDataType::Int4:
-		return GL_INT;
-	case ShaderDataType::Bool:
-		return GL_BOOL;
-	case ShaderDataType::None:
-	default:
-		return 0;
-	}
-}
-//=============================================================================
 VertexBuffer::VertexBuffer(unsigned int size, const void* data)
 {
 	glCreateBuffers(1, &m_id);
@@ -146,12 +84,12 @@ void VertexArray::Bind()
 	glBindVertexArray(m_id);
 }
 //=============================================================================
-Texture2D::~Texture2D()
+Texture2Do::~Texture2Do()
 {
 	glDeleteTextures(1, &m_id);
 }
 //=============================================================================
-std::shared_ptr<Texture2D> Texture2D::LoadFromMemory(int width, int height, ImageFormat format, uint8_t* imageData)
+std::shared_ptr<Texture2Do> Texture2Do::LoadFromMemory(int width, int height, ImageFormat format, uint8_t* imageData)
 {
 	GLenum internalFormat{ GL_RGBA8 }, dataFormat{ GL_RGBA };
 	int channels{ 4 };
@@ -208,7 +146,7 @@ std::shared_ptr<Texture2D> Texture2D::LoadFromMemory(int width, int height, Imag
 	glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	auto texture = std::make_shared<Texture2D>(id);
+	auto texture = std::make_shared<Texture2Do>(id);
 	texture->m_width = width;
 	texture->m_height = height;
 	texture->m_format = format;
@@ -216,7 +154,7 @@ std::shared_ptr<Texture2D> Texture2D::LoadFromMemory(int width, int height, Imag
 	return texture;
 }
 //=============================================================================
-std::shared_ptr<Texture2D> Texture2D::LoadFromFile(const std::string& path, bool flipVertical)
+std::shared_ptr<Texture2Do> Texture2Do::LoadFromFile(const std::string& path, bool flipVertical)
 {
 	Print("Texture load: " + path);
 
@@ -251,7 +189,7 @@ std::shared_ptr<Texture2D> Texture2D::LoadFromFile(const std::string& path, bool
 		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_ALPHA_SIZE, &iAlpha);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		auto texture = std::make_shared<Texture2D>(oglTexture);
+		auto texture = std::make_shared<Texture2Do>(oglTexture);
 		//texture->m_width = width;   // TODO:
 		//texture->m_height = height; // TODO:
 		//texture->m_format = format; // TODO:
@@ -286,17 +224,17 @@ std::shared_ptr<Texture2D> Texture2D::LoadFromFile(const std::string& path, bool
 	return nullptr;
 }
 //=============================================================================
-void Texture2D::Bind(unsigned int slot) const
+void Texture2Do::Bind(unsigned int slot) const
 {
 	glBindTextureUnit(slot, m_id);
 }
 //=============================================================================
-TextureCube::~TextureCube()
+TextureCubeo::~TextureCubeo()
 {
 	glDeleteTextures(1, &m_id);
 }
 //=============================================================================
-std::shared_ptr<TextureCube> TextureCube::LoadFromMemory(int width, int height, ImageFormat format, const std::vector<uint8_t*>& imageData)
+std::shared_ptr<TextureCubeo> TextureCubeo::LoadFromMemory(int width, int height, ImageFormat format, const std::vector<uint8_t*>& imageData)
 {
 	if (imageData.size() != 6)
 	{
@@ -320,10 +258,10 @@ std::shared_ptr<TextureCube> TextureCube::LoadFromMemory(int width, int height, 
 	glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTextureParameteri(id, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	return std::make_shared<TextureCube>(id);
+	return std::make_shared<TextureCubeo>(id);
 }
 //=============================================================================
-std::shared_ptr<TextureCube> TextureCube::LoadFromFiles(const std::vector<std::string>& paths)
+std::shared_ptr<TextureCubeo> TextureCubeo::LoadFromFiles(const std::vector<std::string>& paths)
 {
 	std::string ext = GetFileExtension(paths[0]);
 	if (ext.contains("ktx"))
@@ -349,7 +287,7 @@ std::shared_ptr<TextureCube> TextureCube::LoadFromFiles(const std::vector<std::s
 		}
 		ktxTexture_Destroy(kTexture);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-		return std::make_shared<TextureCube>(oglTexture);
+		return std::make_shared<TextureCubeo>(oglTexture);
 	}
 	else
 	{
@@ -360,7 +298,7 @@ std::shared_ptr<TextureCube> TextureCube::LoadFromFiles(const std::vector<std::s
 	return nullptr;
 }
 //=============================================================================
-void TextureCube::Bind(unsigned int slot) const
+void TextureCubeo::Bind(unsigned int slot) const
 {
 	glBindTextureUnit(slot, m_id);
 }

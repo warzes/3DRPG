@@ -176,5 +176,5 @@ private:
 	std::array<PointLightData, MaxNumLight> m_uniformLightData;
 	std::shared_ptr<UniformBuffer> m_uniformLightBuffer;
 
-	std::shared_ptr<TextureCube>   m_tempSkyBoxMap;
+	std::shared_ptr<TextureCubeo>   m_tempSkyBoxMap;
 };

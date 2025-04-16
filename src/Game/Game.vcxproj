@@ -100,6 +100,9 @@
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="DemoContext.cpp" />
     <ClCompile Include="Profiler.cpp" />
+    <ClCompile Include="RHICore.cpp" />
+    <ClCompile Include="RHIEnums.cpp" />
+    <ClCompile Include="RHITexture.cpp" />
     <ClCompile Include="RoguelikeGameApp.cpp" />
     <ClCompile Include="RTSGameApp.cpp" />
     <ClCompile Include="Test01.cpp" />
@@ -119,6 +122,9 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="DemoContext.h" />
     <ClInclude Include="Profiler.h" />
+    <ClInclude Include="RHICore.h" />
+    <ClInclude Include="RHIEnums.h" />
+    <ClInclude Include="RHITexture.h" />
     <ClInclude Include="RoguelikeGameApp.h" />
     <ClInclude Include="RTSGameApp.h" />
     <ClInclude Include="Test01.h" />

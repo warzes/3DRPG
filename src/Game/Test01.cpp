@@ -98,9 +98,9 @@ bool Test01::Init()
 	scene.Init();
 
 	tempMaterial = std::make_shared<Material>(
-		Texture2D::LoadFromFile("data/Textures/CrateDiffuse.bmp"),
-		Texture2D::LoadFromFile("data/Textures/CrateSpecular.bmp"),
-		Texture2D::LoadFromFile("data/Textures/CrateRoughness.bmp")
+		Texture2Do::LoadFromFile("data/Textures/CrateDiffuse.bmp"),
+		Texture2Do::LoadFromFile("data/Textures/CrateSpecular.bmp"),
+		Texture2Do::LoadFromFile("data/Textures/CrateRoughness.bmp")
 		);
 
 	//model = std::make_shared<Model>("data/cube.obj", tempMaterial);

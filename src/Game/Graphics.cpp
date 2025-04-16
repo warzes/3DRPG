@@ -23,7 +23,7 @@ std::shared_ptr<Material> GetDefaultMeshMaterial()
 			255, 150, 200,
 			64,  64,  64,
 		};
-		std::shared_ptr<Texture2D> diffuseTexture = Texture2D::LoadFromMemory(2, 2, ImageFormat::RGB, defColor);
+		std::shared_ptr<Texture2Do> diffuseTexture = Texture2Do::LoadFromMemory(2, 2, ImageFormat::RGB, defColor);
 
 		uint8_t specColor[] =
 		{
@@ -32,7 +32,7 @@ std::shared_ptr<Material> GetDefaultMeshMaterial()
 			255, 255, 255,
 			255, 255, 255,
 		};
-		std::shared_ptr<Texture2D> specularTexture = Texture2D::LoadFromMemory(2, 2, ImageFormat::RGB, specColor);
+		std::shared_ptr<Texture2Do> specularTexture = Texture2Do::LoadFromMemory(2, 2, ImageFormat::RGB, specColor);
 
 		uint8_t roughColor[] =
 		{
@@ -41,7 +41,7 @@ std::shared_ptr<Material> GetDefaultMeshMaterial()
 			128, 128, 128,
 			128, 128, 128,
 		};
-		std::shared_ptr<Texture2D> roughnessTexture = Texture2D::LoadFromMemory(2, 2, ImageFormat::RGB, roughColor);
+		std::shared_ptr<Texture2Do> roughnessTexture = Texture2Do::LoadFromMemory(2, 2, ImageFormat::RGB, roughColor);
 
 		DefaultMeshMaterial = std::make_shared<Material>(diffuseTexture, specularTexture, roughnessTexture);
 	}
@@ -50,9 +50,9 @@ std::shared_ptr<Material> GetDefaultMeshMaterial()
 }
 //=============================================================================
 Material::Material(
-	std::shared_ptr<Texture2D> DiffuseTexture,
-	std::shared_ptr<Texture2D> SpecularTexture,
-	std::shared_ptr<Texture2D> RoughnessTexture,
+	std::shared_ptr<Texture2Do> DiffuseTexture,
+	std::shared_ptr<Texture2Do> SpecularTexture,
+	std::shared_ptr<Texture2Do> RoughnessTexture,
 	float EmissivePower)
 	: diffuseTexture(DiffuseTexture)
 	, specularTexture(SpecularTexture)
@@ -301,7 +301,7 @@ void Model::loadObjModel(const std::string& path, std::shared_ptr<Material> cust
 		else
 		{
 			if (materials.size() > 0)
-				material = std::make_shared<Material>(Texture2D::LoadFromFile(directory + materials[shape.mesh.material_ids[0]].diffuse_texname), nullptr, nullptr); // TODO: spec and rought textures
+				material = std::make_shared<Material>(Texture2Do::LoadFromFile(directory + materials[shape.mesh.material_ids[0]].diffuse_texname), nullptr, nullptr); // TODO: spec and rought textures
 			else
 				material = GetDefaultMeshMaterial();
 		}
@@ -451,14 +451,14 @@ Mesh Model::processAssimpMesh(const std::string& directoryModel, const glm::mat4
 	return { vertices, indices, material, localMat };
 }
 //=============================================================================
-std::shared_ptr<Texture2D> Model::loadAssimpTexture(const std::string& directoryModel, aiMaterial* mat, aiTextureType type)
+std::shared_ptr<Texture2Do> Model::loadAssimpTexture(const std::string& directoryModel, aiMaterial* mat, aiTextureType type)
 {
 	if (mat->GetTextureCount(type) > 0)
 	{
 		aiString str;
 		mat->GetTexture(type, 0, &str);
 		std::string path = std::string(str.C_Str());
-		return Texture2D::LoadFromFile(directoryModel + path);
+		return Texture2Do::LoadFromFile(directoryModel + path);
 	}
 
 	return nullptr; // Если текстуры нет

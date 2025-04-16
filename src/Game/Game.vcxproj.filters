@@ -25,10 +25,10 @@
       <Filter>_Demo\Framework</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem.cpp">
-      <Filter>Engine\Render\old</Filter>
+      <Filter>Engine\RHI\old</Filter>
     </ClCompile>
     <ClCompile Include="Render.cpp">
-      <Filter>Engine\Render\old</Filter>
+      <Filter>Engine\RHI\old</Filter>
     </ClCompile>
     <ClCompile Include="RoguelikeGameApp.cpp">
       <Filter>Game\Roguelike</Filter>
@@ -38,6 +38,15 @@
     </ClCompile>
     <ClCompile Include="Profiler.cpp">
       <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RHIEnums.cpp">
+      <Filter>Engine\RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="RHITexture.cpp">
+      <Filter>Engine\RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="RHICore.cpp">
+      <Filter>Engine\RHI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -67,10 +76,10 @@
       <Filter>_Demo\Framework</Filter>
     </ClInclude>
     <ClInclude Include="Render.h">
-      <Filter>Engine\Render\old</Filter>
+      <Filter>Engine\RHI\old</Filter>
     </ClInclude>
     <ClInclude Include="RenderCore.h">
-      <Filter>Engine\Render\old</Filter>
+      <Filter>Engine\RHI\old</Filter>
     </ClInclude>
     <ClInclude Include="RoguelikeGameApp.h">
       <Filter>Game\Roguelike</Filter>
@@ -81,6 +90,15 @@
     <ClInclude Include="Profiler.h">
       <Filter>Engine\Core</Filter>
     </ClInclude>
+    <ClInclude Include="RHIEnums.h">
+      <Filter>Engine\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RHITexture.h">
+      <Filter>Engine\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RHICore.h">
+      <Filter>Engine\RHI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -88,9 +106,6 @@
     </Filter>
     <Filter Include="Engine\Core">
       <UniqueIdentifier>{0a710c69-25cf-40a7-b9e6-4d17aac33e82}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Render">
-      <UniqueIdentifier>{597d1977-a0f7-4018-93fb-0c7c73d2be29}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Graphics">
       <UniqueIdentifier>{59c8a38f-881f-4acb-9a76-b876227b4a79}</UniqueIdentifier>
@@ -110,9 +125,6 @@
     <Filter Include="Game">
       <UniqueIdentifier>{bef2c127-006b-43a9-8516-6d1a0a376c85}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Render\old">
-      <UniqueIdentifier>{cf153560-fb3e-4b3e-8d92-98351b869177}</UniqueIdentifier>
-    </Filter>
     <Filter Include="_Test">
       <UniqueIdentifier>{c5a3891c-2518-472a-b5da-2e31ef73d63b}</UniqueIdentifier>
     </Filter>
@@ -121,6 +133,12 @@
     </Filter>
     <Filter Include="Game\RTS">
       <UniqueIdentifier>{3c6aaf0d-5363-4a56-95ef-e4485701075a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\RHI">
+      <UniqueIdentifier>{597d1977-a0f7-4018-93fb-0c7c73d2be29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\RHI\old">
+      <UniqueIdentifier>{cf153560-fb3e-4b3e-8d92-98351b869177}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

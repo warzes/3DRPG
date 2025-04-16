@@ -8,17 +8,17 @@ class Material final
 {
 public:
 	Material(
-		std::shared_ptr<Texture2D> DiffuseTexture, 
-		std::shared_ptr<Texture2D> SpecularTexture, 
-		std::shared_ptr<Texture2D> RoughnessTexture,
+		std::shared_ptr<Texture2Do> DiffuseTexture, 
+		std::shared_ptr<Texture2Do> SpecularTexture, 
+		std::shared_ptr<Texture2Do> RoughnessTexture,
 		float EmissivePower = 0.0f);
 
 	// TODO: возможно слоты перенести в инициализацию материала
 	void Bind(uint32_t diffuseTexSlot = 0, uint32_t specularTexSlot = 1, uint32_t roughnessTexSlot = 2);
 
-	std::shared_ptr<Texture2D> diffuseTexture;
-	std::shared_ptr<Texture2D> specularTexture;
-	std::shared_ptr<Texture2D> roughnessTexture;
+	std::shared_ptr<Texture2Do> diffuseTexture;
+	std::shared_ptr<Texture2Do> specularTexture;
+	std::shared_ptr<Texture2Do> roughnessTexture;
 	float                      emissivePower;
 	bool                       transparent;
 	bool                       reflective{ false };
@@ -83,7 +83,7 @@ private:
 	void loadAssimpModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);
 	void processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Material> material, std::vector<Mesh>& transMesh, std::vector<Mesh>& solidMesh);
 	Mesh processAssimpMesh(const std::string& directoryModel, const glm::mat4& localMat, aiMesh* mesh, const aiScene* scene, std::shared_ptr<Material> material);
-	std::shared_ptr<Texture2D> loadAssimpTexture(const std::string& directoryModel, aiMaterial* mat, aiTextureType type);
+	std::shared_ptr<Texture2Do> loadAssimpTexture(const std::string& directoryModel, aiMaterial* mat, aiTextureType type);
 
 	std::vector<Mesh> m_meshes;
 };
