@@ -217,11 +217,11 @@ private:
 };
 
 
-class FrameBuffer final
+class FrameBuffero final
 {
 public:
-	FrameBuffer(unsigned int width, unsigned int height);
-	~FrameBuffer();
+	FrameBuffero(unsigned int width, unsigned int height);
+	~FrameBuffero();
 
 	void Bind() const;
 

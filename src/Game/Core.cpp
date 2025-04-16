@@ -168,7 +168,7 @@ bool preprocessShader(const std::string& path, const std::string& src, std::stri
 	return true;
 }
 //=============================================================================
-std::string ReadShaderCode(const std::string& filename, std::vector<std::string> defines)
+std::string ReadShaderCode(const std::string& filename, const std::vector<std::string>& defines)
 {
 	std::string source = ReadTextFile(filename);
 	if (source.empty()) return "";

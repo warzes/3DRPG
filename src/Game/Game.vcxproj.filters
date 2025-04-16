@@ -48,6 +48,12 @@
     <ClCompile Include="RHICore.cpp">
       <Filter>Engine\RHI</Filter>
     </ClCompile>
+    <ClCompile Include="RHIFramebuffer.cpp">
+      <Filter>Engine\RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="RHIShaders.cpp">
+      <Filter>Engine\RHI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -97,6 +103,12 @@
       <Filter>Engine\RHI</Filter>
     </ClInclude>
     <ClInclude Include="RHICore.h">
+      <Filter>Engine\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RHIFramebuffer.h">
+      <Filter>Engine\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RHIShaders.h">
       <Filter>Engine\RHI</Filter>
     </ClInclude>
   </ItemGroup>

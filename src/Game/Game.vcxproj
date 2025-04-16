@@ -102,6 +102,8 @@
     <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="RHICore.cpp" />
     <ClCompile Include="RHIEnums.cpp" />
+    <ClCompile Include="RHIFramebuffer.cpp" />
+    <ClCompile Include="RHIShaders.cpp" />
     <ClCompile Include="RHITexture.cpp" />
     <ClCompile Include="RoguelikeGameApp.cpp" />
     <ClCompile Include="RTSGameApp.cpp" />
@@ -124,6 +126,8 @@
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="RHICore.h" />
     <ClInclude Include="RHIEnums.h" />
+    <ClInclude Include="RHIFramebuffer.h" />
+    <ClInclude Include="RHIShaders.h" />
     <ClInclude Include="RHITexture.h" />
     <ClInclude Include="RoguelikeGameApp.h" />
     <ClInclude Include="RTSGameApp.h" />

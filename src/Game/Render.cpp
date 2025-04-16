@@ -303,7 +303,7 @@ void TextureCubeo::Bind(unsigned int slot) const
 	glBindTextureUnit(slot, m_id);
 }
 //=============================================================================
-FrameBuffer::FrameBuffer(unsigned int width, unsigned int height)
+FrameBuffero::FrameBuffero(unsigned int width, unsigned int height)
 {
 	glCreateFramebuffers(1, &m_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_id);
@@ -323,19 +323,19 @@ FrameBuffer::FrameBuffer(unsigned int width, unsigned int height)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 //=============================================================================
-FrameBuffer::~FrameBuffer()
+FrameBuffero::~FrameBuffero()
 {
 	glDeleteFramebuffers(1, &m_id);
 	glDeleteTextures(1, &m_colorAttachment);
 	glDeleteTextures(1, &m_depthAttachment);
 }
 //=============================================================================
-void FrameBuffer::Bind() const
+void FrameBuffero::Bind() const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 }
 //=============================================================================
-void FrameBuffer::Resize(unsigned int width, unsigned int height)
+void FrameBuffero::Resize(unsigned int width, unsigned int height)
 {
 	glTextureStorage2D(m_colorAttachment, 1, GL_RGB8, width, height);
 	glTextureStorage2D(m_depthAttachment, 1, GL_DEPTH_COMPONENT32F, width, height);
@@ -344,12 +344,12 @@ void FrameBuffer::Resize(unsigned int width, unsigned int height)
 	glNamedFramebufferTexture(m_id, GL_DEPTH_ATTACHMENT, m_depthAttachment, 0);
 }
 //=============================================================================
-void FrameBuffer::BindColorTexture(GLuint textureUnit) const
+void FrameBuffero::BindColorTexture(GLuint textureUnit) const
 {
 	glBindTextureUnit(textureUnit, m_colorAttachment);
 }
 //=============================================================================
-void FrameBuffer::BindВepthTexture(GLuint textureUnit) const
+void FrameBuffero::BindВepthTexture(GLuint textureUnit) const
 {
 	glBindTextureUnit(textureUnit, m_depthAttachment);
 }
