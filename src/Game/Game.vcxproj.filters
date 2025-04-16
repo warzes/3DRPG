@@ -54,6 +54,18 @@
     <ClCompile Include="RHIShaders.cpp">
       <Filter>Engine\RHI</Filter>
     </ClCompile>
+    <ClCompile Include="RHIBuffer.cpp">
+      <Filter>Engine\RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="RHIVertexArray.cpp">
+      <Filter>Engine\RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="RHIQuery.cpp">
+      <Filter>Engine\RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="RHIFence.cpp">
+      <Filter>Engine\RHI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -109,6 +121,18 @@
       <Filter>Engine\RHI</Filter>
     </ClInclude>
     <ClInclude Include="RHIShaders.h">
+      <Filter>Engine\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RHIBuffer.h">
+      <Filter>Engine\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RHIVertexArray.h">
+      <Filter>Engine\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RHIQuery.h">
+      <Filter>Engine\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RHIFence.h">
       <Filter>Engine\RHI</Filter>
     </ClInclude>
   </ItemGroup>
