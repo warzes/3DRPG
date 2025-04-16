@@ -1,8 +1,34 @@
 ﻿#include "stdafx.h"
 #include "Context.h"
 #include "Core.h"
+#include "Profiler.h"
 //=============================================================================
 Context* thisContext{ nullptr };
+//=============================================================================
+uint32_t GetFrameWidth()
+{
+	return thisContext->GetWidth();
+}
+//=============================================================================
+uint32_t GetFrameHeight()
+{
+	return thisContext->GetHeight();
+}
+//=============================================================================
+float GetFrameAspect()
+{
+	return thisContext->GetAspect();
+}
+//=============================================================================
+GLFWwindow* GetWindow()
+{
+	return thisContext->GetWindow();
+}
+//=============================================================================
+Context* GetContext()
+{
+	return thisContext;
+}
 //=============================================================================
 void handleWindowMinimizedEvents(GLFWwindow* window, int minimized) noexcept
 {
@@ -14,9 +40,14 @@ void handleWindowMaximizedEvents(GLFWwindow* window, int maximized) noexcept
 
 }
 //=============================================================================
-void handleKeyEvents([[maybe_unused]] GLFWwindow* window, int key, [[maybe_unused]] int scancode, int action, [[maybe_unused]] int mods) noexcept
+void handleMouseEnterLeaveEvents(GLFWwindow* window, int entered) noexcept
 {
-	key_callback_glfw
+
+}
+//=============================================================================
+void handleKeyEvents(GLFWwindow* window, int key, int scancode, int action, int mods) noexcept
+{
+	ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
 
 	if (key >= 0 && key < MaxKeys)
 	{
@@ -42,43 +73,23 @@ void handleKeyEvents([[maybe_unused]] GLFWwindow* window, int key, [[maybe_unuse
 //=============================================================================
 void handleMouseButtonEvents(GLFWwindow* window, int button, int action, int mods) noexcept
 {
-	mouse_button_callback_glfw
-	тут
-	//std::string actionName;
-	//switch (action)
-	//{
-	//case GLFW_PRESS:
-	//	actionName = "pressed";
-	//	break;
-	//case GLFW_RELEASE:
-	//	actionName = "released";
-	//	break;
-	//case GLFW_REPEAT:
-	//	actionName = "repeated";
-	//	break;
-	//default:
-	//	actionName = "invalid";
-	//	break;
-	//}
+	ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
 
-	//std::string mouseButtonName;
-	//switch (button)
-	//{
-	//case GLFW_MOUSE_BUTTON_LEFT:
-	//	mouseButtonName = "left";
-	//	break;
-	//case GLFW_MOUSE_BUTTON_MIDDLE:
-	//	mouseButtonName = "middle";
-	//	break;
-	//case GLFW_MOUSE_BUTTON_RIGHT:
-	//	mouseButtonName = "right";
-	//	break;
-	//default:
-	//	mouseButtonName = "other";
-	//	break;
-	//}
-
-	//Print(mouseButtonName + " - " + actionName);
+	if (button >= 0 && button < MaxMouseButtons)
+	{
+		if (action == GLFW_PRESS)
+		{
+			if (thisContext->MousePressedFunc)
+				thisContext->MousePressedFunc(button);
+			thisContext->m_mouseButtons[button] = true;
+		}
+		else if (action == GLFW_RELEASE)
+		{
+			if (thisContext->MouseReleasedFunc)
+				thisContext->MouseReleasedFunc(button);
+			thisContext->m_mouseButtons[button] = false;
+		}
+	}
 }
 //=============================================================================
 void handleMousePositionEvents([[maybe_unused]] GLFWwindow* window, double xpos, double ypos) noexcept
@@ -89,26 +100,20 @@ void handleMousePositionEvents([[maybe_unused]] GLFWwindow* window, double xpos,
 		thisContext->MouseMoveFunc(xpos, ypos, thisContext->m_mouseDeltaX, thisContext->m_mouseDeltaY);
 }
 //=============================================================================
-void handleMouseScrollEvents([[maybe_unused]] GLFWwindow* window, double xoffset, double yoffset) noexcept
+void handleMouseScrollEvents(GLFWwindow* window, double xoffset, double yoffset) noexcept
 {
-	scroll_callback_glfw
+	ImGui_ImplGlfw_ScrollCallback(window, xoffset, yoffset);
 	if (thisContext->MouseScrolledFunc)
 		thisContext->MouseScrolledFunc(xoffset, yoffset);
 }
 //=============================================================================
-void handleCharEvents(GLFWwindow* window, unsigned int c)
+void handleCharEvents(GLFWwindow* window, unsigned int c) noexcept
 {
-	char_callback_glfw
+	ImGui_ImplGlfw_CharCallback(window, c);
 }
 //=============================================================================
-void handleMouseEnterLeaveEvents(GLFWwindow* window, int entered) noexcept
+void handleWindowResizeEvents([[maybe_unused]] GLFWwindow* window, int width, int height) noexcept
 {
-
-}
-//=============================================================================
-void handleFramebufferResizeEvents([[maybe_unused]] GLFWwindow* window, int width, int height) noexcept
-{
-	тут
 	assert(width > 0);
 	assert(height > 0);
 	assert(thisContext);
@@ -168,13 +173,14 @@ bool Context::Init(const ContextCreateInfo& createInfo)
 
 	glfwSetWindowIconifyCallback(m_window, handleWindowMinimizedEvents);
 	glfwSetWindowMaximizeCallback(m_window, handleWindowMaximizedEvents);
+	glfwSetCursorEnterCallback(m_window, handleMouseEnterLeaveEvents);
+	
 	glfwSetKeyCallback(m_window, handleKeyEvents);
-	glfwSetMouseButtonCallback(m_window, handleMouseButtonEvents);
 	glfwSetCursorPosCallback(m_window, handleMousePositionEvents);
 	glfwSetScrollCallback(m_window, handleMouseScrollEvents);
+	glfwSetMouseButtonCallback(m_window, handleMouseButtonEvents);
 	glfwSetCharCallback(m_window, handleCharEvents);
-	glfwSetCursorEnterCallback(m_window, handleMouseEnterLeaveEvents);
-	glfwSetFramebufferSizeCallback(m_window, handleFramebufferResizeEvents);
+	glfwSetWindowSizeCallback(m_window, handleWindowResizeEvents);
 
 	glfwMakeContextCurrent(m_window);
 
@@ -219,12 +225,15 @@ bool Context::Init(const ContextCreateInfo& createInfo)
 
 	m_lastFrameTime = glfwGetTime();
 
+	profiler::Init();
+
 	thisContext = this;
 	return true;
 }
 //=============================================================================
 void Context::Close()
 {
+	profiler::Close();
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
@@ -283,6 +292,8 @@ void Context::BeginFrame()
 	m_mouseDeltaY = m_mouseY - m_lastMouseY;
 	m_lastMouseX = m_mouseX;
 	m_lastMouseY = m_mouseY;
+
+	profiler::BeginFrame();
 }
 //=============================================================================
 void Context::BeginImgui()
@@ -300,6 +311,7 @@ void Context::EndImgui()
 //=============================================================================
 void Context::EndFrame()
 {
+	profiler::EndFrame();
 	m_isResize = false;
 	glfwSwapBuffers(m_window);
 	glfwPollEvents();
@@ -315,30 +327,5 @@ glm::uvec2 Context::GetCursorPosition() const
 void Context::SetCursorPosition(const glm::uvec2& position)
 {
 	glfwSetCursorPos(m_window, static_cast<double>(position.x), static_cast<double>(position.y));
-}
-//=============================================================================
-uint32_t GetFrameWidth()
-{
-	return thisContext->GetWidth();
-}
-//=============================================================================
-uint32_t GetFrameHeight()
-{
-	return thisContext->GetHeight();
-}
-//=============================================================================
-float GetFrameAspect()
-{
-	return thisContext->GetAspect();
-}
-//=============================================================================
-GLFWwindow* GetWindow()
-{
-	return thisContext->GetWindow();
-}
-//=============================================================================
-Context* GetContext()
-{
-	return thisContext;
 }
 //=============================================================================

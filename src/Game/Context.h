@@ -53,11 +53,15 @@ public:
 	std::function<void(double x, double y, double deltaX, double deltaY)> MouseMoveFunc{ nullptr };
 	std::function<void(double xoffset, double yoffset)> MouseScrolledFunc{ nullptr };
 
+	std::function<void(int code)> MousePressedFunc{ nullptr };
+	std::function<void(int code)> MouseReleasedFunc{ nullptr };
+
 private:
-	friend void handleFramebufferResizeEvents(GLFWwindow*, int, int) noexcept;
+	friend void handleWindowResizeEvents(GLFWwindow*, int, int) noexcept;
 	friend void handleKeyEvents(GLFWwindow*, int, int, int, int) noexcept;
 	friend void handleMousePositionEvents(GLFWwindow*, double, double) noexcept;
 	friend void handleMouseScrollEvents(GLFWwindow*, double, double) noexcept;
+	friend void handleMouseButtonEvents(GLFWwindow*, int, int, int) noexcept;
 
 	GLFWwindow* m_window{ nullptr };
 	uint32_t    m_frameWidth{ 0 };
