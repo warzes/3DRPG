@@ -6,9 +6,6 @@
     <ClCompile Include="Core.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics.cpp">
-      <Filter>Engine\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Engine\Scene</Filter>
     </ClCompile>
@@ -69,14 +66,14 @@
     <ClCompile Include="GeometryCore.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Engine\Graphics\old</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Core.h">
       <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics.h">
-      <Filter>Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Engine\Scene</Filter>
@@ -141,6 +138,9 @@
     <ClInclude Include="GeometryCore.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Engine\Graphics\old</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -181,6 +181,9 @@
     </Filter>
     <Filter Include="Engine\RHI\old">
       <UniqueIdentifier>{cf153560-fb3e-4b3e-8d92-98351b869177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Graphics\old">
+      <UniqueIdentifier>{bc1e2077-3088-4330-afe5-7414ec37a30a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

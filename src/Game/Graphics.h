@@ -4,10 +4,10 @@
 
 void ClearDefaultGraphicsResource();
 
-class Material final
+class Materialo final
 {
 public:
-	Material(
+	Materialo(
 		std::shared_ptr<Texture2Do> DiffuseTexture, 
 		std::shared_ptr<Texture2Do> SpecularTexture, 
 		std::shared_ptr<Texture2Do> RoughnessTexture,
@@ -24,9 +24,9 @@ public:
 	bool                       reflective{ false };
 };
 
-std::shared_ptr<Material> GetDefaultMeshMaterial();
+std::shared_ptr<Materialo> GetDefaultMeshMaterial();
 
-struct MeshVertex final
+struct MeshVertex0 final
 {
 	glm::vec3 Position;
 	glm::vec3 Normal;
@@ -42,48 +42,48 @@ struct MeshVertex final
 	}
 };
 
-class Mesh final
+class Mesh0 final
 {
 public:
-	Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Material> material, const glm::mat4& localTransform);
+	Mesh0(const std::vector<MeshVertex0>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Materialo> material, const glm::mat4& localTransform);
 	void Draw();
 
 	const glm::mat4& GetLocalTransform() const { return m_localTransform; }
-	std::shared_ptr<Material> GetMaterial() const { return m_material; }
+	std::shared_ptr<Materialo> GetMaterial() const { return m_material; }
 
 private:
 	std::shared_ptr<VertexArrayo>  m_VAO;
 	std::shared_ptr<VertexBuffer> m_vertexBuffer;
 	std::shared_ptr<IndexBuffer>  m_indexBuffer;
-	std::shared_ptr<Material>     m_material;
+	std::shared_ptr<Materialo>     m_material;
 	glm::mat4                     m_localTransform = glm::mat4(1.0f);
 };
 
-class Model final
+class Model0 final
 {
 public:
-	Model(const std::vector<Mesh>& meshes);
-	Model(const std::string& path, std::shared_ptr<Material> customMainMaterial = nullptr);
+	Model0(const std::vector<Mesh0>& meshes);
+	Model0(const std::string& path, std::shared_ptr<Materialo> customMainMaterial = nullptr);
 	void Draw();
 	void DrawMesh(size_t i);
 
 	size_t GetNumMesh() const { return m_meshes.size(); }
-	const Mesh& GetMesh(size_t i) const { return m_meshes[i]; }
+	const Mesh0& GetMesh(size_t i) const { return m_meshes[i]; }
 
-	static std::shared_ptr<Model> CreateCube(float length = 1.0f, std::shared_ptr<Material> material = nullptr);
-	static std::shared_ptr<Model> CreateSphere(float radius, uint32_t uiTessU, uint32_t uiTessV, std::shared_ptr<Material> material = nullptr);
-	static std::shared_ptr<Model> CreatePlane(float width, float height, float texWidth, float texHeight, std::shared_ptr<Material> material = nullptr);
+	static std::shared_ptr<Model0> CreateCube(float length = 1.0f, std::shared_ptr<Materialo> material = nullptr);
+	static std::shared_ptr<Model0> CreateSphere(float radius, uint32_t uiTessU, uint32_t uiTessV, std::shared_ptr<Materialo> material = nullptr);
+	static std::shared_ptr<Model0> CreatePlane(float width, float height, float texWidth, float texHeight, std::shared_ptr<Materialo> material = nullptr);
 
 private:
-	void loadModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);
+	void loadModel(const std::string& path, std::shared_ptr<Materialo> customMainMaterial);
 
-	void loadObjModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);
-	void processObjMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material);
+	void loadObjModel(const std::string& path, std::shared_ptr<Materialo> customMainMaterial);
+	void processObjMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Materialo> material);
 
-	void loadAssimpModel(const std::string& path, std::shared_ptr<Material> customMainMaterial);
-	void processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Material> material, std::vector<Mesh>& transMesh, std::vector<Mesh>& solidMesh);
-	Mesh processAssimpMesh(const std::string& directoryModel, const glm::mat4& localMat, aiMesh* mesh, const aiScene* scene, std::shared_ptr<Material> material);
+	void loadAssimpModel(const std::string& path, std::shared_ptr<Materialo> customMainMaterial);
+	void processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Materialo> material, std::vector<Mesh0>& transMesh, std::vector<Mesh0>& solidMesh);
+	Mesh0 processAssimpMesh(const std::string& directoryModel, const glm::mat4& localMat, aiMesh* mesh, const aiScene* scene, std::shared_ptr<Materialo> material);
 	std::shared_ptr<Texture2Do> loadAssimpTexture(const std::string& directoryModel, aiMaterial* mat, aiTextureType type);
 
-	std::vector<Mesh> m_meshes;
+	std::vector<Mesh0> m_meshes;
 };

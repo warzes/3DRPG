@@ -4,7 +4,7 @@
 //=============================================================================
 namespace
 {
-	std::shared_ptr<Material> DefaultMeshMaterial;
+	std::shared_ptr<Materialo> DefaultMeshMaterial;
 }
 //=============================================================================
 void ClearDefaultGraphicsResource()
@@ -12,7 +12,7 @@ void ClearDefaultGraphicsResource()
 	DefaultMeshMaterial.reset();
 }
 //=============================================================================
-std::shared_ptr<Material> GetDefaultMeshMaterial()
+std::shared_ptr<Materialo> GetDefaultMeshMaterial()
 {
 	if (!DefaultMeshMaterial)
 	{
@@ -43,13 +43,13 @@ std::shared_ptr<Material> GetDefaultMeshMaterial()
 		};
 		std::shared_ptr<Texture2Do> roughnessTexture = Texture2Do::LoadFromMemory(2, 2, ImageFormat::RGB, roughColor);
 
-		DefaultMeshMaterial = std::make_shared<Material>(diffuseTexture, specularTexture, roughnessTexture);
+		DefaultMeshMaterial = std::make_shared<Materialo>(diffuseTexture, specularTexture, roughnessTexture);
 	}
 
 	return DefaultMeshMaterial;
 }
 //=============================================================================
-Material::Material(
+Materialo::Materialo(
 	std::shared_ptr<Texture2Do> DiffuseTexture,
 	std::shared_ptr<Texture2Do> SpecularTexture,
 	std::shared_ptr<Texture2Do> RoughnessTexture,
@@ -71,41 +71,41 @@ Material::Material(
 	transparent = diffuseTexture->HasTransparency();
 }
 //=============================================================================
-void Material::Bind(uint32_t diffuseTexSlot, uint32_t specularTexSlot, uint32_t roughnessTexSlot)
+void Materialo::Bind(uint32_t diffuseTexSlot, uint32_t specularTexSlot, uint32_t roughnessTexSlot)
 {
 	diffuseTexture->Bind(diffuseTexSlot);
 	specularTexture->Bind(specularTexSlot);
 	roughnessTexture->Bind(roughnessTexSlot);
 }
 //=============================================================================
-Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Material> material, const glm::mat4& localTransform)
+Mesh0::Mesh0(const std::vector<MeshVertex0>& vertices, const std::vector<uint32_t>& indices, std::shared_ptr<Materialo> material, const glm::mat4& localTransform)
 	: m_material(material)
 	, m_localTransform(localTransform)
 {
 	if (!m_material) m_material = GetDefaultMeshMaterial();
-	m_vertexBuffer = std::make_shared<VertexBuffer>(vertices.size() * sizeof(MeshVertex), vertices.data());
+	m_vertexBuffer = std::make_shared<VertexBuffer>(vertices.size() * sizeof(MeshVertex0), vertices.data());
 	m_indexBuffer = std::make_shared<IndexBuffer>(indices.size(), indices.data());
-	m_VAO = std::make_shared<VertexArrayo>(m_vertexBuffer, m_indexBuffer, MeshVertex::GetLayout());
+	m_VAO = std::make_shared<VertexArrayo>(m_vertexBuffer, m_indexBuffer, MeshVertex0::GetLayout());
 }
 //=============================================================================
-void Mesh::Draw()
+void Mesh0::Draw()
 {
 	m_material->Bind();
 	m_VAO->Bind();
 	glDrawElements(GL_TRIANGLES, m_indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 //=============================================================================
-Model::Model(const std::vector<Mesh>& meshes)
+Model0::Model0(const std::vector<Mesh0>& meshes)
 {
 	m_meshes = meshes;
 }
 //=============================================================================
-Model::Model(const std::string& path, std::shared_ptr<Material> customMainMaterial)
+Model0::Model0(const std::string& path, std::shared_ptr<Materialo> customMainMaterial)
 {
 	loadModel(path, customMainMaterial);
 }
 //=============================================================================
-void Model::Draw()
+void Model0::Draw()
 {
 	for (unsigned int i = 0; i < m_meshes.size(); i++)
 	{
@@ -113,14 +113,14 @@ void Model::Draw()
 	}
 }
 //=============================================================================
-void Model::DrawMesh(size_t i)
+void Model0::DrawMesh(size_t i)
 {
 	m_meshes[i].Draw();
 }
 //=============================================================================
-std::shared_ptr<Model> Model::CreateCube(float length, std::shared_ptr<Material> material)
+std::shared_ptr<Model0> Model0::CreateCube(float length, std::shared_ptr<Materialo> material)
 {
-	std::vector<MeshVertex> vertices = {
+	std::vector<MeshVertex0> vertices = {
 		// Create back face
 		{ glm::vec3( 0.5f,  0.5f, -0.5f) * length, glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(1.0f, 1.0f) },
 		{ glm::vec3( 0.5f, -0.5f, -0.5f) * length, glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(1.0f, 0.5f) },
@@ -170,10 +170,10 @@ std::shared_ptr<Model> Model::CreateCube(float length, std::shared_ptr<Material>
 		20, 21, 23, 23, 21, 22
 	};
 
-	return std::make_shared<Model>(std::vector<Mesh>{ {vertices, indices, material, glm::mat4(1.0f)} });
+	return std::make_shared<Model0>(std::vector<Mesh0>{ {vertices, indices, material, glm::mat4(1.0f)} });
 }
 //=============================================================================
-std::shared_ptr<Model> Model::CreateSphere(float radius, uint32_t uiTessU, uint32_t uiTessV, std::shared_ptr<Material> material)
+std::shared_ptr<Model0> Model0::CreateSphere(float radius, uint32_t uiTessU, uint32_t uiTessV, std::shared_ptr<Materialo> material)
 {
 	// Init params
 	float fDPhi = (float)M_PI / (float)uiTessV;
@@ -184,7 +184,7 @@ std::shared_ptr<Model> Model::CreateSphere(float radius, uint32_t uiTessU, uint3
 	uint32_t uiNumVertices = (uiTessU * (uiTessV + 1));
 	uint32_t uiNumIndices = uiTessU * uiTessV * 6;
 
-	std::vector<MeshVertex> vertices(uiNumVertices);
+	std::vector<MeshVertex0> vertices(uiNumVertices);
 	std::vector<unsigned int> indices(uiNumIndices);
 
 	auto* vBuffer = &vertices[0];
@@ -240,12 +240,12 @@ std::shared_ptr<Model> Model::CreateSphere(float radius, uint32_t uiTessU, uint3
 		}
 	}
 
-	return std::make_shared<Model>(std::vector<Mesh>{ {vertices, indices, material, glm::mat4(1.0f)} });
+	return std::make_shared<Model0>(std::vector<Mesh0>{ {vertices, indices, material, glm::mat4(1.0f)} });
 }
 //=============================================================================
-std::shared_ptr<Model> Model::CreatePlane(float width, float height, float texWidth, float texHeight, std::shared_ptr<Material> material)
+std::shared_ptr<Model0> Model0::CreatePlane(float width, float height, float texWidth, float texHeight, std::shared_ptr<Materialo> material)
 {
-	std::vector<MeshVertex> vertices;
+	std::vector<MeshVertex0> vertices;
 	std::vector<unsigned int> indices;
 
 	// Создаем четыре вершины для плоскости
@@ -257,10 +257,10 @@ std::shared_ptr<Model> Model::CreatePlane(float width, float height, float texWi
 	// Создаем два треугольника из этих четырех вершин
 	indices = { 2, 1, 0, 0, 3, 2 };
 
-	return std::make_shared<Model>(std::vector<Mesh>{ {vertices, indices, material, glm::mat4(1.0f)} });
+	return std::make_shared<Model0>(std::vector<Mesh0>{ {vertices, indices, material, glm::mat4(1.0f)} });
 }
 //=============================================================================
-void Model::loadModel(const std::string& path, std::shared_ptr<Material> customMainMaterial)
+void Model0::loadModel(const std::string& path, std::shared_ptr<Materialo> customMainMaterial)
 {
 	std::string ext = GetFileExtension(path);
 	if (ext.contains("obj"))
@@ -276,7 +276,7 @@ void Model::loadModel(const std::string& path, std::shared_ptr<Material> customM
 	}
 }
 //=============================================================================
-void Model::loadObjModel(const std::string& path, std::shared_ptr<Material> customMainMaterial)
+void Model0::loadObjModel(const std::string& path, std::shared_ptr<Materialo> customMainMaterial)
 {
 	std::string directory = GetFileDirectory(path);
 
@@ -293,7 +293,7 @@ void Model::loadObjModel(const std::string& path, std::shared_ptr<Material> cust
 
 	for (const auto& shape : shapes)
 	{
-		std::shared_ptr<Material> material;
+		std::shared_ptr<Materialo> material;
 		if (customMainMaterial)
 		{
 			material = customMainMaterial;
@@ -301,7 +301,7 @@ void Model::loadObjModel(const std::string& path, std::shared_ptr<Material> cust
 		else
 		{
 			if (materials.size() > 0)
-				material = std::make_shared<Material>(Texture2Do::LoadFromFile(directory + materials[shape.mesh.material_ids[0]].diffuse_texname), nullptr, nullptr); // TODO: spec and rought textures
+				material = std::make_shared<Materialo>(Texture2Do::LoadFromFile(directory + materials[shape.mesh.material_ids[0]].diffuse_texname), nullptr, nullptr); // TODO: spec and rought textures
 			else
 				material = GetDefaultMeshMaterial();
 		}
@@ -309,16 +309,16 @@ void Model::loadObjModel(const std::string& path, std::shared_ptr<Material> cust
 	}
 }
 //=============================================================================
-void Model::processObjMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Material> material)
+void Model0::processObjMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t& attrib, std::shared_ptr<Materialo> material)
 {
-	std::vector<MeshVertex> vertices;
+	std::vector<MeshVertex0> vertices;
 	std::vector<unsigned int> indices;
 
 	for (unsigned int i = 0; i < mesh.indices.size(); i++)
 	{
 		const tinyobj::index_t& index = mesh.indices[i];
 		
-		MeshVertex vertex;
+		MeshVertex0 vertex;
 		vertex.Position = glm::vec3(
 			attrib.vertices[3 * index.vertex_index + 0], 
 			attrib.vertices[3 * index.vertex_index + 1], 
@@ -335,10 +335,10 @@ void Model::processObjMesh(const tinyobj::mesh_t& mesh, const tinyobj::attrib_t&
 		indices.push_back(i);
 	}
 
-	m_meshes.push_back(Mesh(vertices, indices, material, glm::mat4(1.0f)));
+	m_meshes.push_back(Mesh0(vertices, indices, material, glm::mat4(1.0f)));
 }
 //=============================================================================
-void Model::loadAssimpModel(const std::string& path, std::shared_ptr<Material> material)
+void Model0::loadAssimpModel(const std::string& path, std::shared_ptr<Materialo> material)
 {
 	// Load scene from file
 	Assimp::Importer importer;
@@ -362,8 +362,8 @@ void Model::loadAssimpModel(const std::string& path, std::shared_ptr<Material> m
 
 	std::string directory = GetFileDirectory(path);
 
-	std::vector<Mesh> transMesh;
-	std::vector<Mesh> solidMesh;
+	std::vector<Mesh0> transMesh;
+	std::vector<Mesh0> solidMesh;
 
 	// Обрабатываем корневой узел и все его потомки
 	processAssimpNode(directory, scene->mRootNode, scene, material, transMesh, solidMesh);
@@ -375,14 +375,14 @@ void Model::loadAssimpModel(const std::string& path, std::shared_ptr<Material> m
 	Print("num mesh: " + std::to_string(m_meshes.size()));
 }
 //=============================================================================
-void Model::processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Material> material, std::vector<Mesh>& transMesh, std::vector<Mesh>& solidMesh)
+void Model0::processAssimpNode(const std::string& directoryModel, aiNode* node, const aiScene* scene, std::shared_ptr<Materialo> material, std::vector<Mesh0>& transMesh, std::vector<Mesh0>& solidMesh)
 {
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* aimesh = scene->mMeshes[node->mMeshes[i]];
 		glm::mat4 localMat = glm::transpose(*(glm::mat4*)&node->mTransformation);
 
-		Mesh mesh = processAssimpMesh(directoryModel, localMat, aimesh, scene, material);
+		Mesh0 mesh = processAssimpMesh(directoryModel, localMat, aimesh, scene, material);
 		if (mesh.GetMaterial()->transparent)
 			transMesh.emplace_back(mesh);
 		else
@@ -395,14 +395,14 @@ void Model::processAssimpNode(const std::string& directoryModel, aiNode* node, c
 	}
 }
 //=============================================================================
-Mesh Model::processAssimpMesh(const std::string& directoryModel, const glm::mat4& localMat, aiMesh* mesh, const aiScene* scene, std::shared_ptr<Material> defaultMaterial)
+Mesh0 Model0::processAssimpMesh(const std::string& directoryModel, const glm::mat4& localMat, aiMesh* mesh, const aiScene* scene, std::shared_ptr<Materialo> defaultMaterial)
 {
-	std::vector<MeshVertex> vertices(mesh->mNumVertices);
+	std::vector<MeshVertex0> vertices(mesh->mNumVertices);
 
 	// Обрабатываем вершины
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
-		MeshVertex& vertex = vertices[i];
+		MeshVertex0& vertex = vertices[i];
 		vertex.Position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 		if (mesh->HasNormals())
 			vertex.Normal = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
@@ -440,7 +440,7 @@ Mesh Model::processAssimpMesh(const std::string& directoryModel, const glm::mat4
 		float reflectivity = 0.0f;
 		aiMaterial->Get(AI_MATKEY_REFLECTIVITY, reflectivity);
 
-		material = std::make_shared<Material>(
+		material = std::make_shared<Materialo>(
 			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_DIFFUSE),
 			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_SPECULAR),
 			loadAssimpTexture(directoryModel, aiMaterial, aiTextureType_SHININESS),
@@ -451,7 +451,7 @@ Mesh Model::processAssimpMesh(const std::string& directoryModel, const glm::mat4
 	return { vertices, indices, material, localMat };
 }
 //=============================================================================
-std::shared_ptr<Texture2Do> Model::loadAssimpTexture(const std::string& directoryModel, aiMaterial* mat, aiTextureType type)
+std::shared_ptr<Texture2Do> Model0::loadAssimpTexture(const std::string& directoryModel, aiMaterial* mat, aiTextureType type)
 {
 	if (mat->GetTextureCount(type) > 0)
 	{

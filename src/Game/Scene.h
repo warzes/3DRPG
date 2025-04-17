@@ -72,8 +72,8 @@ class Node final
 public:
 	Node() = default;
 
-	void SetModel(std::shared_ptr<Model> model) { m_model = model; }
-	std::shared_ptr<Model> GetModel() const { return m_model; }
+	void SetModel(std::shared_ptr<Model0> model) { m_model = model; }
+	std::shared_ptr<Model0> GetModel() const { return m_model; }
 
 	void AddChild(Node* child) { m_children.push_back(child); }
 	const std::vector<Node*>& GetChildren() const { return m_children; }
@@ -100,7 +100,7 @@ public:
 
 private:
 	Transform              m_transform;
-	std::shared_ptr<Model> m_model;
+	std::shared_ptr<Model0> m_model;
 	mutable glm::mat4      m_worldMatrix;
 	Node*                  m_parent = nullptr;
 	std::vector<Node*>     m_children;

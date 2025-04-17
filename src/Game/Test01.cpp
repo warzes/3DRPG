@@ -2,12 +2,12 @@
 #include "Test01.h"
 #include "Core.h"
 //=============================================================================
-std::shared_ptr<Material> tempMaterial;
-std::shared_ptr<Model> model;
-std::shared_ptr<Model> modelCathedral;
-std::shared_ptr<Model> modelCube;
-std::shared_ptr<Model> modelSphere;
-std::shared_ptr<Model> modelPlane;
+std::shared_ptr<Materialo> tempMaterial;
+std::shared_ptr<Model0> model;
+std::shared_ptr<Model0> modelCathedral;
+std::shared_ptr<Model0> modelCube;
+std::shared_ptr<Model0> modelSphere;
+std::shared_ptr<Model0> modelPlane;
 
 Camera camera;
 Scene scene;
@@ -97,19 +97,19 @@ bool Test01::Init()
 
 	scene.Init();
 
-	tempMaterial = std::make_shared<Material>(
+	tempMaterial = std::make_shared<Materialo>(
 		Texture2Do::LoadFromFile("data/Textures/CrateDiffuse.bmp"),
 		Texture2Do::LoadFromFile("data/Textures/CrateSpecular.bmp"),
 		Texture2Do::LoadFromFile("data/Textures/CrateRoughness.bmp")
 		);
 
 	//model = std::make_shared<Model>("data/cube.obj", tempMaterial);
-	model = std::make_shared<Model>("data/treeRealistic/Tree.obj");
-	modelCathedral = std::make_shared<Model>("data/Cathedral/TutorialCathedral.fbx");
+	model = std::make_shared<Model0>("data/treeRealistic/Tree.obj");
+	modelCathedral = std::make_shared<Model0>("data/Cathedral/TutorialCathedral.fbx");
 
-	modelCube = Model::CreateCube(1, tempMaterial);
-	modelSphere = Model::CreateSphere(1.0f, 36, 18, tempMaterial);
-	modelPlane = Model::CreatePlane(10.0f, 10.0f, 4.0f, 4.0f, tempMaterial);
+	modelCube = Model0::CreateCube(1, tempMaterial);
+	modelSphere = Model0::CreateSphere(1.0f, 36, 18, tempMaterial);
+	modelPlane = Model0::CreatePlane(10.0f, 10.0f, 4.0f, 4.0f, tempMaterial);
 
 	nodePlane.SetModel(modelPlane);
 	//scene.AddNode(&nodePlane);

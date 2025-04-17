@@ -40,12 +40,6 @@ bool Query::ResultAvailable()
 //=============================================================================
 void Query::SetName(const std::string& name)
 {
-	setName(m_query, name);
-}
-//=============================================================================
-void Query::setName(const GLuint& name, const std::string& label)
-{
-	m_name = label;
-	glObjectLabel(m_identifier, name, label.size(), label.c_str());
+	glObjectLabel(GL_QUERY, m_query, name.size(), name.c_str());
 }
 //=============================================================================

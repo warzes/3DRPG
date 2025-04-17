@@ -14,9 +14,5 @@ public:
 	void SetName(const std::string& name);
 
 private:
-	void setName(const GLuint& name, const std::string& label);
-
-	GLuint       m_query;
-	const GLenum m_identifier{ GL_QUERY };
-	std::string  m_name;
+	GLuint m_query;
 };

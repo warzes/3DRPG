@@ -1,6 +1,44 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "RHIFramebuffer.h"
 #include "Core.h"
+//=============================================================================
+RenderBuffer::RenderBuffer(GLenum internalFormat, GLsizei width, GLsizei height)
+	: m_internalFormat(internalFormat)
+	, m_width(width)
+	, m_height(height)
+{
+	glCreateRenderbuffers(1, &m_glRBO);
+	glNamedRenderbufferStorage(m_glRBO, internalFormat, width, height);
+}
+//=============================================================================
+RenderBuffer::RenderBuffer(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height)
+	: m_internalFormat(internalFormat)
+	, m_width(width)
+	, m_height(height)
+{
+	glCreateRenderbuffers(1, &m_glRBO);
+	glNamedRenderbufferStorageMultisample(m_glRBO, samples, internalFormat, width, height);
+}
+//=============================================================================
+RenderBuffer::~RenderBuffer()
+{
+	glDeleteRenderbuffers(1, &m_glRBO);
+}
+//=============================================================================
+RenderBuffer::Ptr RenderBuffer::Create(GLenum internalFormat, GLsizei width, GLsizei height)
+{
+	return std::shared_ptr<RenderBuffer>(new RenderBuffer(internalFormat, width, height));
+}
+//=============================================================================
+RenderBuffer::Ptr RenderBuffer::CreateMultisample(GLsizei samples, GLenum internalFormat, GLsizei width, GLsizei height)
+{
+	return std::shared_ptr<RenderBuffer>(new RenderBuffer(samples, internalFormat, width, height));
+}
+//=============================================================================
+GLuint RenderBuffer::Id() const
+{
+	return m_glRBO;
+}
 //=============================================================================
 Framebuffer::Framebuffer(std::vector<Texture2D::Ptr> colorAttachments, Texture2D::Ptr depthStencilAttachment)
 {
@@ -22,12 +60,37 @@ Framebuffer::Framebuffer(std::vector<Texture2D::Ptr> colorAttachments, Texture2D
 	checkStatus();
 }
 //=============================================================================
+Framebuffer::Framebuffer(std::vector<Texture2D::Ptr> colorAttachments, RenderBuffer::Ptr depthStencilAttachment)
+{
+	glCreateFramebuffers(1, &m_glFBO);
+
+	GLuint attachments[16];
+
+	for (int i = 0; i < colorAttachments.size(); i++)
+	{
+		glNamedFramebufferTexture(m_glFBO, GL_COLOR_ATTACHMENT0 + i, colorAttachments[i]->Id(), 0);
+		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
+	}
+
+	glNamedFramebufferDrawBuffers(m_glFBO, colorAttachments.size(), attachments);
+
+	if (depthStencilAttachment)
+		glNamedFramebufferRenderbuffer(m_glFBO, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthStencilAttachment->Id());
+
+	checkStatus();
+}
+//=============================================================================
 Framebuffer::~Framebuffer()
 {
 	glDeleteFramebuffers(1, &m_glFBO);
 }
 //=============================================================================
 Framebuffer::Ptr Framebuffer::Create(std::vector<Texture2D::Ptr> colorAttachments, Texture2D::Ptr depthStencilAttachment)
+{
+	return std::shared_ptr<Framebuffer>(new Framebuffer(colorAttachments, depthStencilAttachment));
+}
+//=============================================================================
+Framebuffer::Ptr Framebuffer::Create(std::vector<Texture2D::Ptr> colorAttachments, RenderBuffer::Ptr depthStencilAttachment)
 {
 	return std::shared_ptr<Framebuffer>(new Framebuffer(colorAttachments, depthStencilAttachment));
 }
@@ -42,15 +105,19 @@ void Framebuffer::Unbind()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 //=============================================================================
-void Framebuffer::SetName(const std::string& name)
+void Framebuffer::SetDrawBuffer(GLenum buffer)
 {
-	setName(m_glFBO, name);
+	glNamedFramebufferDrawBuffer(m_glFBO, buffer);
 }
 //=============================================================================
-void Framebuffer::setName(const GLuint& name, const std::string& label)
+void Framebuffer::SetDrawBuffers(GLsizei size, const GLenum* buffers)
 {
-	m_name = label;
-	glObjectLabel(m_identifier, name, label.size(), label.c_str());
+	glNamedFramebufferDrawBuffers(m_glFBO, size, buffers);
+}
+//=============================================================================
+void Framebuffer::SetName(const std::string& name)
+{
+	glObjectLabel(GL_FRAMEBUFFER, m_glFBO, name.size(), name.c_str());
 }
 //=============================================================================
 void Framebuffer::checkStatus()
