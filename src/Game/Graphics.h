@@ -52,7 +52,7 @@ public:
 	std::shared_ptr<Material> GetMaterial() const { return m_material; }
 
 private:
-	std::shared_ptr<VertexArray>  m_VAO;
+	std::shared_ptr<VertexArrayo>  m_VAO;
 	std::shared_ptr<VertexBuffer> m_vertexBuffer;
 	std::shared_ptr<IndexBuffer>  m_indexBuffer;
 	std::shared_ptr<Material>     m_material;

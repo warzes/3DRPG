@@ -66,6 +66,9 @@
     <ClCompile Include="RHIFence.cpp">
       <Filter>Engine\RHI</Filter>
     </ClCompile>
+    <ClCompile Include="GeometryCore.cpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -134,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="RHIFence.h">
       <Filter>Engine\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryCore.h">
+      <Filter>Engine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -99,6 +99,7 @@
     <ClCompile Include="Context.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="DemoContext.cpp" />
+    <ClCompile Include="GeometryCore.cpp" />
     <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="RHIBuffer.cpp" />
     <ClCompile Include="RHICore.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="Context.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="DemoContext.h" />
+    <ClInclude Include="GeometryCore.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="RHIBuffer.h" />
     <ClInclude Include="RHICore.h" />

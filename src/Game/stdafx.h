@@ -14,6 +14,7 @@
 #include <memory>
 #include <chrono>
 #include <array>
+#include <stack>
 
 #include <glad/gl.h>
 

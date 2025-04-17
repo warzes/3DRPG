@@ -159,11 +159,11 @@ private:
 	uint32_t m_size;
 };
 
-class VertexArray final 
+class VertexArrayo final 
 {
 public:
-	VertexArray(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<IndexBuffer> ib, const VertexBufferLayout& layout);
-	~VertexArray();
+	VertexArrayo(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<IndexBuffer> ib, const VertexBufferLayout& layout);
+	~VertexArrayo();
 
 	void Bind();
 

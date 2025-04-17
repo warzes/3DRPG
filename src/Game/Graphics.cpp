@@ -85,7 +85,7 @@ Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>&
 	if (!m_material) m_material = GetDefaultMeshMaterial();
 	m_vertexBuffer = std::make_shared<VertexBuffer>(vertices.size() * sizeof(MeshVertex), vertices.data());
 	m_indexBuffer = std::make_shared<IndexBuffer>(indices.size(), indices.data());
-	m_VAO = std::make_shared<VertexArray>(m_vertexBuffer, m_indexBuffer, MeshVertex::GetLayout());
+	m_VAO = std::make_shared<VertexArrayo>(m_vertexBuffer, m_indexBuffer, MeshVertex::GetLayout());
 }
 //=============================================================================
 void Mesh::Draw()

@@ -55,7 +55,7 @@ void UniformBuffer::SetData(const void* data, uint32_t size, uint32_t offset)
 	glNamedBufferSubData(m_id, offset, (size ? size : m_size), data);
 }
 //=============================================================================
-VertexArray::VertexArray(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<IndexBuffer> ib, const VertexBufferLayout& layout)
+VertexArrayo::VertexArrayo(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<IndexBuffer> ib, const VertexBufferLayout& layout)
 {
 	glCreateVertexArrays(1, &m_id);
 
@@ -74,12 +74,12 @@ VertexArray::VertexArray(std::shared_ptr<VertexBuffer> vb, std::shared_ptr<Index
 	}
 }
 //=============================================================================
-VertexArray::~VertexArray()
+VertexArrayo::~VertexArrayo()
 {
 	glDeleteVertexArrays(1, &m_id);
 }
 //=============================================================================
-void VertexArray::Bind()
+void VertexArrayo::Bind()
 {
 	glBindVertexArray(m_id);
 }
