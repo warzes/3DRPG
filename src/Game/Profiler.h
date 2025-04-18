@@ -19,6 +19,6 @@ namespace profiler
 	void BeginFrame();
 	void EndFrame();
 
-	void UI();
+	void Ui();
 
 } // namespace profiler

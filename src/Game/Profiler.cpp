@@ -220,7 +220,7 @@ void profiler::EndFrame()
 	g_profiler->EndFrame();
 }
 //=============================================================================
-void profiler::UI()
+void profiler::Ui()
 {
 	g_profiler->Ui();
 }

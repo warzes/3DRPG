@@ -13,13 +13,13 @@
       <Filter>Engine\Core</Filter>
     </ClCompile>
     <ClCompile Include="Test01.cpp">
-      <Filter>_Test</Filter>
+      <Filter>Old\_Test</Filter>
     </ClCompile>
     <ClCompile Include="0001Demo.cpp">
-      <Filter>_Demo\01API</Filter>
+      <Filter>Old\_Demo\01API</Filter>
     </ClCompile>
     <ClCompile Include="DemoContext.cpp">
-      <Filter>_Demo\Framework</Filter>
+      <Filter>Old\_Demo\Framework</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem.cpp">
       <Filter>Engine\RHI\old</Filter>
@@ -81,6 +81,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="0001SimpleDemo.cpp">
+      <Filter>Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -97,13 +100,13 @@
       <Filter>Engine\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Test01.h">
-      <Filter>_Test</Filter>
+      <Filter>Old\_Test</Filter>
     </ClInclude>
     <ClInclude Include="0001Demo.h">
-      <Filter>_Demo\01API</Filter>
+      <Filter>Old\_Demo\01API</Filter>
     </ClInclude>
     <ClInclude Include="DemoContext.h">
-      <Filter>_Demo\Framework</Filter>
+      <Filter>Old\_Demo\Framework</Filter>
     </ClInclude>
     <ClInclude Include="Render.h">
       <Filter>Engine\RHI\old</Filter>
@@ -165,6 +168,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="0001SimpleDemo.h">
+      <Filter>Demo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -179,20 +185,8 @@
     <Filter Include="Engine\Scene">
       <UniqueIdentifier>{6d4439fc-14ed-418b-aba3-42a582f28b07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_Demo">
-      <UniqueIdentifier>{1f821387-60a4-4870-b094-2cc6fe23825c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_Demo\01API">
-      <UniqueIdentifier>{f8872b3b-96d3-4923-a247-e8dd6a1fe55d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_Demo\Framework">
-      <UniqueIdentifier>{58377f26-4bfe-41df-9244-58d2792f570e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{bef2c127-006b-43a9-8516-6d1a0a376c85}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_Test">
-      <UniqueIdentifier>{c5a3891c-2518-472a-b5da-2e31ef73d63b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Roguelike">
       <UniqueIdentifier>{7b3fbac1-7c79-418c-a503-2d012342ef75}</UniqueIdentifier>
@@ -208,6 +202,24 @@
     </Filter>
     <Filter Include="Engine\Graphics\old">
       <UniqueIdentifier>{bc1e2077-3088-4330-afe5-7414ec37a30a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Old">
+      <UniqueIdentifier>{f507a8dc-bea4-4d9e-8dfa-341b73d298d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Old\_Test">
+      <UniqueIdentifier>{c5a3891c-2518-472a-b5da-2e31ef73d63b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Old\_Demo">
+      <UniqueIdentifier>{1f821387-60a4-4870-b094-2cc6fe23825c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Old\_Demo\01API">
+      <UniqueIdentifier>{f8872b3b-96d3-4923-a247-e8dd6a1fe55d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Old\_Demo\Framework">
+      <UniqueIdentifier>{58377f26-4bfe-41df-9244-58d2792f570e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo">
+      <UniqueIdentifier>{701f85b4-f0af-4618-b22e-88a594b7b57a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

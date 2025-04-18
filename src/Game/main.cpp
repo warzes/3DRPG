@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "Context.h"
 #include "RoguelikeGameApp.h"
+#include "0001SimpleDemo.h"
 //=============================================================================
 #if defined(_MSC_VER)
 #	pragma comment( lib, "3rdparty.lib" )
@@ -18,9 +19,9 @@ ContextCreateInfo GetContextCreateInfo()
 
 	return contextInfo;
 }
+//=============================================================================
 #if defined(__EMSCRIPTEN__)
 RoguelikeGameApp* game{ nullptr };
-
 void runFrame(void* arg)
 {
 	auto context = GetContext();
@@ -51,7 +52,8 @@ int main(
 {
 	Context context;
 
-	RoguelikeGameApp game(context);
+	//RoguelikeGameApp game(context);
+	_0001SimpleDemo game(context);
 
 	if (context.Init(GetContextCreateInfo())
 		&& game.Init())
