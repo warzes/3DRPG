@@ -14,5 +14,5 @@ public:
 	void Frame(double deltaTime);
 	void DrawImGui(double deltaTime);
 
-	void ProcessInput(Camera& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY);
+	void ProcessInput(Camerao& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY);
 };

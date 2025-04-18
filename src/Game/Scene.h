@@ -114,13 +114,13 @@ enum class Direction : uint8_t
 	Right
 };
 
-class Camera final
+class Camerao final
 {
 	const float SPEED = 10.5f;
 	const float SENSITIVITY = 0.25f;
 	const float ZOOM = 65.0f;
 public:
-	Camera(glm::vec3 position = glm::vec3(0.0f, 3.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f);
+	Camerao(glm::vec3 position = glm::vec3(0.0f, 3.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f);
 
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetProjectionMatrix(float aspect) const;
@@ -152,9 +152,9 @@ public:
 	void Init();
 	void Close();
 
-	void AddCamera(const Camera& camera);
+	void AddCamera(const Camerao& camera);
 	void AddNode(Node* node);
-	void Render(const Camera& camera, float screenAspect);
+	void Render(const Camerao& camera, float screenAspect);
 
 	void SetPointLight(size_t id, bool enable,
 		const glm::vec3& position = glm::vec3(0.0f),

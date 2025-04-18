@@ -53,6 +53,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <assimp/pbrmaterial.h>
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)

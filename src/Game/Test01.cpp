@@ -9,7 +9,7 @@ std::shared_ptr<Model0> modelCube;
 std::shared_ptr<Model0> modelSphere;
 std::shared_ptr<Model0> modelPlane;
 
-Camera camera;
+Camerao camera;
 Scene scene;
 Node node;
 Node nodeCathedral;
@@ -161,7 +161,7 @@ void Test01::DrawImGui(double deltaTime)
 
 }
 //=============================================================================
-void Test01::ProcessInput(Camera& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY)
+void Test01::ProcessInput(Camerao& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY)
 {
 	if (glfwGetMouseButton(GetWindow(), GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{

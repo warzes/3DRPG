@@ -3,7 +3,7 @@
 #include "Core.h"
 #include "SceneShader.h"
 //=============================================================================
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
+Camerao::Camerao(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
 	: m_position(position)
 	, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
 	, m_up(up)
@@ -18,17 +18,17 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
 	updateCameraVectors();
 }
 //=============================================================================
-glm::mat4 Camera::GetViewMatrix() const
+glm::mat4 Camerao::GetViewMatrix() const
 {
 	return glm::lookAt(m_position, m_position + m_front, m_up);
 }
 //=============================================================================
-glm::mat4 Camera::GetProjectionMatrix(float aspect) const
+glm::mat4 Camerao::GetProjectionMatrix(float aspect) const
 {
 	return glm::perspective(glm::radians(m_zoom), aspect, 0.1f, 1000.0f);
 }
 //=============================================================================
-void Camera::ProcessMouseMovement(float xoffset, float yoffset)
+void Camerao::ProcessMouseMovement(float xoffset, float yoffset)
 {
 	xoffset *= m_mouseSensitivity;
 	yoffset *= m_mouseSensitivity;
@@ -42,7 +42,7 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset)
 	updateCameraVectors();
 }
 //=============================================================================
-void Camera::ProcessKeyboard(Direction direction, float deltaTime)
+void Camerao::ProcessKeyboard(Direction direction, float deltaTime)
 {
 	float velocity = m_movementSpeed * deltaTime;
 	if (direction == Direction::Forward)  m_position += m_front * velocity;
@@ -51,7 +51,7 @@ void Camera::ProcessKeyboard(Direction direction, float deltaTime)
 	if (direction == Direction::Right)    m_position += m_right * velocity;
 }
 //=============================================================================
-void Camera::updateCameraVectors()
+void Camerao::updateCameraVectors()
 {
 	glm::vec3 front;
 	front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
@@ -85,7 +85,7 @@ void Scene::AddNode(Node* node)
 	m_nodes.push_back(node);
 }
 //=============================================================================
-void Scene::Render(const Camera& camera, float screenAspect)
+void Scene::Render(const Camerao& camera, float screenAspect)
 {
 	assert(m_uniformTransformBuffer);
 	assert(m_uniformCameraBuffer);
