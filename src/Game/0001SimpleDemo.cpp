@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "0001SimpleDemo.h"
 #include "RHIShaders.h"
 #include "RHIBuffer.h"
@@ -13,6 +13,8 @@ namespace
 {
 	// Embedded vertex shader source.
 	const char* g_sample_vs_src = R"(
+#version 430 core
+
 layout (location = 0) in vec4 VS_IN_Position;
 layout (location = 1) in vec4 VS_IN_TexCoord;
 layout (location = 2) in vec4 VS_IN_Normal;
@@ -40,6 +42,8 @@ void main()
 
 	// Embedded fragment shader source.
 	const char* g_sample_fs_src = R"(
+#version 430 core
+
 precision mediump float;
 out vec4 PS_OUT_Color;
 in vec3 PS_IN_FragPos;

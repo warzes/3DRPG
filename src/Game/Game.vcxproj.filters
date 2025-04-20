@@ -84,6 +84,9 @@
     <ClCompile Include="0001SimpleDemo.cpp">
       <Filter>Demo</Filter>
     </ClCompile>
+    <ClCompile Include="Base.cpp">
+      <Filter>Engine\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -171,6 +174,9 @@
     <ClInclude Include="0001SimpleDemo.h">
       <Filter>Demo</Filter>
     </ClInclude>
+    <ClInclude Include="Base.h">
+      <Filter>Engine\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -220,6 +226,9 @@
     </Filter>
     <Filter Include="Demo">
       <UniqueIdentifier>{701f85b4-f0af-4618-b22e-88a594b7b57a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Base">
+      <UniqueIdentifier>{f91c4f33-3dd3-4e05-953e-139a033bd71a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -97,6 +97,7 @@
   <ItemGroup>
     <ClCompile Include="0001Demo.cpp" />
     <ClCompile Include="0001SimpleDemo.cpp" />
+    <ClCompile Include="Base.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Context.cpp" />
     <ClCompile Include="Core.cpp" />
@@ -131,6 +132,7 @@
   <ItemGroup>
     <ClInclude Include="0001Demo.h" />
     <ClInclude Include="0001SimpleDemo.h" />
+    <ClInclude Include="Base.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Context.h" />
     <ClInclude Include="Core.h" />
