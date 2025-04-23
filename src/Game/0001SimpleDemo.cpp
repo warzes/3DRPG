@@ -85,6 +85,10 @@ void main()
 
 	// Camera.
 	std::unique_ptr<Camera> m_main_camera;
+	//Camerao camera{ glm::vec3(0.0f, 0.0f, 100.0f), glm::vec3(0.0f, 0.0, -1.0f) };
+	bool firstMouse = true;
+	float lastX = 1600.0f / 2.0;
+	float lastY = 900.0f / 2.0;
 
 	// Assets.
 	Mesh::Ptr m_mesh;
@@ -152,6 +156,7 @@ void _0001SimpleDemo::Update(double deltaTime)
 
 	// Update camera.
 	m_main_camera->Update();
+	//ProcessInput(camera, deltaTime, firstMouse, lastX, lastY);
 
 	m_transforms.model = glm::mat4(1.0f);
 	m_transforms.model = glm::translate(m_transforms.model, glm::vec3(0.0f, -20.0f, 0.0f));
@@ -159,6 +164,8 @@ void _0001SimpleDemo::Update(double deltaTime)
 	m_transforms.model = glm::scale(m_transforms.model, glm::vec3(0.6f));
 	m_transforms.view = m_main_camera->view;
 	m_transforms.projection = m_main_camera->projection;
+	//m_transforms.view = camera.GetViewMatrix();
+	//m_transforms.projection = camera.GetProjectionMatrix(GetFrameAspect());
 
 	void* ptr = m_ubo->Map(GL_WRITE_ONLY);
 	memcpy(ptr, &m_transforms, sizeof(Transforms));
@@ -212,4 +219,44 @@ void _0001SimpleDemo::DrawImGui(double deltaTime)
 	// Render profiler.
 	profiler::Ui();
 }
+//=============================================================================
+//void _0001SimpleDemo::ProcessInput(Camerao& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY)
+//{
+//	if (glfwGetMouseButton(GetWindow(), GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+//	{
+//		glfwSetInputMode(GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+//
+//		double xpos, ypos;
+//		glfwGetCursorPos(GetWindow(), &xpos, &ypos);
+//
+//		if (firstMouse)
+//		{
+//			lastX = xpos;
+//			lastY = ypos;
+//			firstMouse = false;
+//		}
+//
+//		float xoffset = xpos - lastX;
+//		float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+//
+//		lastX = xpos;
+//		lastY = ypos;
+//
+//		camera.ProcessMouseMovement(xoffset, yoffset);
+//	}
+//	else
+//	{
+//		glfwSetInputMode(GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+//		firstMouse = true;
+//	}
+//
+//	if (glfwGetKey(GetWindow(), GLFW_KEY_W) == GLFW_PRESS)
+//		camera.ProcessKeyboard(Direction::Forward, deltaTime);
+//	if (glfwGetKey(GetWindow(), GLFW_KEY_S) == GLFW_PRESS)
+//		camera.ProcessKeyboard(Direction::Backward, deltaTime);
+//	if (glfwGetKey(GetWindow(), GLFW_KEY_A) == GLFW_PRESS)
+//		camera.ProcessKeyboard(Direction::Left, deltaTime);
+//	if (glfwGetKey(GetWindow(), GLFW_KEY_D) == GLFW_PRESS)
+//		camera.ProcessKeyboard(Direction::Right, deltaTime);
+//}
 //=============================================================================

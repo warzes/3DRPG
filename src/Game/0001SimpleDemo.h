@@ -1,6 +1,7 @@
-#pragma once
+﻿#pragma once
 
 class Context;
+class Camerao;
 
 class _0001SimpleDemo final
 {
@@ -17,6 +18,8 @@ public:
 	void Draw(double deltaTime);
 
 	void DrawImGui(double deltaTime);
+
+	//void ProcessInput(Camerao& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY);
 
 private:
 	Context& m_context;

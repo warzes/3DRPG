@@ -43,3 +43,55 @@ struct Camera final
 	void UpdateFromFrame(glm::vec3 position, glm::vec3 forward, glm::vec3 right);
 	void UpdateProjection(float fov, float near, float far, float aspectRatio);
 };
+
+enum class CameraMovement : uint8_t
+{
+	Forward,
+	Backward,
+	Left,
+	Right,
+	Up,
+	Down
+};
+
+constexpr const float YAW = -90.0f;
+constexpr const float PITCH = 0.0f;
+
+class Camerao final
+{
+	const float SPEED = 10.5f;
+	const float SENSITIVITY = 0.25f;
+	const float ZOOM = 65.0f;
+public:
+	Camerao(
+		const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f), 
+		const glm::vec3& up = glm::vec3(0.0f, 1.0f, 0.0f),
+		float yaw = YAW,
+		float pitch = PITCH);
+
+	glm::mat4 GetViewMatrix() const;
+	glm::mat4 GetProjectionMatrix(float aspect) const;
+	glm::vec3 GetPosition() const { return m_position; }
+
+	void SetSpeed(float val);
+
+	void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
+	void ProcessKeyboard(CameraMovement direction, float deltaTime);
+
+private:
+	void updateCameraVectors();
+
+	// Camera Attributes
+	glm::vec3 m_position;
+	glm::vec3 m_front;
+	glm::vec3 m_up;
+	glm::vec3 m_right;
+	glm::vec3 m_worldUp;
+	// Eular Angles
+	float     m_yaw;
+	float     m_pitch;
+	// Camera options
+	float     m_movementSpeed;
+	float     m_mouseSensitivity;
+	float     m_zoom;
+};

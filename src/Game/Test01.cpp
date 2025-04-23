@@ -192,12 +192,12 @@ void Test01::ProcessInput(Camerao& camera, float deltaTime, bool& firstMouse, fl
 	}
 
 	if (glfwGetKey(GetWindow(), GLFW_KEY_W) == GLFW_PRESS)
-		camera.ProcessKeyboard(Direction::Forward, deltaTime);
+		camera.ProcessKeyboard(CameraMovement::Forward, deltaTime);
 	if (glfwGetKey(GetWindow(), GLFW_KEY_S) == GLFW_PRESS)
-		camera.ProcessKeyboard(Direction::Backward, deltaTime);
+		camera.ProcessKeyboard(CameraMovement::Backward, deltaTime);
 	if (glfwGetKey(GetWindow(), GLFW_KEY_A) == GLFW_PRESS)
-		camera.ProcessKeyboard(Direction::Left, deltaTime);
+		camera.ProcessKeyboard(CameraMovement::Left, deltaTime);
 	if (glfwGetKey(GetWindow(), GLFW_KEY_D) == GLFW_PRESS)
-		camera.ProcessKeyboard(Direction::Right, deltaTime);
+		camera.ProcessKeyboard(CameraMovement::Right, deltaTime);
 }
 //=============================================================================

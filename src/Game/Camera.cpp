@@ -86,3 +86,71 @@ void Camera::UpdateFromFrame(glm::vec3 Position, glm::vec3 Forward, glm::vec3 Ri
 	FrustumFromMatrix(frustum, viewProjection);
 }
 //=============================================================================
+Camerao::Camerao(const glm::vec3& position, const glm::vec3& up, float yaw, float pitch)
+	: m_position(position)
+	, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
+	, m_up(up)
+	, m_right(glm::vec3(1.0f, 0.0f, 0.0f))
+	, m_worldUp(up)
+	, m_yaw(yaw)
+	, m_pitch(pitch)
+	, m_movementSpeed(SPEED)
+	, m_mouseSensitivity(SENSITIVITY)
+	, m_zoom(ZOOM)
+{
+	updateCameraVectors();
+}
+//=============================================================================
+glm::mat4 Camerao::GetViewMatrix() const
+{
+	return glm::lookAt(m_position, m_position + m_front, m_up);
+}
+//=============================================================================
+glm::mat4 Camerao::GetProjectionMatrix(float aspect) const
+{
+	return glm::perspective(glm::radians(m_zoom), aspect, 0.1f, 1000.0f);
+}
+//=============================================================================
+void Camerao::SetSpeed(float val)
+{
+	m_movementSpeed = val;
+}
+//=============================================================================
+void Camerao::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch)
+{
+	xoffset *= m_mouseSensitivity;
+	yoffset *= m_mouseSensitivity;
+
+	m_yaw += xoffset;
+	m_pitch += yoffset;
+
+	if (m_pitch > 89.0f) m_pitch = 89.0f;
+	if (m_pitch < -89.0f) m_pitch = -89.0f;
+
+	updateCameraVectors();
+}
+//=============================================================================
+void Camerao::ProcessKeyboard(CameraMovement direction, float deltaTime)
+{
+	float velocity = m_movementSpeed * deltaTime;
+	if (direction == CameraMovement::Forward)  m_position += m_front * velocity;
+	if (direction == CameraMovement::Backward) m_position -= m_front * velocity;
+	if (direction == CameraMovement::Left)     m_position -= m_right * velocity;
+	if (direction == CameraMovement::Right)    m_position += m_right * velocity;
+
+	if (direction == CameraMovement::Up)       m_position += m_up * velocity;
+	if (direction == CameraMovement::Down)     m_position -= m_up * velocity;
+}
+//=============================================================================
+void Camerao::updateCameraVectors()
+{
+	glm::vec3 front;
+	front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+	front.y = sin(glm::radians(m_pitch));
+	front.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+	m_front = glm::normalize(front);
+
+	m_right = glm::normalize(glm::cross(m_front, m_worldUp));
+	m_up = glm::normalize(glm::cross(m_right, m_front));
+}
+//=============================================================================
