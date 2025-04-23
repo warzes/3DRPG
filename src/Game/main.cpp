@@ -52,6 +52,8 @@ int main(
 {
 	Context context;
 
+	stratusgfx
+
 	//RoguelikeGameApp game(context);
 	_0001SimpleDemo game(context);
 
