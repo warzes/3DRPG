@@ -114,7 +114,7 @@
 #ifndef _WIN32
 #include <unistd.h>             // for usleep()
 #endif
-#include <GLFW/glfw.h>
+#include <GLFW/glfw3.h>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>

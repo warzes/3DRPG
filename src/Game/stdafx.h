@@ -20,13 +20,10 @@
 
 #include <glad/gl.h>
 
-#if defined(_WIN32)
-#	include <glfw/glfw.h>
-#endif
+#include <glfw/glfw3.h>
 
 #if defined(__EMSCRIPTEN__)
 #	define GLFW_INCLUDE_ES3
-#	include <GLFW/glfw3.h>
 #	include <emscripten/emscripten.h>
 #	include <emscripten/html5.h>
 #endif
