@@ -1,5 +1,5 @@
 ﻿#include "stdafx.h"
-#include "0001SimpleDemo.h"
+#include "0002SimpleDemo.h"
 #include "RHIShaders.h"
 #include "RHIBuffer.h"
 #include "Camera.h"
@@ -97,16 +97,21 @@ void main()
 	Transforms m_transforms;
 }
 //=============================================================================
-_0001SimpleDemo::_0001SimpleDemo(Context& context)
+_0002SimpleDemo::_0002SimpleDemo(Context& context)
 	: m_context(context)
 {
 
 }
 //=============================================================================
-bool _0001SimpleDemo::Init()
+bool _0002SimpleDemo::Init()
 {
 	glEnable(GL_DEPTH_TEST);
 	glCullFace(GL_BACK);
+
+#ifdef INVERTED_Z
+	glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE); // TODO: в движок? для INVERTED_Z
+#endif
+	glLineWidth(3.0);
 
 	// Create shaders
 	m_vs = Shader::Create(GL_VERTEX_SHADER, g_sample_vs_src);
@@ -132,47 +137,63 @@ bool _0001SimpleDemo::Init()
 	// Create uniform buffer for matrix data
 	m_ubo = Buffer::Create(GL_UNIFORM_BUFFER, GL_MAP_WRITE_BIT, sizeof(Transforms), nullptr);
 
-	m_mesh = Mesh::Load("data/mesh/teapot.obj");
+	//m_mesh = Mesh::Load("data/mesh/teapot.obj");
+	m_mesh = Mesh::Load("data/mesh/PastVillage/PastVillage.obj");
+
 
 	m_main_camera = std::make_unique<Camerao2>(60.0f, 0.1f, 1000.0f, GetFrameAspect(), glm::vec3(0.0f, 0.0f, 100.0f), glm::vec3(0.0f, 0.0, -1.0f));
+
+	m_mainCamera.Init(glm::radians(70.0f), GetFrameWidth(), GetFrameHeight(), 0.1f, 1E4f);
+
+	m_mainCamera.SetPosition(glm::vec3(50.0f, 100.0f, 300.0f));
+	m_mainCamera.LookAt(glm::vec3(0.0f, 0.0, -1.0f));
 
 	return true;
 }
 //=============================================================================
-void _0001SimpleDemo::Close()
+void _0002SimpleDemo::Close()
 {
 	m_mesh.reset();
 }
 //=============================================================================
-void _0001SimpleDemo::Resize(uint32_t width, uint32_t height)
+void _0002SimpleDemo::Resize(uint32_t width, uint32_t height)
 {
 	glViewport(0, 0, width, height);
 	m_main_camera->UpdateProjection(60.0f, 0.1f, 1000.0f, GetFrameAspect());
+
+	m_mainCamera.SetFrameBufferSize(width, height);
 }
 //=============================================================================
-void _0001SimpleDemo::Update(double deltaTime)
+void _0002SimpleDemo::Update(double deltaTime)
 {
 	SE_SCOPED_SAMPLE("update");
 
 	// Update camera.
 	m_main_camera->Update();
 	//ProcessInput(camera, deltaTime, firstMouse, lastX, lastY);
+	m_mainCamera.UpdateProjectionViewMatrix();
+	auto camPos = m_mainCamera.GetPosition();
+	auto camFront = m_mainCamera.GetDirection();
+	glm::vec3 camDir[2] = { m_mainCamera.GetDirection(), glm::cross(camFront, glm::cross(camFront, glm::vec3(0, 1, 0))) };
 
 	m_transforms.model = glm::mat4(1.0f);
 	m_transforms.model = glm::translate(m_transforms.model, glm::vec3(0.0f, -20.0f, 0.0f));
-	m_transforms.model = glm::rotate(m_transforms.model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+	//m_transforms.model = glm::rotate(m_transforms.model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
 	m_transforms.model = glm::scale(m_transforms.model, glm::vec3(0.6f));
-	m_transforms.view = m_main_camera->view;
-	m_transforms.projection = m_main_camera->projection;
+	//m_transforms.view = m_main_camera->view;
+	//m_transforms.projection = m_main_camera->projection;
 	//m_transforms.view = camera.GetViewMatrix();
 	//m_transforms.projection = camera.GetProjectionMatrix(GetFrameAspect());
+	m_transforms.view = m_mainCamera.GetViewMatrix();
+	m_transforms.projection = m_mainCamera.GetProjectionViewMatrix();
+
 
 	void* ptr = m_ubo->Map(GL_WRITE_ONLY);
 	memcpy(ptr, &m_transforms, sizeof(Transforms));
 	m_ubo->Unmap();
 }
 //=============================================================================
-void _0001SimpleDemo::Draw(double deltaTime)
+void _0002SimpleDemo::Draw(double deltaTime)
 {
 	SE_SCOPED_SAMPLE("Draw");
 
@@ -212,51 +233,11 @@ void _0001SimpleDemo::Draw(double deltaTime)
 	}
 }
 //=============================================================================
-void _0001SimpleDemo::DrawImGui(double deltaTime)
+void _0002SimpleDemo::DrawImGui(double deltaTime)
 {
 	SE_SCOPED_SAMPLE("DrawImGui");
 
 	// Render profiler.
 	profiler::Ui();
 }
-//=============================================================================
-//void _0001SimpleDemo::ProcessInput(Camerao& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY)
-//{
-//	if (glfwGetMouseButton(GetWindow(), GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
-//	{
-//		glfwSetInputMode(GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-//
-//		double xpos, ypos;
-//		glfwGetCursorPos(GetWindow(), &xpos, &ypos);
-//
-//		if (firstMouse)
-//		{
-//			lastX = xpos;
-//			lastY = ypos;
-//			firstMouse = false;
-//		}
-//
-//		float xoffset = xpos - lastX;
-//		float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-//
-//		lastX = xpos;
-//		lastY = ypos;
-//
-//		camera.ProcessMouseMovement(xoffset, yoffset);
-//	}
-//	else
-//	{
-//		glfwSetInputMode(GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-//		firstMouse = true;
-//	}
-//
-//	if (glfwGetKey(GetWindow(), GLFW_KEY_W) == GLFW_PRESS)
-//		camera.ProcessKeyboard(Direction::Forward, deltaTime);
-//	if (glfwGetKey(GetWindow(), GLFW_KEY_S) == GLFW_PRESS)
-//		camera.ProcessKeyboard(Direction::Backward, deltaTime);
-//	if (glfwGetKey(GetWindow(), GLFW_KEY_A) == GLFW_PRESS)
-//		camera.ProcessKeyboard(Direction::Left, deltaTime);
-//	if (glfwGetKey(GetWindow(), GLFW_KEY_D) == GLFW_PRESS)
-//		camera.ProcessKeyboard(Direction::Right, deltaTime);
-//}
 //=============================================================================

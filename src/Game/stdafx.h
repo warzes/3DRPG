@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+//#define INVERTED_Z
+
 #if defined(_MSC_VER)
 #	pragma warning(push, 3)
 //#	pragma warning(disable : 5039) 
@@ -35,6 +37,7 @@
 
 #define GLM_FORCE_XYZW_ONLY
 #define GLM_ENABLE_EXPERIMENTAL
+#define GLM_FORCE_RADIAN
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <glm/gtc/type_ptr.hpp>

@@ -97,6 +97,7 @@
   <ItemGroup>
     <ClCompile Include="0001Demo.cpp" />
     <ClCompile Include="0001SimpleDemo.cpp" />
+    <ClCompile Include="0002SimpleDemo.cpp" />
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -104,6 +105,7 @@
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="DemoContext.cpp" />
+    <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GeometryCore.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -134,6 +136,7 @@
   <ItemGroup>
     <ClInclude Include="0001Demo.h" />
     <ClInclude Include="0001SimpleDemo.h" />
+    <ClInclude Include="0002SimpleDemo.h" />
     <ClInclude Include="Base.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
@@ -141,6 +144,7 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="DemoContext.h" />
+    <ClInclude Include="Frustum.h" />
     <ClInclude Include="GeometryCore.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />

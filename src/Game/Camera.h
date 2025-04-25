@@ -1,8 +1,82 @@
 ﻿#pragma once
 
 #include "GeometryCore.h"
+#include "Frustum.h"
 
-struct Camera final
+enum class CameraType : uint8_t
+{
+	Perspective,
+	Orthographic
+};
+
+class Camera final
+{
+public:
+	Camera(CameraType type = CameraType::Perspective);
+
+	void Init(float FOV, float width, float height, float nearplane, float farPlane);
+
+	void SetPosition(const glm::vec3& position);
+	void LookAt(const glm::vec3& position);
+	void SetDirection(const glm::vec3& direction) { m_direction = direction; };
+
+	const glm::vec3& GetPosition() const { return m_position; };
+	const glm::vec3& GetDirection() const { return m_direction; };
+	const glm::vec3& GetLookpoint() const { return m_lookPoint; };
+
+	glm::vec3* GetPositionAddr() { return &m_position; };
+	glm::vec3* GetDirectionAddr() { return &m_direction; };
+	glm::vec3* GetLookpointAddr() { return &m_lookPoint; };
+
+	const glm::mat4& GetViewMatrix() const { return m_viewMatrix; };
+	const glm::mat4& GetProjectionMatrix() const { return m_projectionMatrix; };
+	const glm::mat4& GetProjectionViewMatrix() const { return m_projectionViewMatrix; };
+
+	const glm::mat4* GetViewMatrixAddr() { return &m_viewMatrix; };
+	const glm::mat4* GetProjectionMatrixAddr() { return &m_projectionMatrix; };
+	const glm::mat4* GetProjectionViewMatrixAddr() { return &m_projectionViewMatrix; };
+
+	void UpdateFrustum();
+	Frustum GetFrustum();
+
+	void UpdateViewMatrix();
+	void UpdateProjectionMatrix();
+	const glm::mat4 UpdateProjectionViewMatrix();
+	const glm::mat4* GetProjectionViewMatrixAddr() const { return &m_projectionViewMatrix; };
+
+	void ToggleMouseFollow() { m_followMouse = !m_followMouse; };
+	void SetMouseFollow(bool enable) { m_followMouse = enable; };
+	bool GetMouseFollow() { return m_followMouse; };
+
+	void ToggleForceLookAtPoint() { m_forceLookAtpoint = !m_forceLookAtpoint; };
+	void SetForceLookAtPoint(bool enable) { m_forceLookAtpoint = enable; };
+
+	void Move(glm::vec3 velocity, double deltatime);
+
+	void SetFrameBufferSize(float width, float height);
+
+private:
+	glm::mat4  m_projectionMatrix;
+	glm::mat4  m_viewMatrix;
+	glm::mat4  m_projectionViewMatrix;
+
+	float      m_FOV{ 1.0f };
+	float      m_nearPlane{ 0.1f };
+	float      m_farPlane{ 1000.f };
+	float      m_sensitivity{ 1.5f };
+	bool       m_followMouse{ true };
+	bool       m_forceLookAtpoint{ true };
+	glm::vec3  m_position = glm::vec3(0.0f);
+	glm::vec3  m_lookPoint = glm::vec3(0.0f, 0.0f, -1.0f);
+	glm::vec3  m_direction;
+	float      m_width{ 1600.0f };
+	float      m_height{ 900.0f };
+
+	Frustum    m_frustum;
+	CameraType m_type = CameraType::Perspective;
+};
+
+struct Camerao2 final
 {
 	float     fov;
 	float     near;
@@ -33,9 +107,9 @@ struct Camera final
 	Plane topPlane;
 	Plane bottomPlane;
 
-	Frustum frustum;
+	FrustumO2 frustum;
 
-	Camera(float fov, float near, float far, float aspectRatio, glm::vec3 position, glm::vec3 forward);
+	Camerao2(float fov, float near, float far, float aspectRatio, glm::vec3 position, glm::vec3 forward);
 	void SetTranslationDelta(glm::vec3 direction, float amount);
 	void SetRotationDelta(glm::vec3 angles);
 	void SetPosition(glm::vec3 position);

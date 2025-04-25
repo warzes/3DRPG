@@ -1,16 +1,18 @@
 ﻿#pragma once
 
+#include "Camera.h"
+
 class Context;
-class Camerao;
 
 /*
-чайник
+терейн
+
 */
 
-class _0001SimpleDemo final
+class _0002SimpleDemo final
 {
 public:
-	_0001SimpleDemo(Context& context);
+	_0002SimpleDemo(Context& context);
 
 	bool Init();
 	void Close();
@@ -23,8 +25,8 @@ public:
 
 	void DrawImGui(double deltaTime);
 
-	//void ProcessInput(Camerao& camera, float deltaTime, bool& firstMouse, float& lastX, float& lastY);
-
 private:
 	Context& m_context;
+
+	Camera m_mainCamera;
 };

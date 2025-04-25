@@ -2,6 +2,7 @@
 #include "Context.h"
 #include "RoguelikeGameApp.h"
 #include "0001SimpleDemo.h"
+#include "0002SimpleDemo.h"
 //=============================================================================
 #if defined(_MSC_VER)
 #	pragma comment( lib, "3rdparty.lib" )
@@ -52,10 +53,9 @@ int main(
 {
 	Context context;
 
-	stratusgfx
-
 	//RoguelikeGameApp game(context);
-	_0001SimpleDemo game(context);
+	//_0001SimpleDemo game(context);
+	_0002SimpleDemo game(context);
 
 	if (context.Init(GetContextCreateInfo())
 		&& game.Init())

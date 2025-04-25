@@ -59,10 +59,10 @@ std::string getGltfMetallicRoughnessTexturePath(aiMaterial* material)
 //=============================================================================
 std::string resolveRelativePath(const std::string& meshPath, const std::string& path, bool isGltf)
 {
-	if (isGltf)
+	//if (isGltf)
 		return GetFileDirectory(meshPath) + "/" + path;
-	else
-		return path;
+	//else
+	//	return path;
 }
 //=============================================================================
 static uint32_t gLastMeshIdx = 0;
