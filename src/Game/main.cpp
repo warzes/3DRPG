@@ -1,26 +1,36 @@
 ﻿#include "stdafx.h"
+#if ENABLE_SAMPLES
+#include "SampleFramework.h"
+#include "s0001Example.h"
+#else
 #include "Context.h"
 #include "RoguelikeGameApp.h"
 #include "0001SimpleDemo.h"
 #include "0002SimpleDemo.h"
+#endif
 //=============================================================================
 #if defined(_MSC_VER)
 #	pragma comment( lib, "3rdparty.lib" )
 #endif
 //=============================================================================
+#if !ENABLE_SAMPLES
 bool ExitRequested(const Context& context)
 {
 	extern bool IsExitApp;
 	return IsExitApp || context.ExitRequested();
 }
+#endif
 //=============================================================================
+#if !ENABLE_SAMPLES
 ContextCreateInfo GetContextCreateInfo()
 {
 	ContextCreateInfo contextInfo{};
 
 	return contextInfo;
 }
+#endif
 //=============================================================================
+#if !ENABLE_SAMPLES
 #if defined(__EMSCRIPTEN__)
 RoguelikeGameApp* game{ nullptr };
 void runFrame(void* arg)
@@ -46,11 +56,18 @@ void runFrame(void* arg)
 	context->EndFrame();
 }
 #endif
+#endif
 //=============================================================================
 int main(
 	[[maybe_unused]] int   argc,
 	[[maybe_unused]] char* argv[])
 {
+#if ENABLE_SAMPLES
+	SampleFramework* example = new s0001Example();
+
+	StartSample(1600, 900, example);
+	delete example;
+#else
 	Context context;
 
 	//RoguelikeGameApp game(context);
@@ -97,5 +114,6 @@ int main(
 #endif
 	game.Close();
 	context.Close();
+#endif
 }
 //=============================================================================

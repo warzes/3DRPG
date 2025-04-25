@@ -23,9 +23,17 @@ class SampleFramework
 public:
 	virtual ~SampleFramework();
 
-	virtual void OnStart() = 0;
-	virtual void OnClose() = 0;
+	void Run(uint32_t width, uint32_t height);
 
+	virtual void OnStart() = 0;
+
+	virtual void OnResize(uint32_t width, uint32_t height) = 0;
 	virtual void OnUpdate(float deltaTime) = 0;
 	virtual void OnRender() = 0;
+	virtual void OnImGuiDraw() = 0;
+
+protected:
+	GLFWwindow* m_window{ nullptr };
 };
+
+void StartSample(uint32_t width, uint32_t height, SampleFramework* example);

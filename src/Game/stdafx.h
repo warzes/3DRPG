@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-//#define INVERTED_Z
+#include "Config.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push, 3)

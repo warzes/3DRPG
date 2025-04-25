@@ -122,6 +122,10 @@
     <ClCompile Include="RHIVertexArray.cpp" />
     <ClCompile Include="RoguelikeGameApp.cpp" />
     <ClCompile Include="RTSGameApp.cpp" />
+    <ClCompile Include="s0001Example.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="SampleFramework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -144,6 +148,7 @@
     <ClInclude Include="Base.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Context.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="DebugDraw.h" />
@@ -165,6 +170,7 @@
     <ClInclude Include="RHIVertexArray.h" />
     <ClInclude Include="RoguelikeGameApp.h" />
     <ClInclude Include="RTSGameApp.h" />
+    <ClInclude Include="s0001Example.h" />
     <ClInclude Include="SampleFramework.h" />
     <ClInclude Include="Test01.h" />
     <ClInclude Include="Graphics.h" />
