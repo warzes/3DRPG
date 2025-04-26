@@ -13,3 +13,5 @@ Thumbs.db
 #exe
 /bin/Game_Debug.*
 /bin/Game_Release.*
+/bin/Old_Debug.*
+/bin/Old_Release.*

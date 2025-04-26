@@ -1,0 +1,60 @@
+﻿#pragma once
+
+#include "Config.h"
+
+#if defined(_MSC_VER)
+#	pragma warning(push, 3)
+//#	pragma warning(disable : 5039) 
+#endif
+
+#define _USE_MATH_DEFINES
+
+#include <cmath>
+#include <string>
+#include <filesystem>
+#include <algorithm>
+#include <memory>
+#include <chrono>
+#include <array>
+#include <stack>
+
+#include <glad/gl.h>
+
+#include <glfw/glfw3.h>
+
+#if defined(__EMSCRIPTEN__)
+#	define GLFW_INCLUDE_ES3
+#	include <emscripten/emscripten.h>
+#	include <emscripten/html5.h>
+#endif
+
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
+
+#define GLM_FORCE_XYZW_ONLY
+#define GLM_ENABLE_EXPERIMENTAL
+#define GLM_FORCE_RADIAN
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtx/dual_quaternion.hpp>
+#include <glm/gtx/type_aligned.hpp>
+
+#include <stb/stb_image.h>
+#include <stb/stb_truetype.h>
+
+#include <ktx.h>
+
+#include <tiny_obj_loader.h>
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <assimp/pbrmaterial.h>
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
