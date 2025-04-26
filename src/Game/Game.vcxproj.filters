@@ -9,6 +9,12 @@
     <ClCompile Include="s0001OGL4Example.cpp">
       <Filter>_SamplesOpenGL4Modern</Filter>
     </ClCompile>
+    <ClCompile Include="SampleFrameworkOGL3.cpp">
+      <Filter>_SamplesOpenGL33\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="s0001OGL3Example.cpp">
+      <Filter>_SamplesOpenGL33</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -23,10 +29,16 @@
       <Filter>_SamplesOpenGL4Modern\Framework</Filter>
     </ClInclude>
     <ClInclude Include="OpenGLOther.h">
-      <Filter>_SamplesOpenGL33\temp</Filter>
+      <Filter>_SamplesOpenGL33\Framework\temp</Filter>
     </ClInclude>
     <ClInclude Include="s0001OGL4Example.h">
       <Filter>_SamplesOpenGL4Modern</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleFrameworkOGL3.h">
+      <Filter>_SamplesOpenGL33\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="s0001OGL3Example.h">
+      <Filter>_SamplesOpenGL33</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -45,7 +57,7 @@
     <Filter Include="_SamplesOpenGL33\Framework">
       <UniqueIdentifier>{e1a326aa-fc3f-4629-b22e-36a589566072}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_SamplesOpenGL33\temp">
+    <Filter Include="_SamplesOpenGL33\Framework\temp">
       <UniqueIdentifier>{56c5c72c-4025-4aa3-a51c-481b6e6e5cc4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

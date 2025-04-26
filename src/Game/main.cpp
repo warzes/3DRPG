@@ -1,5 +1,7 @@
 ﻿#include "stdafx.h"
 #if ENABLE_SAMPLES
+#include "s0001OGL3Example.h"
+
 #include "s0001OGL4Example.h"
 #else
 #endif
@@ -13,10 +15,16 @@ int main(
 	[[maybe_unused]] char* argv[])
 {
 #if ENABLE_SAMPLES
-	SampleFrameworkOGL4* example = new s0001OGL4Example();
+	//SampleFrameworkOGL4* example = new s0001OGL4Example();
+	//StartSampleOGL4(1600, 900, example);
+	//delete example;
 
-	StartSampleOGL4(1600, 900, example);
+
+	SampleFrameworkOGL3* example = new s0001OGL3Example();
+	StartSampleOGL3(1600, 900, example);
 	delete example;
+
+
 #else
 	
 #endif
