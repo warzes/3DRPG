@@ -19,6 +19,7 @@
 #include <tiny_obj_loader.h>
 
 #include "SimpleOpenGL.h"
+#include "OpenGLOther.h"
 
 class SampleFramework
 {

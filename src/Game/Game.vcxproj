@@ -158,6 +158,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="OpenGLOther.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="RHIBuffer.h" />
     <ClInclude Include="RHICore.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="s0001Example.h" />
     <ClInclude Include="SampleFramework.h" />
     <ClInclude Include="SimpleOpenGL.h" />
+    <ClInclude Include="SimpleOpenGLUtils.h" />
     <ClInclude Include="Test01.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Render.h" />

@@ -217,6 +217,12 @@
     <ClInclude Include="SimpleOpenGL.h">
       <Filter>_Samples\OpenGL\Framework</Filter>
     </ClInclude>
+    <ClInclude Include="SimpleOpenGLUtils.h">
+      <Filter>_Samples\OpenGL\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLOther.h">
+      <Filter>_Samples\OpenGL\Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

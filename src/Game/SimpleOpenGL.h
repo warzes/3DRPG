@@ -1,4 +1,6 @@
-#pragma once
+﻿#pragma once
+
+#include "SimpleOpenGLUtils.h"
 
 namespace sample
 {
@@ -15,21 +17,20 @@ namespace sample
 			GLchar log[512];
 			glGetShaderInfoLog(shader, 512, nullptr, log);
 
-			std::string logError = "OPENGL: Shader compilation failed: ";
-			logError += std::string(log);
-			logError += ", Source: ";
-			logError += shaderSource;
-
+			const std::string logError 
+				= "OPENGL " + ShaderTypeToString(type) + ": Shader compilation failed : " 
+				+ std::string(log) + ", Source: \n" + shaderSource;
 			throw std::exception(logError.c_str());
 		}
+
+		return shader;
 	}
 
 	inline GLuint CreateShaderProgram(const char* vertexShaderSource, const char* fragmentShaderSource)
 	{
-		GLuint vertexShader = CreateShader(GL_VERTEX_SHADER, vertexShaderSource);
+		GLuint vertexShader   = CreateShader(GL_VERTEX_SHADER, vertexShaderSource);
 		GLuint fragmentShader = CreateShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
-
-		GLuint program = glCreateProgram();
+		GLuint program        = glCreateProgram();
 		glAttachShader(program, vertexShader);
 		glAttachShader(program, fragmentShader);
 		glLinkProgram(program);
@@ -43,9 +44,7 @@ namespace sample
 		{
 			char  log[512];
 			glGetProgramInfoLog(program, 512, nullptr, log);
-
-			std::string logError = "OPENGL: Shader program linking failed: ";
-			logError += std::string(log);
+			std::string logError = "OPENGL: Shader program linking failed: " + std::string(log);
 			throw std::exception(logError.c_str());
 		}
 		return program;
@@ -53,6 +52,15 @@ namespace sample
 
 	inline GLuint CreateBuffer(GLenum flags, size_t size, void* data)
 	{
+		/*
+		flags:
+			GL_DYNAMIC_STORAGE_BIT - содержимое можно будет изменять через glBufferSubData
+			GL_MAP_READ_BIT - можно мапить для чтения
+			GL_MAP_READ_BIT - можно мапить для записи
+			GL_MAP_PERSISTENT_BIT - запрос на чтение или запись через мапинг. Указатель на данные действителен пока выполняется мапинг, даже во время выполнения команд отрисовки. Должен быть минимум с GL_MAP_READ_BIT или GL_MAP_READ_BIT
+			GL_MAP_COHERENT_BIT - соответствие данных клиента и сервера без дополнительных действий. должен быть с GL_MAP_PERSISTENT_BIT
+			GL_CLIENT_STORAGE_BIT - 
+		*/
 		GLuint buffer;
 		glCreateBuffers(1, &buffer);
 		glNamedBufferStorage(buffer, size, data, flags);
@@ -69,17 +77,19 @@ namespace sample
 		glVertexArrayAttribFormat(vao, attribIndex, size, type, normalized, relativeOffset);
 	}
 
-	inline GLuint CreateTexture2D(GLenum internalFormat, GLenum format, int width, int height, void* data)
+	// TODO: TextureParameter
+	inline GLuint CreateTexture2D(GLenum internalFormat, int width, int height, void* data)
 	{
 		GLuint texture;
 		glCreateTextures(GL_TEXTURE_2D, 1, &texture);
-		glTextureStorage2D(texture, 1, internalFormat, width, height);
+
 		glTextureParameteri(texture, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTextureParameteri(texture, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTextureParameteri(texture, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(texture, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		glTextureSubImage2D(texture, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
+		glTextureStorage2D(texture, 1, internalFormat, width, height);
+		glTextureSubImage2D(texture, 0, 0, 0, width, height, GetBaseFormat(internalFormat), GL_UNSIGNED_BYTE, data);
 
 		glGenerateTextureMipmap(texture);
 
@@ -95,28 +105,13 @@ namespace sample
 		if (!data)
 			throw std::exception((std::string("Texture: ") + texturePath + " not find").c_str());
 
-		GLenum internalFormat, format;
-		if (nrChannels == 1)
-		{
-			internalFormat = GL_R8;
-			format = GL_RED;
-		}
-		else
-		{
-			if (nrChannels == 4)
-			{
-				internalFormat = GL_RGBA8;
-				format = GL_RGBA;
-			}
-			// TODO: 2 ����������
-			else
-			{
-				internalFormat = GL_RGB8;
-				format = GL_RGB;
-			}
-		}
+		GLenum internalFormat;
+		if (nrChannels == 1) internalFormat = GL_R8;
+		else if (nrChannels == 2) internalFormat = GL_RG8;
+		else if (nrChannels == 3) internalFormat = GL_RGB8;
+		else internalFormat = GL_RGBA8;
 
-		GLuint texture = CreateTexture2D(internalFormat, format, width, height, data);
+		GLuint texture = CreateTexture2D(internalFormat, width, height, data);
 
 		stbi_image_free(data);
 		return texture;

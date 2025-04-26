@@ -91,18 +91,19 @@ void s0001Example::OnStart()
 	glNamedBufferStorage(EBO, sizeof(indices), indices, 0);
 
 	glCreateVertexArrays(1, &VAO);
+	glVertexArrayVertexBuffer(VAO, 0, VBO, 0, sizeof(Vertex));
+	glVertexArrayElementBuffer(VAO, EBO);
 
 	glEnableVertexArrayAttrib(VAO, 0);
 	glVertexArrayAttribBinding(VAO, 0, 0);
 	glVertexArrayAttribFormat(VAO, 0, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, pos));
+	
 	glEnableVertexArrayAttrib(VAO, 1);
 	glVertexArrayAttribBinding(VAO, 1, 0);
 	glVertexArrayAttribFormat(VAO, 1, 2, GL_FLOAT, GL_FALSE, offsetof(Vertex, uv));
 
-	glVertexArrayVertexBuffer(VAO, 0, VBO, 0, sizeof(Vertex));
-	glVertexArrayElementBuffer(VAO, EBO);
-
 	// Загрузка текстуры
+	stbi_set_flip_vertically_on_load(true);
 	int width, height, nrChannels;
 	unsigned char* data = stbi_load("data/temp.png", &width, &height, &nrChannels, 0);
 
@@ -120,8 +121,6 @@ void s0001Example::OnStart()
 	glGenerateTextureMipmap(texture);
 
 	stbi_image_free(data);
-
-	а что если именно в таком ключе продолжить минималку?
 }
 //=============================================================================
 void s0001Example::OnResize(uint32_t width, uint32_t height)
