@@ -99,11 +99,11 @@
     <ClCompile Include="Frustum.cpp">
       <Filter>Engine\Math</Filter>
     </ClCompile>
-    <ClCompile Include="SampleFramework.cpp">
-      <Filter>_Samples\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="s0001Example.cpp">
       <Filter>_Samples\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleFramework.cpp">
+      <Filter>_Samples\OpenGL\Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -207,12 +207,15 @@
     <ClInclude Include="Frustum.h">
       <Filter>Engine\Math</Filter>
     </ClInclude>
-    <ClInclude Include="SampleFramework.h">
-      <Filter>_Samples\OpenGL</Filter>
-    </ClInclude>
     <ClInclude Include="Config.h" />
     <ClInclude Include="s0001Example.h">
       <Filter>_Samples\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleFramework.h">
+      <Filter>_Samples\OpenGL\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleOpenGL.h">
+      <Filter>_Samples\OpenGL\Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -275,6 +278,9 @@
     </Filter>
     <Filter Include="_Samples\OpenGL">
       <UniqueIdentifier>{fd40a6dd-ba47-409c-bf57-b324f808203f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Samples\OpenGL\Framework">
+      <UniqueIdentifier>{431facae-bfa7-4b4c-884b-8e3114d71455}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

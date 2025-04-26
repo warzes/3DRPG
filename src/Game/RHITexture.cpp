@@ -30,6 +30,8 @@ int NumChannelsFromInternalFormat(GLenum fmt)
 //=============================================================================
 void TextureBase::Bind(uint32_t unit)
 {
+	// TODO: 	glBindTextureUnit(0, texture);
+
 	glActiveTexture(GL_TEXTURE0 + unit);
 	glBindTexture(m_target, m_glTex);
 }

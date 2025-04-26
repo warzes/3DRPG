@@ -172,6 +172,7 @@
     <ClInclude Include="RTSGameApp.h" />
     <ClInclude Include="s0001Example.h" />
     <ClInclude Include="SampleFramework.h" />
+    <ClInclude Include="SimpleOpenGL.h" />
     <ClInclude Include="Test01.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Render.h" />

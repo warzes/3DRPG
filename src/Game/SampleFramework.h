@@ -18,6 +18,8 @@
 
 #include <tiny_obj_loader.h>
 
+#include "SimpleOpenGL.h"
+
 class SampleFramework
 {
 public:
