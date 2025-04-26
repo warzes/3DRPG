@@ -36,7 +36,6 @@ void main()
 		glm::vec2 uv;
 	};
 
-
 	GLuint shaderProgram;
 	GLuint VAO, VBO, EBO;
 	GLuint texture;

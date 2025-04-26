@@ -99,11 +99,11 @@
     <ClCompile Include="Frustum.cpp">
       <Filter>Engine\Math</Filter>
     </ClCompile>
-    <ClCompile Include="s0001Example.cpp">
-      <Filter>_Samples\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="SampleFramework.cpp">
-      <Filter>_Samples\OpenGL\Framework</Filter>
+      <Filter>_Samples\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="s0001Example.cpp">
+      <Filter>_Samples</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,20 +208,20 @@
       <Filter>Engine\Math</Filter>
     </ClInclude>
     <ClInclude Include="Config.h" />
-    <ClInclude Include="s0001Example.h">
-      <Filter>_Samples\OpenGL</Filter>
-    </ClInclude>
     <ClInclude Include="SampleFramework.h">
-      <Filter>_Samples\OpenGL\Framework</Filter>
+      <Filter>_Samples\Framework</Filter>
     </ClInclude>
     <ClInclude Include="SimpleOpenGL.h">
-      <Filter>_Samples\OpenGL\Framework</Filter>
+      <Filter>_Samples\Framework</Filter>
     </ClInclude>
     <ClInclude Include="SimpleOpenGLUtils.h">
-      <Filter>_Samples\OpenGL\Framework</Filter>
+      <Filter>_Samples\Framework</Filter>
     </ClInclude>
     <ClInclude Include="OpenGLOther.h">
-      <Filter>_Samples\OpenGL\Framework</Filter>
+      <Filter>_Samples\Framework\temp</Filter>
+    </ClInclude>
+    <ClInclude Include="s0001Example.h">
+      <Filter>_Samples</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -282,11 +282,11 @@
     <Filter Include="_Samples">
       <UniqueIdentifier>{c784f8e5-2a4b-4058-afbb-fa69326aa8c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_Samples\OpenGL">
-      <UniqueIdentifier>{fd40a6dd-ba47-409c-bf57-b324f808203f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_Samples\OpenGL\Framework">
+    <Filter Include="_Samples\Framework">
       <UniqueIdentifier>{431facae-bfa7-4b4c-884b-8e3114d71455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Samples\Framework\temp">
+      <UniqueIdentifier>{56c5c72c-4025-4aa3-a51c-481b6e6e5cc4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
