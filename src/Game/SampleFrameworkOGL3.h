@@ -12,8 +12,11 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #define GLM_FORCE_RADIAN
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
 
 #include <stb/stb_image.h>
+
+#include "SimpleOpenGL3.h"
 
 class SampleFrameworkOGL3
 {

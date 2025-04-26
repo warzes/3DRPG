@@ -15,6 +15,9 @@
     <ClCompile Include="s0001OGL3Example.cpp">
       <Filter>_SamplesOpenGL33</Filter>
     </ClCompile>
+    <ClCompile Include="s0002OGL3Example.cpp">
+      <Filter>_SamplesOpenGL33</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -38,6 +41,12 @@
       <Filter>_SamplesOpenGL33\Framework</Filter>
     </ClInclude>
     <ClInclude Include="s0001OGL3Example.h">
+      <Filter>_SamplesOpenGL33</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleOpenGL3.h">
+      <Filter>_SamplesOpenGL33\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="s0002OGL3Example.h">
       <Filter>_SamplesOpenGL33</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿#include "s0001OGL3Example.h"
+#include "s0002OGL3Example.h"
 //=============================================================================
 namespace
 {
@@ -34,11 +34,11 @@ void main()
 	float delta = 0.8f;
 }
 //=============================================================================
-s0001OGL3Example::~s0001OGL3Example()
+s0002OGL3Example::~s0002OGL3Example()
 {
 }
 //=============================================================================
-void s0001OGL3Example::OnStart()
+void s0002OGL3Example::OnStart()
 {
 	glm::vec3 vertices[] =
 	{
@@ -74,19 +74,19 @@ void s0001OGL3Example::OnStart()
 	translateLocation = glGetUniformLocation(program, "gTranslate");
 }
 //=============================================================================
-void s0001OGL3Example::OnResize(uint32_t width, uint32_t height)
+void s0002OGL3Example::OnResize(uint32_t width, uint32_t height)
 {
 	glViewport(0, 0, width, height);
 }
 //=============================================================================
-void s0001OGL3Example::OnUpdate(float deltaTime)
+void s0002OGL3Example::OnUpdate(float deltaTime)
 {
 	scale += delta * deltaTime;
 	if (scale >= 1.0f || scale <= -1.0f)
 		delta *= -1.0f;
 }
 //=============================================================================
-void s0001OGL3Example::OnRender()
+void s0002OGL3Example::OnRender()
 {
 	glClearColor(0.2f, 0.4f, 0.8f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -102,7 +102,7 @@ void s0001OGL3Example::OnRender()
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 //=============================================================================
-void s0001OGL3Example::OnImGuiDraw()
+void s0002OGL3Example::OnImGuiDraw()
 {
 
 }
