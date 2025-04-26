@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include "SampleFramework.h"
+#include "SampleFrameworkOGL4.h"
 
-class s0001Example final : public SampleFramework
+class s0001OGL4Example final : public SampleFrameworkOGL4
 {
 public:
-	~s0001Example();
+	~s0001OGL4Example();
 
 	void OnStart() final;
 

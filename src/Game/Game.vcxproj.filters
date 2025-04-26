@@ -3,289 +3,49 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="Core.cpp">
-      <Filter>Engine\Core</Filter>
+    <ClCompile Include="SampleFrameworkOGL4.cpp">
+      <Filter>_SamplesOpenGL4Modern\Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Engine\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Context.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Test01.cpp">
-      <Filter>Old\_Test</Filter>
-    </ClCompile>
-    <ClCompile Include="0001Demo.cpp">
-      <Filter>Old\_Demo\01API</Filter>
-    </ClCompile>
-    <ClCompile Include="DemoContext.cpp">
-      <Filter>Old\_Demo\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem.cpp">
-      <Filter>Engine\RHI\old</Filter>
-    </ClCompile>
-    <ClCompile Include="Render.cpp">
-      <Filter>Engine\RHI\old</Filter>
-    </ClCompile>
-    <ClCompile Include="RoguelikeGameApp.cpp">
-      <Filter>Game\Roguelike</Filter>
-    </ClCompile>
-    <ClCompile Include="RTSGameApp.cpp">
-      <Filter>Game\RTS</Filter>
-    </ClCompile>
-    <ClCompile Include="Profiler.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="RHIEnums.cpp">
-      <Filter>Engine\RHI</Filter>
-    </ClCompile>
-    <ClCompile Include="RHITexture.cpp">
-      <Filter>Engine\RHI</Filter>
-    </ClCompile>
-    <ClCompile Include="RHICore.cpp">
-      <Filter>Engine\RHI</Filter>
-    </ClCompile>
-    <ClCompile Include="RHIFramebuffer.cpp">
-      <Filter>Engine\RHI</Filter>
-    </ClCompile>
-    <ClCompile Include="RHIShaders.cpp">
-      <Filter>Engine\RHI</Filter>
-    </ClCompile>
-    <ClCompile Include="RHIBuffer.cpp">
-      <Filter>Engine\RHI</Filter>
-    </ClCompile>
-    <ClCompile Include="RHIVertexArray.cpp">
-      <Filter>Engine\RHI</Filter>
-    </ClCompile>
-    <ClCompile Include="RHIQuery.cpp">
-      <Filter>Engine\RHI</Filter>
-    </ClCompile>
-    <ClCompile Include="RHIFence.cpp">
-      <Filter>Engine\RHI</Filter>
-    </ClCompile>
-    <ClCompile Include="GeometryCore.cpp">
-      <Filter>Engine\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics.cpp">
-      <Filter>Engine\Graphics\old</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Engine\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Engine\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugDraw.cpp">
-      <Filter>Engine\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="0001SimpleDemo.cpp">
-      <Filter>Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Base.cpp">
-      <Filter>Engine\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Color.cpp">
-      <Filter>Engine\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Engine\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Engine\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="0002SimpleDemo.cpp">
-      <Filter>Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Frustum.cpp">
-      <Filter>Engine\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="SampleFramework.cpp">
-      <Filter>_Samples\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="s0001Example.cpp">
-      <Filter>_Samples</Filter>
+    <ClCompile Include="s0001OGL4Example.cpp">
+      <Filter>_SamplesOpenGL4Modern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Core.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Engine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Context.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneShader.h">
-      <Filter>Engine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Test01.h">
-      <Filter>Old\_Test</Filter>
-    </ClInclude>
-    <ClInclude Include="0001Demo.h">
-      <Filter>Old\_Demo\01API</Filter>
-    </ClInclude>
-    <ClInclude Include="DemoContext.h">
-      <Filter>Old\_Demo\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Render.h">
-      <Filter>Engine\RHI\old</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderCore.h">
-      <Filter>Engine\RHI\old</Filter>
-    </ClInclude>
-    <ClInclude Include="RoguelikeGameApp.h">
-      <Filter>Game\Roguelike</Filter>
-    </ClInclude>
-    <ClInclude Include="RTSGameApp.h">
-      <Filter>Game\RTS</Filter>
-    </ClInclude>
-    <ClInclude Include="Profiler.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="RHIEnums.h">
-      <Filter>Engine\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="RHITexture.h">
-      <Filter>Engine\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="RHICore.h">
-      <Filter>Engine\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="RHIFramebuffer.h">
-      <Filter>Engine\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="RHIShaders.h">
-      <Filter>Engine\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="RHIBuffer.h">
-      <Filter>Engine\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="RHIVertexArray.h">
-      <Filter>Engine\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="RHIQuery.h">
-      <Filter>Engine\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="RHIFence.h">
-      <Filter>Engine\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryCore.h">
-      <Filter>Engine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics.h">
-      <Filter>Engine\Graphics\old</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Engine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Engine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugDraw.h">
-      <Filter>Engine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="0001SimpleDemo.h">
-      <Filter>Demo</Filter>
-    </ClInclude>
-    <ClInclude Include="Base.h">
-      <Filter>Engine\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Color.h">
-      <Filter>Engine\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Engine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Engine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="0002SimpleDemo.h">
-      <Filter>Demo</Filter>
-    </ClInclude>
-    <ClInclude Include="Frustum.h">
-      <Filter>Engine\Math</Filter>
-    </ClInclude>
     <ClInclude Include="Config.h" />
-    <ClInclude Include="SampleFramework.h">
-      <Filter>_Samples\Framework</Filter>
+    <ClInclude Include="SampleFrameworkOGL4.h">
+      <Filter>_SamplesOpenGL4Modern\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleOpenGL.h">
-      <Filter>_Samples\Framework</Filter>
+    <ClInclude Include="SimpleOpenGL4.h">
+      <Filter>_SamplesOpenGL4Modern\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleOpenGLUtils.h">
-      <Filter>_Samples\Framework</Filter>
+    <ClInclude Include="SimpleOpenGL4Utils.h">
+      <Filter>_SamplesOpenGL4Modern\Framework</Filter>
     </ClInclude>
     <ClInclude Include="OpenGLOther.h">
-      <Filter>_Samples\Framework\temp</Filter>
+      <Filter>_SamplesOpenGL33\temp</Filter>
     </ClInclude>
-    <ClInclude Include="s0001Example.h">
-      <Filter>_Samples</Filter>
+    <ClInclude Include="s0001OGL4Example.h">
+      <Filter>_SamplesOpenGL4Modern</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
       <UniqueIdentifier>{ac6c5d5d-a407-465d-a5cc-51d285e08d99}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Core">
-      <UniqueIdentifier>{0a710c69-25cf-40a7-b9e6-4d17aac33e82}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Graphics">
-      <UniqueIdentifier>{59c8a38f-881f-4acb-9a76-b876227b4a79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Scene">
-      <UniqueIdentifier>{6d4439fc-14ed-418b-aba3-42a582f28b07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game">
-      <UniqueIdentifier>{bef2c127-006b-43a9-8516-6d1a0a376c85}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Roguelike">
-      <UniqueIdentifier>{7b3fbac1-7c79-418c-a503-2d012342ef75}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\RTS">
-      <UniqueIdentifier>{3c6aaf0d-5363-4a56-95ef-e4485701075a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\RHI">
-      <UniqueIdentifier>{597d1977-a0f7-4018-93fb-0c7c73d2be29}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\RHI\old">
-      <UniqueIdentifier>{cf153560-fb3e-4b3e-8d92-98351b869177}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Graphics\old">
-      <UniqueIdentifier>{bc1e2077-3088-4330-afe5-7414ec37a30a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Old">
-      <UniqueIdentifier>{f507a8dc-bea4-4d9e-8dfa-341b73d298d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Old\_Test">
-      <UniqueIdentifier>{c5a3891c-2518-472a-b5da-2e31ef73d63b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Old\_Demo">
-      <UniqueIdentifier>{1f821387-60a4-4870-b094-2cc6fe23825c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Old\_Demo\01API">
-      <UniqueIdentifier>{f8872b3b-96d3-4923-a247-e8dd6a1fe55d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Old\_Demo\Framework">
-      <UniqueIdentifier>{58377f26-4bfe-41df-9244-58d2792f570e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Demo">
-      <UniqueIdentifier>{701f85b4-f0af-4618-b22e-88a594b7b57a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Base">
-      <UniqueIdentifier>{f91c4f33-3dd3-4e05-953e-139a033bd71a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Math">
-      <UniqueIdentifier>{ed0f5a9b-4c1d-4df5-b2f9-d4919c1edbf1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_Samples">
+    <Filter Include="_SamplesOpenGL4Modern">
       <UniqueIdentifier>{c784f8e5-2a4b-4058-afbb-fa69326aa8c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_Samples\Framework">
+    <Filter Include="_SamplesOpenGL4Modern\Framework">
       <UniqueIdentifier>{431facae-bfa7-4b4c-884b-8e3114d71455}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_Samples\Framework\temp">
+    <Filter Include="_SamplesOpenGL33">
+      <UniqueIdentifier>{036aba9c-88e6-4f8c-a4de-d3e3e114287c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_SamplesOpenGL33\Framework">
+      <UniqueIdentifier>{e1a326aa-fc3f-4629-b22e-36a589566072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_SamplesOpenGL33\temp">
       <UniqueIdentifier>{56c5c72c-4025-4aa3-a51c-481b6e6e5cc4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

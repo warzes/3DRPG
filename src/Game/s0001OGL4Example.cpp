@@ -1,4 +1,4 @@
-﻿#include "s0001Example.h"
+﻿#include "s0001OGL4Example.h"
 //=============================================================================
 namespace
 {
@@ -41,7 +41,7 @@ void main()
 	GLuint texture;
 }
 //=============================================================================
-s0001Example::~s0001Example()
+s0001OGL4Example::~s0001OGL4Example()
 {
 	glDeleteTextures(1, &texture);
 	glDeleteVertexArrays(1, &VAO);
@@ -50,7 +50,7 @@ s0001Example::~s0001Example()
 	glDeleteProgram(shaderProgram);
 }
 //=============================================================================
-void s0001Example::OnStart()
+void s0001OGL4Example::OnStart()
 {
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
@@ -122,20 +122,19 @@ void s0001Example::OnStart()
 	stbi_image_free(data);
 }
 //=============================================================================
-void s0001Example::OnResize(uint32_t width, uint32_t height)
+void s0001OGL4Example::OnResize(uint32_t width, uint32_t height)
 {
 	glViewport(0, 0, width, height);
 }
 //=============================================================================
-void s0001Example::OnUpdate(float deltaTime)
+void s0001OGL4Example::OnUpdate(float deltaTime)
 {
 
 }
 //=============================================================================
-void s0001Example::OnRender()
+void s0001OGL4Example::OnRender()
 {
 	glClearColor(0.2f, 0.4f, 0.8f, 1.0f);
-
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(shaderProgram);
 	glBindTextureUnit(0, texture);
@@ -143,7 +142,7 @@ void s0001Example::OnRender()
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 //=============================================================================
-void s0001Example::OnImGuiDraw()
+void s0001OGL4Example::OnImGuiDraw()
 {
 
 }

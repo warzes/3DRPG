@@ -95,92 +95,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="0001Demo.cpp" />
-    <ClCompile Include="0001SimpleDemo.cpp" />
-    <ClCompile Include="0002SimpleDemo.cpp" />
-    <ClCompile Include="Base.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Color.cpp" />
-    <ClCompile Include="Context.cpp" />
-    <ClCompile Include="Core.cpp" />
-    <ClCompile Include="DebugDraw.cpp" />
-    <ClCompile Include="DemoContext.cpp" />
-    <ClCompile Include="Frustum.cpp" />
-    <ClCompile Include="GeometryCore.cpp" />
-    <ClCompile Include="Light.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Profiler.cpp" />
-    <ClCompile Include="RHIBuffer.cpp" />
-    <ClCompile Include="RHICore.cpp" />
-    <ClCompile Include="RHIEnums.cpp" />
-    <ClCompile Include="RHIFence.cpp" />
-    <ClCompile Include="RHIFramebuffer.cpp" />
-    <ClCompile Include="RHIQuery.cpp" />
-    <ClCompile Include="RHIShaders.cpp" />
-    <ClCompile Include="RHITexture.cpp" />
-    <ClCompile Include="RHIVertexArray.cpp" />
-    <ClCompile Include="RoguelikeGameApp.cpp" />
-    <ClCompile Include="RTSGameApp.cpp" />
-    <ClCompile Include="s0001Example.cpp">
+    <ClCompile Include="s0001OGL4Example.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SampleFramework.cpp">
+    <ClCompile Include="SampleFrameworkOGL4.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Test01.cpp" />
-    <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Render.cpp" />
-    <ClCompile Include="RenderSystem.cpp" />
-    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="0001Demo.h" />
-    <ClInclude Include="0001SimpleDemo.h" />
-    <ClInclude Include="0002SimpleDemo.h" />
-    <ClInclude Include="Base.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Color.h" />
     <ClInclude Include="Config.h" />
-    <ClInclude Include="Context.h" />
-    <ClInclude Include="Core.h" />
-    <ClInclude Include="DebugDraw.h" />
-    <ClInclude Include="DemoContext.h" />
-    <ClInclude Include="Frustum.h" />
-    <ClInclude Include="GeometryCore.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="OpenGLOther.h" />
-    <ClInclude Include="Profiler.h" />
-    <ClInclude Include="RHIBuffer.h" />
-    <ClInclude Include="RHICore.h" />
-    <ClInclude Include="RHIEnums.h" />
-    <ClInclude Include="RHIFence.h" />
-    <ClInclude Include="RHIFramebuffer.h" />
-    <ClInclude Include="RHIQuery.h" />
-    <ClInclude Include="RHIShaders.h" />
-    <ClInclude Include="RHITexture.h" />
-    <ClInclude Include="RHIVertexArray.h" />
-    <ClInclude Include="RoguelikeGameApp.h" />
-    <ClInclude Include="RTSGameApp.h" />
-    <ClInclude Include="s0001Example.h" />
-    <ClInclude Include="SampleFramework.h" />
-    <ClInclude Include="SimpleOpenGL.h" />
-    <ClInclude Include="SimpleOpenGLUtils.h" />
-    <ClInclude Include="Test01.h" />
-    <ClInclude Include="Graphics.h" />
-    <ClInclude Include="Render.h" />
-    <ClInclude Include="RenderCore.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneShader.h" />
+    <ClInclude Include="s0001OGL4Example.h" />
+    <ClInclude Include="SampleFrameworkOGL4.h" />
+    <ClInclude Include="SimpleOpenGL4.h" />
+    <ClInclude Include="SimpleOpenGL4Utils.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

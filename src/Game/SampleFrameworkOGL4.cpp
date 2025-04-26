@@ -1,8 +1,8 @@
-﻿#include "SampleFramework.h"
+﻿#include "SampleFrameworkOGL4.h"
 //=============================================================================
 namespace
 {
-	SampleFramework* thisSampleFramework{ nullptr };
+	SampleFrameworkOGL4* thisSampleFramework{ nullptr };
 }
 //=============================================================================
 void exampleHandleWindowResizeEvents([[maybe_unused]] GLFWwindow* window, int width, int height) noexcept
@@ -10,7 +10,7 @@ void exampleHandleWindowResizeEvents([[maybe_unused]] GLFWwindow* window, int wi
 	thisSampleFramework->OnResize(width, height);
 }
 //=============================================================================
-SampleFramework::~SampleFramework()
+SampleFrameworkOGL4::~SampleFrameworkOGL4()
 {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
@@ -21,7 +21,7 @@ SampleFramework::~SampleFramework()
 	thisSampleFramework = nullptr;
 }
 //=============================================================================
-void SampleFramework::Run(uint32_t width, uint32_t height)
+void SampleFrameworkOGL4::Run(uint32_t width, uint32_t height)
 {
 	thisSampleFramework = this;
 
@@ -84,7 +84,7 @@ void SampleFramework::Run(uint32_t width, uint32_t height)
 	}
 }
 //=============================================================================
-void StartSample(uint32_t width, uint32_t height, SampleFramework* example)
+void StartSampleOGL4(uint32_t width, uint32_t height, SampleFrameworkOGL4* example)
 {
 	try
 	{

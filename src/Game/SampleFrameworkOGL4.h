@@ -18,13 +18,12 @@
 
 #include <tiny_obj_loader.h>
 
-#include "SimpleOpenGL.h"
-#include "OpenGLOther.h"
+#include "SimpleOpenGL4.h"
 
-class SampleFramework
+class SampleFrameworkOGL4
 {
 public:
-	virtual ~SampleFramework();
+	virtual ~SampleFrameworkOGL4();
 
 	void Run(uint32_t width, uint32_t height);
 
@@ -39,4 +38,4 @@ protected:
 	GLFWwindow* m_window{ nullptr };
 };
 
-void StartSample(uint32_t width, uint32_t height, SampleFramework* example);
+void StartSampleOGL4(uint32_t width, uint32_t height, SampleFrameworkOGL4* example);
