@@ -6,11 +6,11 @@ namespace
 #version 330 core
 layout (location = 0) in vec3 aPosition;
 
-uniform mat4 gTranslate;
+uniform mat4 gScale;
 
 void main()
 {
-	gl_Position = gTranslate * vec4(aPosition, 1.0);
+	gl_Position = gScale * vec4(aPosition, 1.0);
 }
 )";
 
@@ -28,7 +28,7 @@ void main()
 	GLuint vbo;
 	GLuint vao;
 	GLuint program;
-	GLint translateLocation;
+	GLint scaleLocation;
 
 	float scale = 0.0f;
 	float delta = 0.8f;
@@ -71,12 +71,16 @@ void s0001OGL3Example::OnStart()
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
-	translateLocation = glGetUniformLocation(program, "gTranslate");
+	scaleLocation = glGetUniformLocation(program, "gScale");
 }
 //=============================================================================
 void s0001OGL3Example::OnResize(uint32_t width, uint32_t height)
 {
 	glViewport(0, 0, width, height);
+}
+//=============================================================================
+void s0001OGL3Example::OnMouseMove(int xpos, int ypos)
+{
 }
 //=============================================================================
 void s0001OGL3Example::OnUpdate(float deltaTime)
@@ -95,8 +99,8 @@ void s0001OGL3Example::OnRender()
 
 	// TODO: world = translation * rotation * scaling * positions; == TRSMatrix
 
-	glm::mat4 tr = glm::translate(glm::mat4(1.0f), glm::vec3(scale * 2, scale, 0.0f));
-	glUniformMatrix4fv(translateLocation, 1, GL_FALSE, glm::value_ptr(tr));
+	glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), glm::vec3(scale));
+	glUniformMatrix4fv(scaleLocation, 1, GL_FALSE, glm::value_ptr(scaleMat));
 
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, 3);

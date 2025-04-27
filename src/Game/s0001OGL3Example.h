@@ -10,6 +10,8 @@ public:
 	void OnStart() final;
 
 	void OnResize(uint32_t width, uint32_t height) final;
+	void OnMouseMove(int xpos, int ypos) final;
+
 	void OnUpdate(float deltaTime) final;
 	void OnRender() final;
 	void OnImGuiDraw() final;

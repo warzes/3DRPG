@@ -2,6 +2,8 @@
 #if ENABLE_SAMPLES
 #include "s0001OGL3Example.h"
 #include "s0002OGL3Example.h"
+#include "s0003OGL3Example.h"
+#include "s0004OGL3Example.h"
 
 #include "s0001OGL4Example.h"
 #else
@@ -23,7 +25,10 @@ int main(
 
 	SampleFrameworkOGL3* example = new 
 		//s0001OGL3Example();
-		s0002OGL3Example();
+		//s0002OGL3Example();
+		//s0003OGL3Example();
+		s0004OGL3Example();
+
 	StartSampleOGL3(1600, 900, example);
 	delete example;
 

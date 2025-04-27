@@ -2,10 +2,10 @@
 
 #include "SampleFrameworkOGL3.h"
 
-class s0002OGL3Example final : public SampleFrameworkOGL3
+class s0004OGL3Example final : public SampleFrameworkOGL3
 {
 public:
-	~s0002OGL3Example();
+	~s0004OGL3Example();
 
 	void OnStart() final;
 

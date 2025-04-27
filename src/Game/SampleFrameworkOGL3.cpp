@@ -5,9 +5,14 @@ namespace
 	SampleFrameworkOGL3* thisSampleFramework{ nullptr };
 }
 //=============================================================================
-void exampleHandleWindowResizeEvents3([[maybe_unused]] GLFWwindow* window, int width, int height) noexcept
+void exampleOGL3HandleWindowResizeEvents([[maybe_unused]] GLFWwindow* window, int width, int height) noexcept
 {
 	thisSampleFramework->OnResize(width, height);
+}
+//=============================================================================
+void exampleOGL3HandleMouseMoveEvents([[maybe_unused]] GLFWwindow* window, double xpos, double ypos) noexcept
+{
+	thisSampleFramework->OnMouseMove(xpos, ypos);
 }
 //=============================================================================
 SampleFrameworkOGL3::~SampleFrameworkOGL3()
@@ -37,7 +42,8 @@ void SampleFrameworkOGL3::Run(uint32_t width, uint32_t height)
 
 	m_window = glfwCreateWindow(width, height, "Example", nullptr, nullptr);
 
-	glfwSetWindowSizeCallback(m_window, exampleHandleWindowResizeEvents3);
+	glfwSetWindowSizeCallback(m_window, exampleOGL3HandleWindowResizeEvents);
+	glfwSetCursorPosCallback(m_window, exampleOGL3HandleMouseMoveEvents);
 
 	glfwMakeContextCurrent(m_window);
 	gladLoadGL(glfwGetProcAddress);
