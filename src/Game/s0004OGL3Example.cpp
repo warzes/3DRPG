@@ -1,15 +1,4 @@
-#include "s0004OGL3Example.h"
-
-обернуть текстуру в функцию
-обернуть вао (в параметры передаются буфера и формат вершин)
-
-про загрузку меша из ассима и уроки. я придерживался идеи использования одного буфера вершин для каждого сабмеша
-а значит при 10 сабмешей было 10 переключений буферов (и вао)
-а есть другой вариант - в буфера хранить всю геометрию, а взывать драв со смещением (посмотреть урок). возможно нужны раздельные буферы для вершины (а может нет)
-
-
-после уроков делать нечто похожее на tes arena
-возможно с боевкой adnd (особенно доп правил adnd
+п»ї#include "s0004OGL3Example.h"
 //=============================================================================
 namespace
 {
@@ -108,8 +97,6 @@ void s0004OGL3Example::OnStart()
 	Vertices[6] = Vertex(glm::vec3(0.5f, -0.5f, 0.5f), t01);
 	Vertices[7] = Vertex(glm::vec3(-0.5f, -0.5f, 0.5f), t11);
 
-	vbo = gl3::CreateVertexBuffer(GL_STATIC_DRAW, sizeof(Vertices), Vertices);
-
 	unsigned int Indices[] = {
 							 0, 1, 2,
 							 1, 3, 4,
@@ -125,60 +112,19 @@ void s0004OGL3Example::OnStart()
 							 0, 2, 7
 	};
 
+	std::vector<gl3::VertexAttribute> attributes = {
+		{0, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, pos)},
+		{1, 2, GL_FLOAT, GL_FALSE, offsetof(Vertex, tex)}
+	};
+
+	vbo = gl3::CreateVertexBuffer(GL_STATIC_DRAW, sizeof(Vertices), Vertices);
 	ibo = gl3::CreateIndexBuffer(GL_STATIC_DRAW, sizeof(Indices), Indices);
-
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));
+	vao = gl3::CreateVertexArray(vbo, ibo, sizeof(Vertex), attributes);
 
 	program = gl3::CreateShaderProgram(vertexShaderSource, fragmentShaderSource);
 	uWorldLocation = glGetUniformLocation(program, "uWVP");
 
-	stbi_set_flip_vertically_on_load(true);
-
-	int width, height, nrChannels;
-	unsigned char* data = stbi_load("data/temp.png", &width, &height, &nrChannels, 0);
-
-	GLenum internalFormat, format;
-	if (nrChannels == 1)
-	{
-		internalFormat = GL_R8;
-		format = GL_RED;
-	}
-	else if (nrChannels == 2)
-	{
-		internalFormat = GL_RG8;
-		format = GL_RG;
-	}
-	else if (nrChannels == 3)
-	{
-		internalFormat = GL_RGB8;
-		format = GL_RGB;
-	}
-	else
-	{
-		internalFormat = GL_RGBA8;
-		format = GL_RGBA;
-	}
-
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	stbi_image_free(data);
+	texture = gl3::LoadTexture2D("data/temp.png", true);
 }
 //=============================================================================
 void s0004OGL3Example::OnResize(uint32_t width, uint32_t height)

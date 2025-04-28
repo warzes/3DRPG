@@ -24,6 +24,18 @@
     <ClCompile Include="s0004OGL3Example.cpp">
       <Filter>_SamplesOpenGL33</Filter>
     </ClCompile>
+    <ClCompile Include="s0005OGL3Example.cpp">
+      <Filter>_SamplesOpenGL33</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleOpenGL3.cpp">
+      <Filter>_SamplesOpenGL33\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="TempMathGL3.cpp">
+      <Filter>_SamplesOpenGL33\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="TempTextureGL3.cpp">
+      <Filter>_SamplesOpenGL33\Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -60,6 +72,18 @@
     </ClInclude>
     <ClInclude Include="s0004OGL3Example.h">
       <Filter>_SamplesOpenGL33</Filter>
+    </ClInclude>
+    <ClInclude Include="s0005OGL3Example.h">
+      <Filter>_SamplesOpenGL33</Filter>
+    </ClInclude>
+    <ClInclude Include="TempMathGL3.h">
+      <Filter>_SamplesOpenGL33\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreGL3.h">
+      <Filter>_SamplesOpenGL33\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="TempTextureGL3.h">
+      <Filter>_SamplesOpenGL33\Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

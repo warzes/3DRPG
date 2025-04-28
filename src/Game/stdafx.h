@@ -32,7 +32,7 @@
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 
-#define GLM_FORCE_XYZW_ONLY
+//#define GLM_FORCE_XYZW_ONLY
 #define GLM_ENABLE_EXPERIMENTAL
 #define GLM_FORCE_RADIAN
 #include <glm/glm.hpp>
