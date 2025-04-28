@@ -111,6 +111,8 @@ namespace utils
 
 		Matrix4f GetMatrix();
 
+		const Vector3f& GetPos() { return m_pos; }
+		const Vector3f& GetTarget() { return m_target; }
 	private:
 
 		void init();
@@ -340,5 +342,29 @@ namespace utils
 
 		Assimp::Importer m_importer;
 		bool m_isPBR{ false };
+	};
+
+	class Technique
+	{
+	public:
+		Technique() = default;
+		virtual ~Technique();
+		virtual bool Init();
+		void Enable();
+
+		GLuint GetProgram() const { return m_shaderProg; }
+
+	protected:
+		bool addShader(GLenum ShaderType, const char* pFilename);
+		bool finalize();
+		GLint getUniformLocation(const char* pUniformName);
+
+		GLuint m_shaderProg = 0;
+
+	private:
+		void printUniformList();
+
+		typedef std::list<GLuint> ShaderObjList;
+		ShaderObjList m_shaderObjList;
 	};
 }

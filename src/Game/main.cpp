@@ -5,6 +5,11 @@
 #include "s0003OGL3Example.h"
 #include "s0004OGL3Example.h"
 #include "s0005OGL3Example.h"
+#include "s0006OGL3Example.h"
+#include "s0007OGL3Example.h"
+#include "s0008OGL3Example.h"
+#include "s0009OGL3Example.h"
+#include "s0010OGL3Example.h"
 
 #include "s0001OGL4Example.h"
 #else
@@ -29,7 +34,12 @@ int main(
 		//s0002OGL3Example();
 		//s0003OGL3Example();
 		//s0004OGL3Example();
-		s0005OGL3Example();
+		//s0005OGL3Example();
+		//s0006OGL3Example();
+		//s0007OGL3Example();
+		//s0008OGL3Example();
+		//s0009OGL3Example();
+		s0010OGL3Example();
 
 	StartSampleOGL3(1600, 900, example);
 	delete example;
